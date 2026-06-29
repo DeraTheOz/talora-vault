@@ -1,26 +1,57 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
+  --color-talora-dark-blue: #10141e;
+  --color-talora-white: #fff;
+  --color-talora-semi-dark-blue: #161d2f;
+  --color-talora-red: #fc4747;
+  --color-talora-greyish-blue: #5a698f;
+
+  --font-sans: var(--font-outfit);
   --font-mono: var(--font-geist-mono);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+@layer base {
+  html {
+    min-height: 100dvh;
+    scroll-behavior: smooth;
+  }
+
+  body {
+    background: var(--color-talora-dark-blue);
+    color: var(--color-talora-white);
+    font-size: 1.125rem;
+    font-family: var(--font-sans), Arial, Helvetica, sans-serif;
+    font-weight: 300;
+    line-height: 1.5rem;
+  }
+
+  button,
+  input,
+  textarea {
+    font: inherit;
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+@layer components {
+  .image-overlay {
+    position: absolute;
+    inset: 0;
+    border-radius: 0 0 0.5rem 0.5rem;
+    background: linear-gradient(
+      180deg,
+      rgba(0, 0, 0, 0) 0%,
+      rgba(0, 0, 0, 0.75) 100%
+    );
+  }
+}
+
+@layer utilities {
+  .scrollbar-none {
+    scrollbar-width: none;
+  }
+
+  .scrollbar-none::-webkit-scrollbar {
+    display: none;
+  }
 }
