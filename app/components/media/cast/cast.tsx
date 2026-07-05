@@ -16,30 +16,24 @@ interface CastProps {
 
 export default function Cast({ cast, title = "Top Cast" }: CastProps) {
   return (
-    <aside aria-labelledby="cast-title" className="xl:sticky xl:top-6">
-      <section className="rounded-lg bg-talora-semi-dark-blue p-4 md:p-6">
-        <h2
-          id="cast-title"
-          className="flex items-center gap-2 text-2xl font-normal">
-          <HugeiconsIcon
-            icon={UserMultipleIcon}
-            size={22}
-            color="currentColor"
-          />
-          {title}
-        </h2>
+    <section aria-labelledby="cast-title" className="rounded-lg">
+      <h2
+        id="cast-title"
+        className="flex items-center gap-2 text-2xl font-normal">
+        <HugeiconsIcon icon={UserMultipleIcon} size={22} color="currentColor" />
+        {title}
+      </h2>
 
-        <div className="mt-5 grid grid-cols-2 gap-4 sm:grid-cols-3 xl:grid-cols-2">
-          {cast.map((person) => (
-            <CastList
-              key={`${person.name}-${person.role}`}
-              name={person.name}
-              image={person.image}
-              role={person.role}
-            />
-          ))}
-        </div>
-      </section>
-    </aside>
+      <div className="-mx-4 mt-5 flex gap-3 overflow-x-auto scrollbar-none px-4 pb-2 sm:-mx-6 sm:px-6 xl:-mx-6 xl:px-6">
+        {cast.map((person) => (
+          <CastList
+            key={`${person.name}-${person.role}`}
+            name={person.name}
+            image={person.image}
+            role={person.role}
+          />
+        ))}
+      </div>
+    </section>
   );
 }
