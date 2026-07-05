@@ -39,19 +39,27 @@ export default async function SeriesPage({ params }: SeriesPageProps) {
   void id;
 
   return (
-    <div className="pb-10 xl:pr-8">
+    <div className="pb-6 mb-16 sm:mb-0 xl:pr-8">
       <SeriesHero series={series} />
       <SeriesFacts series={series} />
 
-      <div className="mt-8 grid gap-8 xl:grid-cols-[minmax(0,1fr)_22rem]">
-        <div className="space-y-8">
+      <div className="mt-8 grid grid-cols-1 gap-8 xl:grid-cols-[minmax(0,1fr)_22rem]">
+        <div className="xl:col-start-1 xl:row-start-1 space-y-6">
           <EpisodeSelector episodes={series.episodeList} />
           <SeriesStreamingPreview series={series} />
-          <SimilarSeriesList series={series.similarSeries} />
+        </div>
+
+        <div className="xl:col-start-1 xl:row-start-2">
+          <Cast cast={series.cast} />
+        </div>
+
+        <div className="xl:col-start-1 xl:row-start-3">
           <SeriesReviewForm />
         </div>
 
-        <Cast cast={series.cast} />
+        <div className="xl:col-start-2 xl:row-span-3 xl:row-start-1">
+          <SimilarSeriesList series={series.similarSeries} />
+        </div>
       </div>
     </div>
   );
