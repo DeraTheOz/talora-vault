@@ -1,6 +1,6 @@
-import { TmdbTrendingTitlesResponse } from "../types/trending";
+import { TmdbTrendingTitlesApiResponse } from "../types/trending";
 
-export async function getTrending(): Promise<TmdbTrendingTitlesResponse> {
+export async function getTrending(): Promise<TmdbTrendingTitlesApiResponse> {
   const response = await fetch("/api/tmdb/trending");
 
   if (!response.ok) {
