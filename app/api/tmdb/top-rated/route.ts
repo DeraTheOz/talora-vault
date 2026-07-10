@@ -1,9 +1,6 @@
 import { NextResponse } from "next/server";
 
-import {
-  TmdbTrendingTitles,
-  TmdbTrendingTitlesApiResponse,
-} from "@/features/trending/types/trending";
+import { TmdbTopRatedApiResponse } from "@/features/top-rated/types/top-rated";
 
 export async function GET() {
   const token = process.env.TMDB_ACCESS_TOKEN;
@@ -28,29 +25,25 @@ export async function GET() {
     };
 
     const response = await fetch(
-      `${baseUrl}/trending/all/week?language=en-US`,
+      `${baseUrl}/movie/top_rated?language=en-US`,
       options,
     );
 
     if (!response.ok) {
       return NextResponse.json(
-        { message: "Failed to fetch trending titles" },
+        { message: "Failed to fetch top rated content" },
         { status: 502 },
       );
     }
 
-    const data = (await response.json()) as TmdbTrendingTitlesApiResponse;
+    const data = (await response.json()) as TmdbTopRatedApiResponse;
 
-    const results: TmdbTrendingTitles[] = data.results.filter(
-      (title) => title.media_type === "movie" || title.media_type === "tv",
-    );
-
-    return NextResponse.json({ ...data, results });
+    return NextResponse.json(data);
   } catch (error) {
     console.error(error);
 
     return NextResponse.json(
-      { message: "Failed to fetch trending titles" },
+      { message: "Failed to fetch top rated content" },
       { status: 500 },
     );
   }

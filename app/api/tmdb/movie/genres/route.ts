@@ -1,9 +1,5 @@
+import { TmdbGenreApiResponse } from "@/features/movie/types/movies";
 import { NextResponse } from "next/server";
-
-import {
-  TmdbTrendingTitles,
-  TmdbTrendingTitlesApiResponse,
-} from "@/features/trending/types/trending";
 
 export async function GET() {
   const token = process.env.TMDB_ACCESS_TOKEN;
@@ -23,34 +19,30 @@ export async function GET() {
         Authorization: `Bearer ${token}`,
       },
       next: {
-        revalidate: 300,
+        revalidate: 60 * 60 * 24,
       },
     };
 
     const response = await fetch(
-      `${baseUrl}/trending/all/week?language=en-US`,
+      `${baseUrl}/genre/movie/list?language=en-US`,
       options,
     );
 
     if (!response.ok) {
       return NextResponse.json(
-        { message: "Failed to fetch trending titles" },
+        { message: "Failed to fetch movie genres" },
         { status: 502 },
       );
     }
 
-    const data = (await response.json()) as TmdbTrendingTitlesApiResponse;
+    const data = (await response.json()) as TmdbGenreApiResponse;
 
-    const results: TmdbTrendingTitles[] = data.results.filter(
-      (title) => title.media_type === "movie" || title.media_type === "tv",
-    );
-
-    return NextResponse.json({ ...data, results });
+    return NextResponse.json(data);
   } catch (error) {
     console.error(error);
 
     return NextResponse.json(
-      { message: "Failed to fetch trending titles" },
+      { message: "Failed to fetch movie genres" },
       { status: 500 },
     );
   }
