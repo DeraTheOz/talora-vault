@@ -1,5 +1,5 @@
-import { TmdbGenreApiResponse } from "@/features/movie/types/movies";
 import { NextResponse } from "next/server";
+import type { TmdbGenreApiResponse } from "@/features/media/types/media";
 
 export async function GET() {
   const token = process.env.TMDB_ACCESS_TOKEN;
