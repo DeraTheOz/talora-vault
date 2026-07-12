@@ -1,48 +1,48 @@
-import Image, { type StaticImageData } from "next/image";
+import Image from "next/image";
 import Link from "next/link";
-import { StarIcon } from "@hugeicons/core-free-icons";
+import { Film02Icon, StarIcon, Tv01Icon } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
-import type { IconSvgElement } from "@hugeicons/react";
 
 import BookmarkButton from "../../ui/bookmark-button";
+import { TmdbNowPlayingItem } from "@/features/now-playing/types/now-playing";
+import { getTmdbImageUrl } from "@/lib/tmdb/tmdb-image";
 
 interface MediaCardProps {
-  href: string;
-  title: string;
-  year: string;
-  rating: string;
-  maturity: string;
-  image: StaticImageData;
-  mediaLabel: string;
-  mediaIcon: IconSvgElement;
-  bookmarkLabel?: string;
+  media: TmdbNowPlayingItem;
 }
 
-export default function MediaCard({
-  href,
-  title,
-  year,
-  rating,
-  maturity,
-  image,
-  mediaLabel,
-  mediaIcon,
-  bookmarkLabel = `Add ${title} to bookmarks`,
-}: MediaCardProps) {
+export default function MediaCard({ media }: MediaCardProps) {
+  const imagePath = media.backdrop_path ?? media.poster_path;
+  const imageUrl = imagePath ? getTmdbImageUrl(imagePath) : null;
+  const year = media.release_date?.slice(0, 4) || "TBA";
+  const isMovie = media.media_type === "movie";
+  const mediaType = isMovie ? "Movie" : "TV Series";
+  const mediaIcon = isMovie ? Film02Icon : Tv01Icon;
+  const displayRating = media.vote_average.toFixed(1);
+
+  const href = isMovie ? `/movies/${media.id}` : `/series/${media.id}`;
+
   return (
     <article className="group relative w-full">
       <Link
         href={href}
         className="block rounded-lg transition duration-300 hover:-translate-y-1 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-talora-white">
         <div className="relative aspect-164/110 overflow-hidden rounded-lg bg-talora-semi-dark-blue md:aspect-220/140 xl:aspect-auto xl:h-44.5">
-          <Image
-            src={image}
-            alt=""
-            fill
-            placeholder="blur"
-            sizes="(min-width: 1280px) 280px, (min-width: 768px) 220px, 164px"
-            className="object-cover transition duration-300 group-hover:scale-105"
-          />
+          {imageUrl ? (
+            <Image
+              src={imageUrl}
+              alt={`Image of ${media.title}`}
+              fill
+              placeholder="blur"
+              blurDataURL={imageUrl}
+              sizes="(min-width: 1280px) 280px, (min-width: 768px) 220px, 164px"
+              className="object-cover transition duration-300 group-hover:scale-105"
+            />
+          ) : (
+            <div className="flex h-full w-full items-center justify-center bg-talora-semi-dark-blue text-xs text-talora-white/60">
+              No display image
+            </div>
+          )}
 
           {/* Card Overlay */}
           <span
@@ -52,8 +52,13 @@ export default function MediaCard({
 
           {/* Media star rating */}
           <div className="absolute left-2 top-3 flex items-center gap-1 rounded-full bg-talora-dark-blue/75 px-2.5 py-1 text-xs font-medium text-talora-white backdrop-blur">
-            <HugeiconsIcon icon={StarIcon} size={13} color="currentColor" />
-            {rating}
+            <HugeiconsIcon
+              icon={StarIcon}
+              size={13}
+              fill="currentColor"
+              color="currentColor"
+            />
+            {displayRating}
           </div>
         </div>
 
@@ -69,21 +74,20 @@ export default function MediaCard({
                 color="currentColor"
                 aria-hidden="true"
               />
-              {mediaLabel}
+              {mediaType}
             </span>
-            <span aria-hidden="true">•</span>
-            <span>{maturity}</span>
           </p>
 
           <h2 className="line-clamp-2 text-sm font-medium leading-tight text-talora-white transition group-hover:text-talora-red md:text-lg">
-            {title}
+            {media.title}
           </h2>
         </div>
       </Link>
 
       <BookmarkButton
-        label={bookmarkLabel}
-        removeLabel={`Remove ${title} from bookmarks`}
+        bookmarkId={`${media.media_type}:${media.id}`}
+        label={`Add ${media.title} to watchlist`}
+        removeLabel={`Remove ${media.title} from watchlist`}
         className="absolute right-2 top-3 z-10 size-9"
       />
     </article>
