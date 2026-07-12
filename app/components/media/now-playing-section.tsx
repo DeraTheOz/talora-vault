@@ -5,20 +5,32 @@ import MediaCard from "./card/media-card";
 import { MediaSectionSkeleton } from "./media-skeletons";
 import MediaErrorState from "./media-error-state";
 
-interface MediaProps {
+interface NowPlayingProps {
   title: string;
   id: string;
 }
 
-export default function MediaSection({ title, id }: MediaProps) {
-  const { data: nowPlaying = [], isLoading, error } = useNowPlaying();
+export default function NowPlayingSection({ title, id }: NowPlayingProps) {
+  const {
+    data: nowPlaying = [],
+    isLoading,
+    error,
+    refetch,
+    isFetching,
+  } = useNowPlaying();
 
   if (isLoading) {
     return <MediaSectionSkeleton />;
   }
 
   if (error) {
-    return <MediaErrorState message="Could not load now playing content." />;
+    return (
+      <MediaErrorState
+        message="Could not load now playing content."
+        onRetry={() => void refetch()}
+        isRetrying={isFetching}
+      />
+    );
   }
 
   return (

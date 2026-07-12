@@ -7,6 +7,7 @@ import {
 
 import MovieCard from "./movie-card";
 import MediaFilterBar from "../media/filter/MediaFilterBar";
+import MediaErrorState from "../media/media-error-state";
 
 import { useMovieSection } from "@/features/movie/hooks/use-movie-section";
 import { movieSortOptions } from "@/lib/constants/sort-options";
@@ -38,19 +39,11 @@ export default function MovieSection({ title, id }: MovieProps) {
 
   if (error || genreError) {
     return (
-      <div
-        role="alert"
-        className="flex flex-col items-start gap-3 text-talora-white">
-        <p className="text-talora-red">Could not load movies.</p>
-
-        <button
-          type="button"
-          onClick={handleRetry}
-          disabled={isRetrying}
-          className="rounded-md bg-talora-red px-4 py-2 text-sm font-medium transition hover:bg-talora-red/80 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-talora-white disabled:cursor-not-allowed disabled:opacity-60">
-          {isRetrying ? "Retrying..." : "Retry"}
-        </button>
-      </div>
+      <MediaErrorState
+        message="Could not load movies."
+        onRetry={handleRetry}
+        isRetrying={isRetrying}
+      />
     );
   }
 

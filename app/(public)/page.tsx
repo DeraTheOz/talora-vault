@@ -1,5 +1,6 @@
 import SearchBar from "../components/forms/search-bar";
-import MediaSection from "../components/media/media-section";
+import NowPlayingSection from "../components/media/now-playing-section";
+import TopRatedSection from "../components/media/top-rated-section";
 import TrendingSection from "../components/media/trending-section";
 
 export default function Page() {
@@ -9,7 +10,9 @@ export default function Page() {
 
       <TrendingSection title="Trending" id="trending-heading" />
 
-      <MediaSection title="Recommended for you" id="recommended-heading" />
+      <TopRatedSection title="Top Rated" id="top-rated-heading" />
+
+      <NowPlayingSection title="Now Playing" id="now-playing-heading" />
     </div>
   );
 }
