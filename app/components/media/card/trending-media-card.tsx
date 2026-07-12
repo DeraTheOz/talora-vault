@@ -1,63 +1,84 @@
 import Image from "next/image";
 import Link from "next/link";
 import { HugeiconsIcon } from "@hugeicons/react";
-import { Film02Icon } from "@hugeicons/core-free-icons";
+import { Film02Icon, Tv01Icon } from "@hugeicons/core-free-icons";
 
 import BookmarkButton from "../../ui/bookmark-button";
-import movieImage from "@/public/large.jpg";
 
-export default function TrendingMediaCard() {
+import { getTmdbImageUrl } from "@/lib/tmdb/tmdb-image";
+import { TmdbTrendingTitles } from "@/features/trending/types/trending";
+
+interface TrendingMediaProps {
+  trendingTitle: TmdbTrendingTitles;
+}
+
+export default function TrendingMediaCard({
+  trendingTitle,
+}: TrendingMediaProps) {
+  const title = trendingTitle.title ?? trendingTitle.name ?? "Untitled";
+  const imagePath = trendingTitle.backdrop_path ?? trendingTitle.poster_path;
+  const imageUrl = imagePath ? getTmdbImageUrl(imagePath) : null;
+  const year =
+    trendingTitle.release_date?.slice(0, 4) ||
+    trendingTitle.first_air_date?.slice(0, 4) ||
+    "TBA";
+  const isMovie = trendingTitle.media_type === "movie";
+  const mediaType = isMovie ? "Movie" : "TV Series";
+  const href = isMovie
+    ? `/movies/${trendingTitle.id}`
+    : `/series/${trendingTitle.id}`;
+  const mediaIcon = isMovie ? Film02Icon : Tv01Icon;
+
   return (
     <article className="group relative h-45 w-60 shrink-0 overflow-hidden rounded-lg md:h-57.5 md:w-117.5">
       <Link
-        href="/movies/1"
+        href={href}
         className="relative block h-full w-full focus-visible:outline-2 focus-visible:outline-inset focus-visible:outline-talora-white">
-        <Image
-          src={movieImage}
-          alt=""
-          fill
-          placeholder="blur"
-          sizes="(min-width: 768px) 470px, 240px"
-          className="object-cover transition-transform duration-300 group-hover:scale-105"
-        />
+        {imageUrl ? (
+          <Image
+            src={imageUrl}
+            alt={`Image of ${title}`}
+            fill
+            placeholder="blur"
+            blurDataURL={imageUrl}
+            sizes="(min-width: 768px) 470px, 240px"
+            className="object-cover transition-transform duration-300 group-hover:scale-105"
+          />
+        ) : (
+          <div className="flex h-full w-full items-center justify-center bg-talora-semi-dark-blue text-xs text-talora-white/60">
+            No display image
+          </div>
+        )}
 
         {/* Media Detail */}
         <div className="absolute inset-x-0 bottom-0 z-10 px-4 pb-4 md:px-6 md:pb-6">
           <p className="mb-1 flex flex-wrap items-center gap-2 text-xs font-light text-white/75 md:text-[0.9375rem]">
-            <span>2019</span>
+            <span>{year}</span>
             <span aria-hidden="true">•</span>
             <span className="inline-flex items-center gap-1">
               <HugeiconsIcon
-                icon={Film02Icon}
+                icon={mediaIcon}
                 size={16}
                 color="currentColor"
                 aria-hidden="true"
               />
-              Movie
+              {mediaType}
             </span>
-            <span aria-hidden="true" className="hidden md:block">
-              •
-            </span>
-            <span className="hidden md:block">PG</span>
           </p>
 
           <h2 className="text-[0.9375rem] font-medium leading-tight text-talora-white transition duration-300 group-hover:text-talora-red md:text-2xl">
-            Beyond Earth
+            {title}
           </h2>
         </div>
-
-        {/* Mobile Movie Rating */}
-        <span className="absolute bottom-6 right-6 z-20 flex items-center justify-center text-[0.8125rem] uppercase w-8.5 h-5.25 rounded-[0.65625rem] bg-talora-white/15 md:hidden">
-          PG
-        </span>
 
         {/* Card Overlay */}
         <span className="image-overlay" aria-hidden="true" />
       </Link>
 
       <BookmarkButton
-        label="Add Beyond Earth to bookmarks"
-        removeLabel="Remove Beyond Earth from bookmarks"
+        bookmarkId={`${trendingTitle.media_type}:${trendingTitle.id}`}
+        label={`Add ${title} to watchlist`}
+        removeLabel={`Remove ${title} from bookmarks`}
         className="absolute right-2 top-2 z-20 size-10 md:right-6 md:top-4"
       />
     </article>
