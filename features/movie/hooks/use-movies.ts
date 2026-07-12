@@ -1,6 +1,6 @@
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { getMovies } from "../api/get-movies";
-import { MovieFilters } from "../types/movies";
+import { MovieFilters } from "@/features/media/types/media";
 
 export function useMovies(filters: MovieFilters = {}) {
   return useInfiniteQuery({
