@@ -1,9 +1,9 @@
 import { NextRequest, NextResponse } from "next/server";
 
-import {
+import type {
   MovieSortOption,
   TmdbMovieApiResponse,
-} from "@/features/movie/types/movies";
+} from "@/features/media/types/media";
 
 const SORT_OPTIONS = new Set<MovieSortOption>([
   "popularity.desc",
