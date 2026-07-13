@@ -1,4 +1,4 @@
-import type { FilterSelectOption } from "@/features/movie/hooks/use-filter-select";
+import type { FilterSelectOption } from "@/features/media/hooks/use-filter-select";
 
 export const movieSortOptions: FilterSelectOption[] = [
   { label: "Most popular", value: "popularity.desc" },
