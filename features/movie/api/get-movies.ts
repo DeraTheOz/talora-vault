@@ -1,4 +1,7 @@
-import { MovieFilters, TmdbMovieApiResponse } from "../types/movies";
+import type {
+  MovieFilters,
+  TmdbMovieApiResponse,
+} from "@/features/media/types/media";
 
 export async function getMovies(
   page = 1,
