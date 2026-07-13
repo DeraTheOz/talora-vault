@@ -1,20 +1,12 @@
 "use client";
 
-import { useMovieFilterStore } from "@/stores/movie/movie-filter-store";
 import { useEffect, useRef } from "react";
-import { useMovies } from "./use-movies";
-import { useMovieGenres } from "./use-movie-genres";
 import { toast } from "sonner";
 
-const toastStyles = {
-  error: {
-    classNames: {
-      icon: "text-talora-red!",
-      title: "text-talora-red!",
-      description: "text-talora-red!",
-    },
-  },
-};
+import { useMovies } from "./use-movies";
+import { useMovieGenres } from "./use-movie-genres";
+import { useMovieFilterStore } from "@/stores/movie/movie-filter-store";
+import { toastStyles } from "@/lib/constants/toast";
 
 export function useMovieSection() {
   const loadMoreRef = useRef<HTMLDivElement | null>(null);
