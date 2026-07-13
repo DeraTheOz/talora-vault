@@ -6,7 +6,7 @@ import {
 } from "../media/media-skeletons";
 
 import MovieCard from "./movie-card";
-import MediaFilterBar from "../media/filter/MediaFilterBar";
+import MediaFilter from "../media/filter/media-filter";
 import MediaErrorState from "../media/media-error-state";
 
 import { useMovieSection } from "@/features/movie/hooks/use-movie-section";
@@ -56,7 +56,7 @@ export default function MovieSection({ title, id }: MovieProps) {
           {title}
         </h2>
 
-        <MediaFilterBar
+        <MediaFilter
           genres={genres}
           filters={filters}
           sortOptions={movieSortOptions}
