@@ -1,12 +1,12 @@
 import type {
-  MovieFilters,
-  TmdbMovieApiResponse,
+  TvFilters,
+  TmdbTvApiResponse,
 } from "@/features/media/types/media";
 
-export async function getMovies(
+export async function getSeries(
   page = 1,
-  filters: MovieFilters = {},
-): Promise<TmdbMovieApiResponse> {
+  filters: TvFilters = {},
+): Promise<TmdbTvApiResponse> {
   const searchParams = new URLSearchParams({
     page: String(page),
   });
@@ -19,10 +19,10 @@ export async function getMovies(
     searchParams.set("sortBy", filters.sortBy);
   }
 
-  const response = await fetch(`/api/tmdb/movie?${searchParams.toString()}`);
+  const response = await fetch(`/api/tmdb/series?${searchParams.toString()}`);
 
   if (!response.ok) {
-    throw new Error("Unable to load movies");
+    throw new Error("Unable to load tv shows");
   }
 
   return response.json();

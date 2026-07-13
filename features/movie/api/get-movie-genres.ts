@@ -1,4 +1,4 @@
-import { TmdbGenreApiResponse } from "../types/movies";
+import type { TmdbGenreApiResponse } from "@/features/media/types/media";
 
 export async function getMovieGenres(): Promise<TmdbGenreApiResponse> {
   const response = await fetch("/api/tmdb/movie/genres");

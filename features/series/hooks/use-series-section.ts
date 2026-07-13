@@ -3,15 +3,15 @@
 import { useEffect, useRef } from "react";
 import { toast } from "sonner";
 
-import { useMovies } from "./use-movies";
-import { useMovieGenres } from "./use-movie-genres";
-import { useMovieFilterStore } from "@/stores/movie/movie-filter-store";
+import { useSeries } from "./use-series";
+import { useSeriesGenres } from "./use-series-genre";
+import { useTvFilterStore } from "@/stores/series/series-filter-store";
 import { toastStyles } from "@/lib/constants/toast";
 
-export function useMovieSection() {
+export function useSeriesSection() {
   const loadMoreRef = useRef<HTMLDivElement | null>(null);
-  const filters = useMovieFilterStore((state) => state.filters);
-  const setFilters = useMovieFilterStore((state) => state.setFilters);
+  const filters = useTvFilterStore((state) => state.filters);
+  const setFilters = useTvFilterStore((state) => state.setFilters);
 
   const {
     data,
@@ -21,29 +21,29 @@ export function useMovieSection() {
     fetchNextPage,
     hasNextPage,
     isFetchingNextPage,
-    refetch: refetchMovies,
-  } = useMovies(filters);
+    refetch: refetchSeries,
+  } = useSeries(filters);
 
   const {
     data: genreData,
     isLoading: isLoadingGenres,
     error: genreError,
-    refetch: refetchMovieGenres,
-  } = useMovieGenres();
+    refetch: refetchSeriesGenres,
+  } = useSeriesGenres();
 
-  const movies = Array.from(
+  const series = Array.from(
     new Map(
       data?.pages
         .flatMap((page) => page.results)
-        .map((movie) => [movie.id, movie]),
+        .map((series) => [series.id, series]),
     ).values(),
   );
 
   useEffect(() => {
     if (!error) return;
 
-    toast.error("Could not load movies", {
-      id: "movies-load-error",
+    toast.error("Could not load TV shows", {
+      id: "series-load-error",
       description: "Please try again or change your filters.",
       ...toastStyles.error,
     });
@@ -52,10 +52,10 @@ export function useMovieSection() {
   useEffect(() => {
     if (!genreError) return;
 
-    toast.error("Could not load movie genres", {
-      id: "movie-genres-load-error",
+    toast.error("Could not load TV show genres", {
+      id: "series-genres-load-error",
       description:
-        "The movie list may still work, but filters are unavailable.",
+        "The series list may still work, but filters are unavailable.",
       ...toastStyles.error,
     });
   }, [genreError]);
@@ -91,12 +91,12 @@ export function useMovieSection() {
   const isRetrying = isFetching || isLoadingGenres;
 
   function handleRetry() {
-    if (error) void refetchMovies();
-    if (genreError) void refetchMovieGenres();
+    if (error) void refetchSeries();
+    if (genreError) void refetchSeriesGenres();
   }
 
   return {
-    movies,
+    series,
     genres: genreData?.genres ?? [],
     loadMoreRef,
     filters,

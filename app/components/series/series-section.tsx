@@ -5,21 +5,21 @@ import {
   MediaSectionSkeleton,
 } from "../media/media-skeletons";
 
-import MovieCard from "./movie-card";
+import SeriesCard from "./series-card";
 import MediaFilter from "../media/filter/media-filter";
 import MediaErrorState from "../media/media-error-state";
 
-import { useMovieSection } from "@/features/movie/hooks/use-movie-section";
-import { movieSortOptions } from "@/lib/constants/sort-options";
+import { tvSortOptions } from "@/lib/constants/sort-options";
+import { useSeriesSection } from "@/features/series/hooks/use-series-section";
 
-interface MovieProps {
+interface TvProps {
   title: string;
   id: string;
 }
 
-export default function MovieSection({ title, id }: MovieProps) {
+export default function SeriesSection({ title, id }: TvProps) {
   const {
-    movies,
+    series,
     genres,
     loadMoreRef,
     filters,
@@ -31,7 +31,7 @@ export default function MovieSection({ title, id }: MovieProps) {
     error,
     genreError,
     handleRetry,
-  } = useMovieSection();
+  } = useSeriesSection();
 
   if (isInitialLoading) {
     return <MediaSectionSkeleton filters />;
@@ -40,7 +40,7 @@ export default function MovieSection({ title, id }: MovieProps) {
   if (error || genreError) {
     return (
       <MediaErrorState
-        message="Could not load movies."
+        message="Could not load TV shows."
         onRetry={handleRetry}
         isRetrying={isRetrying}
       />
@@ -59,21 +59,21 @@ export default function MovieSection({ title, id }: MovieProps) {
         <MediaFilter
           genres={genres}
           filters={filters}
-          sortOptions={movieSortOptions}
+          sortOptions={tvSortOptions}
           onFiltersChange={setFilters}
         />
       </div>
 
       {isFiltering ? (
         <MediaGridSkeleton />
-      ) : movies.length === 0 ? (
+      ) : series.length === 0 ? (
         <p className="text-sm text-talora-white">
-          No movies found for this filter.
+          No tv shows found for this filter.
         </p>
       ) : (
         <div className="grid grid-cols-2 gap-x-4 gap-y-5 md:grid-cols-3 md:gap-x-7 md:gap-y-6 xl:pr-8 xl:grid-cols-[repeat(auto-fill,minmax(17.5rem,1fr))] xl:gap-x-10 xl:gap-y-8">
-          {movies.map((movie) => (
-            <MovieCard key={`${movie.title}-${movie.id}`} movie={movie} />
+          {series.map((tvShow) => (
+            <SeriesCard key={`${tvShow.name}-${tvShow.id}`} tvShow={tvShow} />
           ))}
         </div>
       )}
