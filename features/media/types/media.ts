@@ -67,3 +67,27 @@ export type TmdbTvApiResponse = TmdbPagedResponse<TmdbTvShow>;
 
 export type MovieFilters = MediaFilters<"movie">;
 export type TvFilters = MediaFilters<"tv">;
+
+// ---------------------------------------------------------------------------
+// Shared cast / credits types — used by movie AND TV series detail pages
+// ---------------------------------------------------------------------------
+
+export type TmdbCastMember = {
+  id: number;
+  name: string;
+  character: string;
+  profile_path: string | null;
+  order: number;
+};
+
+export type TmdbCrewMember = {
+  id: number;
+  name: string;
+  job: string;
+  department: string;
+};
+
+export type TmdbCreditsResponse = {
+  cast: TmdbCastMember[];
+  crew: TmdbCrewMember[];
+};
