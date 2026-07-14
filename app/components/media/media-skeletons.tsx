@@ -74,3 +74,16 @@ export function TrendingSectionSkeleton() {
     </section>
   );
 }
+
+export function CastSkeleton() {
+  return (
+    <div className="space-y-4">
+      <Skeleton className="h-8 w-32" />
+      <div className="flex gap-3 overflow-hidden">
+        {Array.from({ length: 6 }).map((_, i) => (
+          <Skeleton key={i} className="h-18 w-52 shrink-0 rounded-md" />
+        ))}
+      </div>
+    </div>
+  );
+}
