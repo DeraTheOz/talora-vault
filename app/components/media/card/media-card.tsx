@@ -6,6 +6,7 @@ import { HugeiconsIcon } from "@hugeicons/react";
 import BookmarkButton from "../../ui/bookmark-button";
 import { TmdbNowPlayingItem } from "@/features/now-playing/types/now-playing";
 import { getTmdbImageUrl } from "@/lib/tmdb/tmdb-image";
+import { formatRating, formatReleaseYear } from "@/lib/helpers/format";
 
 interface MediaCardProps {
   media: TmdbNowPlayingItem;
@@ -14,11 +15,9 @@ interface MediaCardProps {
 export default function MediaCard({ media }: MediaCardProps) {
   const imagePath = media.backdrop_path ?? media.poster_path;
   const imageUrl = imagePath ? getTmdbImageUrl(imagePath) : null;
-  const year = media.release_date?.slice(0, 4) || "TBA";
   const isMovie = media.media_type === "movie";
   const mediaType = isMovie ? "Movie" : "TV Series";
   const mediaIcon = isMovie ? Film02Icon : Tv01Icon;
-  const displayRating = media.vote_average.toFixed(1);
 
   const href = isMovie ? `/movies/${media.id}` : `/series/${media.id}`;
 
@@ -58,14 +57,14 @@ export default function MediaCard({ media }: MediaCardProps) {
               fill="currentColor"
               color="currentColor"
             />
-            {displayRating}
+            {formatRating(media.vote_average)}
           </div>
         </div>
 
         {/* Media Detail */}
         <div className="mt-3">
           <p className="mb-1 flex flex-wrap items-center gap-1.5 text-[0.6875rem] font-light text-talora-white/70 md:text-[0.8125rem]">
-            <span>{year}</span>
+            <span>{formatReleaseYear(media.release_date)}</span>
             <span aria-hidden="true">•</span>
             <span className="inline-flex items-center gap-1">
               <HugeiconsIcon

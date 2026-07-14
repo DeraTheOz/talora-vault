@@ -7,6 +7,7 @@ import BookmarkButton from "../../ui/bookmark-button";
 
 import { getTmdbImageUrl } from "@/lib/tmdb/tmdb-image";
 import { TmdbTrendingTitles } from "@/features/trending/types/trending";
+import { formatReleaseYear } from "@/lib/helpers/format";
 
 interface TrendingMediaProps {
   trendingTitle: TmdbTrendingTitles;
@@ -18,10 +19,6 @@ export default function TrendingMediaCard({
   const title = trendingTitle.title ?? trendingTitle.name ?? "Untitled";
   const imagePath = trendingTitle.backdrop_path ?? trendingTitle.poster_path;
   const imageUrl = imagePath ? getTmdbImageUrl(imagePath) : null;
-  const year =
-    trendingTitle.release_date?.slice(0, 4) ||
-    trendingTitle.first_air_date?.slice(0, 4) ||
-    "TBA";
   const isMovie = trendingTitle.media_type === "movie";
   const mediaType = isMovie ? "Movie" : "TV Series";
   const href = isMovie
@@ -53,7 +50,11 @@ export default function TrendingMediaCard({
         {/* Media Detail */}
         <div className="absolute inset-x-0 bottom-0 z-10 px-4 pb-4 md:px-6 md:pb-6">
           <p className="mb-1 flex flex-wrap items-center gap-2 text-xs font-light text-white/75 md:text-[0.9375rem]">
-            <span>{year}</span>
+            <span>
+              {formatReleaseYear(
+                trendingTitle.release_date || trendingTitle.first_air_date,
+              )}
+            </span>
             <span aria-hidden="true">•</span>
             <span className="inline-flex items-center gap-1">
               <HugeiconsIcon
