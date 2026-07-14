@@ -6,6 +6,7 @@ export interface MediaFactItem {
   id: string;
   icon: IconSvgElement;
   label: string;
+  fill?: string;
 }
 
 interface MediaFactsProps {
@@ -21,7 +22,12 @@ export default function MediaFacts({
     <section aria-label={ariaLabel} className="mt-6">
       <div className="flex flex-wrap gap-3">
         {items.map((item) => (
-          <MediaFactPill key={item.id} icon={item.icon} label={item.label} />
+          <MediaFactPill
+            key={item.id}
+            icon={item.icon}
+            label={item.label}
+            fill={item.fill}
+          />
         ))}
       </div>
     </section>

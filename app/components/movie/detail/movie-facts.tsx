@@ -8,10 +8,15 @@ import {
 import MediaFacts, {
   type MediaFactItem,
 } from "@/app/components/media/facts/media-facts";
-import type { MovieDetail } from "@/app/data/movie-detail";
+import type { TmdbMovieDetail } from "@/features/movie/types/movie-detail";
+import {
+  formatRating,
+  formatReleaseYear,
+  formatRuntime,
+} from "@/lib/helpers/format";
 
 interface MovieFactsProps {
-  movie: MovieDetail;
+  movie: TmdbMovieDetail;
 }
 
 export default function MovieFacts({ movie }: MovieFactsProps) {
@@ -19,22 +24,23 @@ export default function MovieFacts({ movie }: MovieFactsProps) {
     {
       id: "rating",
       icon: StarIcon,
-      label: movie.rating,
+      label: formatRating(movie.vote_average),
+      fill: "currentColor",
     },
     {
       id: "year",
       icon: Calendar03Icon,
-      label: movie.year,
+      label: formatReleaseYear(movie.release_date),
     },
     {
       id: "runtime",
       icon: Clock7Icon,
-      label: movie.runtime,
+      label: formatRuntime(movie.runtime),
     },
     ...movie.genres.map((genre) => ({
-      id: `genre-${genre}`,
+      id: `genre-${genre.id}`,
       icon: Film02Icon,
-      label: genre,
+      label: genre.name,
     })),
   ];
 
