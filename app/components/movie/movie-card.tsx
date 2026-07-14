@@ -8,6 +8,7 @@ import type { TmdbMovie } from "@/features/media/types/media";
 import { getTmdbImageUrl } from "@/lib/tmdb/tmdb-image";
 
 import BookmarkButton from "../ui/bookmark-button";
+import { formatRating, formatReleaseYear } from "@/lib/helpers/format";
 
 interface MovieCardProps {
   movie: TmdbMovie;
@@ -16,8 +17,6 @@ interface MovieCardProps {
 export default function MovieCard({ movie }: MovieCardProps) {
   const imagePath = movie.backdrop_path ?? movie.poster_path;
   const imageUrl = imagePath ? getTmdbImageUrl(imagePath) : null;
-  const year = movie.release_date?.slice(0, 4) || "TBA";
-  const displayRating = movie.vote_average.toFixed(1);
 
   return (
     <article className="group relative w-full">
@@ -55,14 +54,14 @@ export default function MovieCard({ movie }: MovieCardProps) {
               fill="currentColor"
               color="currentColor"
             />
-            {+displayRating === 0 ? "N/A" : displayRating}
+            {formatRating(movie.vote_average)}
           </div>
         </div>
 
         {/* Media Detail */}
         <div className="mt-3">
           <p className="mb-1 flex flex-wrap items-center gap-1.5 text-[0.6875rem] font-light text-talora-white/70 md:text-[0.8125rem]">
-            <span>{year}</span>
+            <span>{formatReleaseYear(movie.release_date)}</span>
             <span aria-hidden="true">•</span>
             <span className="inline-flex items-center gap-1">
               <HugeiconsIcon
