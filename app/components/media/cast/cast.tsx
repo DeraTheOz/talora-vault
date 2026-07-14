@@ -1,12 +1,11 @@
-import type { StaticImageData } from "next/image";
 import { UserMultipleIcon } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
-import CastList from "./cast-list";
+import CastItem from "./cast-item";
 
-interface CastMember {
+export interface CastMember {
   name: string;
   role: string;
-  image: StaticImageData;
+  image: string | null;
 }
 
 interface CastProps {
@@ -24,9 +23,9 @@ export default function Cast({ cast, title = "Top Cast" }: CastProps) {
         {title}
       </h2>
 
-      <div className="-mx-4 mt-5 flex gap-3 overflow-x-auto scrollbar-none px-4 pb-2 sm:-mx-6 sm:px-6 xl:-mx-6 xl:px-6">
+      <div className="mt-5 flex gap-3 overflow-x-auto scrollbar-none pb-2">
         {cast.map((person) => (
-          <CastList
+          <CastItem
             key={`${person.name}-${person.role}`}
             name={person.name}
             image={person.image}
