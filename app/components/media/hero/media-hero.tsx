@@ -1,4 +1,4 @@
-import Image, { type StaticImageData } from "next/image";
+import Image from "next/image";
 import { BookmarkAdd02Icon, PlayCircleIcon } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
 import type { IconSvgElement } from "@hugeicons/react";
@@ -7,11 +7,12 @@ interface MediaHeroProps {
   titleId: string;
   title: string;
   overview: string;
-  image: StaticImageData;
+  image: string | null;
+  mobileImage: string | null;
   mediaLabel: string;
   mediaIcon: IconSvgElement;
   year: string;
-  maturity: string;
+  movieStatus: string;
   secondaryHref: string;
   secondaryLabel: string;
   watchlistLabel?: string;
@@ -22,10 +23,11 @@ export default function MediaHero({
   title,
   overview,
   image,
+  mobileImage,
   mediaLabel,
   mediaIcon,
   year,
-  maturity,
+  movieStatus,
   secondaryHref,
   secondaryLabel,
   watchlistLabel = "Add to watchlist",
@@ -34,16 +36,41 @@ export default function MediaHero({
     <section
       aria-labelledby={titleId}
       className="relative isolate overflow-hidden rounded-lg px-4 pb-8 pt-56 md:px-6 md:pt-72 xl:mx-0 xl:px-8 xl:pt-80">
-      <Image
-        src={image}
-        alt=""
-        fill
-        priority
-        placeholder="blur"
-        sizes="100vw"
-        className="absolute inset-0 -z-20 object-cover"
-      />
+      {/* Mobile Image */}
+      {mobileImage ? (
+        <Image
+          src={mobileImage}
+          alt={`Image of ${title}`}
+          fill
+          priority
+          blurDataURL={mobileImage}
+          sizes="100vw"
+          className="block md:hidden absolute inset-0 -z-20 object-cover"
+        />
+      ) : (
+        <div className="flex h-full w-full mb-6 text-xs uppercase text-talora-red md:hidden">
+          Display is currently unavailable
+        </div>
+      )}
 
+      {/* Desktop Image */}
+      {image ? (
+        <Image
+          src={image}
+          alt=""
+          fill
+          priority
+          blurDataURL={image}
+          sizes="100vw"
+          className="hidden md:block absolute inset-0 -z-20 object-cover"
+        />
+      ) : (
+        <div className="hidden md:flex h-full w-full mb-6 text-xs uppercase text-talora-red">
+          Display is currently unavailable
+        </div>
+      )}
+
+      {/* Image Overlay */}
       <div
         aria-hidden="true"
         className="absolute inset-0 -z-10 bg-[linear-gradient(180deg,rgba(16,20,30,0.15)_0%,rgba(16,20,30,0.78)_48%,#10141e_100%)]"
@@ -58,7 +85,7 @@ export default function MediaHero({
           <span aria-hidden="true">•</span>
           <span>{year}</span>
           <span aria-hidden="true">•</span>
-          <span>{maturity}</span>
+          <span>{movieStatus}</span>
         </p>
 
         <h1
