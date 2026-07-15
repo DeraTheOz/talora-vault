@@ -87,3 +87,20 @@ export function CastSkeleton() {
     </div>
   );
 }
+
+export function SimilarMediaSkeleton() {
+  return (
+    <div>
+      <Skeleton className="mb-4 h-8 w-40" />
+      <div className="grid grid-cols-2 gap-4 xl:grid-cols-2">
+        {Array.from({ length: 6 }).map((_, i) => (
+          <div key={i} className="space-y-2">
+            <Skeleton className="aspect-164/110 w-full rounded-lg" />
+            <Skeleton className="h-4 w-3/4" />
+            <Skeleton className="h-3 w-1/2" />
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}

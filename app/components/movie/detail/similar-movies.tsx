@@ -1,18 +1,25 @@
+"use client";
+
+import { useSimilarMovies } from "@/features/movie/hooks/use-similar-movies";
 import SimilarMedia from "@/app/components/media/similar/similar-media";
-import type { SimilarMovie } from "@/app/data/movie-detail";
+import { SimilarMediaSkeleton } from "../../media/media-skeletons";
+import { toSimilarMediaCardItem } from "@/features/media/similar/to-similar-media-card-item";
 
-interface SimilarMoviesProps {
-  movies: SimilarMovie[];
-}
+export default function SimilarMovies({ id }: { id: string }) {
+  const { data, isLoading, error } = useSimilarMovies(id);
 
-export default function SimilarMovies({ movies }: SimilarMoviesProps) {
+  if (isLoading) return <SimilarMediaSkeleton />;
+  if (error || !data?.results?.length) return null;
+
+  const items = data.results.map((movie) =>
+    toSimilarMediaCardItem(movie, "movie"),
+  );
+
   return (
     <SimilarMedia
-      title="Similar Movies"
+      title="You May Also Like"
       titleId="similar-movies-title"
-      items={movies}
-      hrefBase="/movies"
-      mediaLabel="Movie"
+      items={items}
     />
   );
 }

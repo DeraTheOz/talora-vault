@@ -1,21 +1,16 @@
-import SimilarMediaCard, {
-  type SimilarMediaCardItem,
-} from "./similar-media-card";
+import SimilarMediaCard from "./similar-media-card";
+import type { SimilarMediaCardItem } from "@/features/media/types/media";
 
 interface SimilarMediaProps {
   title: string;
   titleId: string;
   items: SimilarMediaCardItem[];
-  hrefBase: "/movies" | "/series";
-  mediaLabel: "Movie" | "TV Series";
 }
 
 export default function SimilarMedia({
   title,
   titleId,
   items,
-  hrefBase,
-  mediaLabel,
 }: SimilarMediaProps) {
   return (
     <section aria-labelledby={titleId}>
@@ -27,12 +22,12 @@ export default function SimilarMedia({
         {items.map((item) => (
           <SimilarMediaCard
             key={item.id}
-            id={item.id}
-            href={`${hrefBase}/${item.id}`}
-            image={item.image}
-            title={item.title}
-            category={item.category}
-            mediaLabel={mediaLabel}
+            {...item}
+            href={
+              item.mediaType === "movie"
+                ? `/movies/${item.id}`
+                : `/series/${item.id}`
+            }
           />
         ))}
       </div>
