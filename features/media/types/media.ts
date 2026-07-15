@@ -91,3 +91,29 @@ export type TmdbCreditsResponse = {
   cast: TmdbCastMember[];
   crew: TmdbCrewMember[];
 };
+
+// ---------------------------------------------------------------------------
+// Shared movie / tv types — used by movie AND TV series detail pages
+// ---------------------------------------------------------------------------
+
+export type TmdbSimilarMediaItem = {
+  id: number;
+  title?: string;
+  name?: string;
+  backdrop_path: string | null;
+  poster_path: string | null;
+  release_date?: string | null;
+  first_air_date?: string | null;
+};
+
+export type TmdbSimilarMediaResponse = {
+  results: TmdbSimilarMediaItem[];
+};
+
+export type SimilarMediaCardItem = {
+  id: string;
+  title: string;
+  image: string | null;
+  year: string;
+  mediaType: MediaType;
+};

@@ -1,10 +1,10 @@
-import Image, { type StaticImageData } from "next/image";
+import Image from "next/image";
 import { PlayCircleIcon } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
 
 interface StreamingPreviewProps {
   title: string;
-  image: StaticImageData;
+  image: string | null;
   heading?: string;
   playLabel?: string;
   description?: string;
@@ -28,14 +28,15 @@ export default function StreamingPreview({
       </div>
 
       <div className="relative aspect-video overflow-hidden rounded-lg bg-black">
-        <Image
-          src={image}
-          alt=""
-          fill
-          placeholder="blur"
-          sizes="(min-width: 1280px) 760px, 100vw"
-          className="object-cover opacity-35"
-        />
+        {image && (
+          <Image
+            src={image}
+            alt=""
+            fill
+            sizes="(min-width: 1280px) 760px, 100vw"
+            className="object-cover opacity-35"
+          />
+        )}
 
         <div className="absolute inset-0 flex flex-col items-center justify-center gap-3 text-center">
           <button
