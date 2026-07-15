@@ -1,3 +1,5 @@
+"use client";
+
 import { useQuery } from "@tanstack/react-query";
 import { getMovieGenres } from "../api/get-movie-genres";
 

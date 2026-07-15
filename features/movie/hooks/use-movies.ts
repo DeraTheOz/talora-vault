@@ -1,3 +1,5 @@
+"use client";
+
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { getMovies } from "../api/get-movies";
 import { MovieFilters } from "@/features/media/types/media";
