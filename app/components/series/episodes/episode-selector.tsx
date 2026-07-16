@@ -1,37 +1,35 @@
+"use client";
+
 import { Video01Icon } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
 
-import type { CustomSelectOption } from "@/app/components/forms/custom-select";
-import type { SeriesEpisode } from "@/app/data/series-detail";
+import type { TmdbTvSeasonSummary } from "@/features/series/types/series-detail";
+import { useEpisodeSelector } from "@/features/series/hooks/use-episode-selector";
 import EpisodeSelectField from "./episode-select-field";
 import EpisodeSummaryCard from "./episode-summary-card";
 
 interface EpisodeSelectorProps {
-  episodes: SeriesEpisode[];
+  tvShowId: string;
+  seasons: TmdbTvSeasonSummary[];
 }
 
-function getSeasonOptions(episodes: SeriesEpisode[]): CustomSelectOption[] {
-  const seasons = Array.from(
-    new Set(episodes.map((episode) => episode.seasonNumber)),
-  ).sort((a, b) => a - b);
-
-  return seasons.map((season) => ({
-    value: String(season),
-    label: `Season ${season}`,
-  }));
-}
-
-function getEpisodeOptions(episodes: SeriesEpisode[]): CustomSelectOption[] {
-  return episodes.map((episode) => ({
-    value: episode.id,
-    label: `S${episode.seasonNumber}:E${episode.episodeNumber} - ${episode.title}`,
-  }));
-}
-
-export default function EpisodeSelector({ episodes }: EpisodeSelectorProps) {
-  const firstEpisode = episodes[0];
-  const seasonOptions = getSeasonOptions(episodes);
-  const episodeOptions = getEpisodeOptions(episodes);
+export default function EpisodeSelector({
+  tvShowId,
+  seasons,
+}: EpisodeSelectorProps) {
+  const {
+    seasonOptions,
+    episodeOptions,
+    selectedSeasonValue,
+    selectedEpisodeValue,
+    selectedEpisode,
+    isLoading,
+    isError,
+    isEpisodeSelectDisabled,
+    handleSeasonChange,
+    handleEpisodeChange,
+    handleRetry,
+  } = useEpisodeSelector({ tvShowId, seasons });
 
   return (
     <section id="episode-selector" aria-labelledby="episode-selector-title">
@@ -42,14 +40,14 @@ export default function EpisodeSelector({ episodes }: EpisodeSelectorProps) {
       </div>
 
       <form className="rounded-lg bg-talora-semi-dark-blue p-4 md:p-6">
-        {/* Later with React Hook Form: register season and episode, watch season, then fetch/filter episodes with TanStack Query. */}
         <div className="grid gap-4 md:grid-cols-2">
           <EpisodeSelectField
             id="season"
             name="season"
             label="Select season"
             options={seasonOptions}
-            defaultValue={String(firstEpisode?.seasonNumber ?? "")}
+            value={selectedSeasonValue}
+            onChange={handleSeasonChange}
           />
 
           <EpisodeSelectField
@@ -57,19 +55,40 @@ export default function EpisodeSelector({ episodes }: EpisodeSelectorProps) {
             name="episode"
             label="Select episode"
             options={episodeOptions}
-            defaultValue={firstEpisode?.id}
+            value={selectedEpisodeValue}
+            disabled={isEpisodeSelectDisabled}
+            onChange={handleEpisodeChange}
           />
         </div>
 
         <button
           type="button"
-          className="mt-5 inline-flex min-h-11 items-center gap-2 rounded-lg bg-talora-red px-5 text-sm font-medium text-talora-white transition hover:bg-talora-red/85 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-talora-white active:scale-95">
+          disabled={!selectedEpisode}
+          className="mt-5 inline-flex min-h-11 items-center gap-2 rounded-lg bg-talora-red px-5 text-sm font-medium text-talora-white transition cursor-pointer hover:bg-talora-red/85 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-talora-white active:scale-95 disabled:cursor-not-allowed disabled:opacity-60">
           <HugeiconsIcon icon={Video01Icon} size={18} color="currentColor" />
           Load episode
         </button>
 
         <div className="mt-5">
-          <EpisodeSummaryCard episode={firstEpisode} />
+          {isLoading ? (
+            <p className="rounded-lg bg-talora-dark-blue p-4 text-sm text-talora-white/65">
+              Loading episodes...
+            </p>
+          ) : isError ? (
+            <div className="rounded-lg bg-talora-dark-blue p-4">
+              <p className="text-sm text-talora-white/65">
+                Episodes could not be loaded right now.
+              </p>
+              <button
+                type="button"
+                onClick={() => void handleRetry()}
+                className="mt-3 text-sm font-medium text-talora-red transition cursor-pointer hover:text-talora-red/80">
+                Try again
+              </button>
+            </div>
+          ) : (
+            <EpisodeSummaryCard episode={selectedEpisode} />
+          )}
         </div>
       </form>
     </section>

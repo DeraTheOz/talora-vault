@@ -1,20 +1,24 @@
 import StreamingPreview from "@/app/components/media/streaming/streaming-preview";
-import type { SeriesDetail } from "@/app/data/series-detail";
+import type { TmdbTvDetail } from "@/features/series/types/series-detail";
+import { getTmdbImageUrl } from "@/lib/tmdb/tmdb-image";
 
 interface SeriesStreamingPreviewProps {
-  series: SeriesDetail;
+  series: TmdbTvDetail;
 }
 
 export default function SeriesStreamingPreview({
   series,
 }: SeriesStreamingPreviewProps) {
+  const imagePath = series.backdrop_path ?? series.poster_path;
+  const imageUrl = imagePath ? getTmdbImageUrl(imagePath, "w780") : null;
+
   return (
     <StreamingPreview
-      title={series.title}
-      image={series.image}
+      title={series.name}
+      image={imageUrl}
       heading="Stream Episode"
-      playLabel={`Play ${series.title} episode preview placeholder`}
-      description="Embed or redirect module will mount here during streaming integration."
+      playLabel={`Play ${series.name} episode preview placeholder`}
+      description="Streaming integration coming soon. Check back for legal streaming options and direct playback."
     />
   );
 }
