@@ -31,7 +31,7 @@ export default function MovieHero({ movie }: MovieHeroProps) {
       mediaLabel="Movie"
       mediaIcon={Film02Icon}
       year={formatReleaseYear(movie.release_date)}
-      movieStatus={movieStatus}
+      status={movieStatus}
       secondaryHref="#streaming-preview"
       secondaryLabel="Streaming preview"
     />

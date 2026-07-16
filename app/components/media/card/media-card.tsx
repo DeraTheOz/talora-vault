@@ -30,7 +30,7 @@ export default function MediaCard({ media }: MediaCardProps) {
           {imageUrl ? (
             <Image
               src={imageUrl}
-              alt={`Image of ${media.title}`}
+              alt={`${media.title} poster`}
               fill
               placeholder="blur"
               blurDataURL={imageUrl}

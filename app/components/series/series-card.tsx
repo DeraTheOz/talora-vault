@@ -27,7 +27,7 @@ export default function SeriesCard({ tvShow }: SeriesCardProps) {
           {imageUrl ? (
             <Image
               src={imageUrl}
-              alt={`Image of ${tvShow.name}`}
+              alt={`${tvShow.name} poster`}
               fill
               placeholder="blur"
               blurDataURL={imageUrl}

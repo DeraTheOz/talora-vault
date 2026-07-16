@@ -27,7 +27,7 @@ export default function MovieCard({ movie }: MovieCardProps) {
           {imageUrl ? (
             <Image
               src={imageUrl}
-              alt={`Image of ${movie.title}`}
+              alt={`${movie.title} poster`}
               fill
               placeholder="blur"
               blurDataURL={imageUrl}

@@ -12,11 +12,14 @@ interface MediaHeroProps {
   mediaLabel: string;
   mediaIcon: IconSvgElement;
   year: string;
-  movieStatus: string;
+  status: string;
   secondaryHref: string;
   secondaryLabel: string;
   watchlistLabel?: string;
 }
+
+const HERO_IMAGE_SIZES =
+  "(min-width: 1280px) calc(100vw - 10.25rem), (min-width: 768px) calc(100vw - 3rem), calc(100vw - 2rem)";
 
 export default function MediaHero({
   titleId,
@@ -27,7 +30,7 @@ export default function MediaHero({
   mediaLabel,
   mediaIcon,
   year,
-  movieStatus,
+  status,
   secondaryHref,
   secondaryLabel,
   watchlistLabel = "Add to watchlist",
@@ -40,11 +43,11 @@ export default function MediaHero({
       {mobileImage ? (
         <Image
           src={mobileImage}
-          alt={`Image of ${title}`}
+          alt={`${title} poster`}
           fill
           priority
           blurDataURL={mobileImage}
-          sizes="100vw"
+          sizes={HERO_IMAGE_SIZES}
           className="block md:hidden absolute inset-0 -z-20 object-cover"
         />
       ) : (
@@ -61,7 +64,7 @@ export default function MediaHero({
           fill
           priority
           blurDataURL={image}
-          sizes="100vw"
+          sizes={HERO_IMAGE_SIZES}
           className="hidden md:block absolute inset-0 -z-20 object-cover"
         />
       ) : (
@@ -85,7 +88,7 @@ export default function MediaHero({
           <span aria-hidden="true">•</span>
           <span>{year}</span>
           <span aria-hidden="true">•</span>
-          <span>{movieStatus}</span>
+          <span>{status}</span>
         </p>
 
         <h1
