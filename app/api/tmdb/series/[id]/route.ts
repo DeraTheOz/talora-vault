@@ -29,12 +29,15 @@ export async function GET(
     };
 
     const response = await fetch(
-      `${baseUrl}/movie/${id}/credits?language=en-US`,
+      `${baseUrl}/tv/${id}/credits?language=en-US`,
       options,
     );
 
     if (response.status === 404) {
-      return NextResponse.json({ message: "Movie not found" }, { status: 404 });
+      return NextResponse.json(
+        { message: "Tv show not found" },
+        { status: 404 },
+      );
     }
 
     if (!response.ok) {
