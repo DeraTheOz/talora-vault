@@ -4,7 +4,6 @@ import SeriesFacts from "@/app/components/series/detail/series-facts";
 import SeriesHero from "@/app/components/series/detail/series-hero";
 import SeriesReviewForm from "@/app/components/series/detail/series-review-form";
 import SeriesStreamingPreview from "@/app/components/series/detail/series-streaming-preview";
-import { series } from "@/app/data/series-detail";
 import EpisodeSelector from "@/app/components/series/episodes/episode-selector";
 import { getTvDetail } from "@/features/series/api/get-series-detail";
 import TvCast from "@/app/components/series/detail/series-cast";
@@ -53,8 +52,11 @@ export default async function SeriesPage({ params }: SeriesPageProps) {
 
       <div className="mt-8 grid grid-cols-1 gap-8 xl:grid-cols-[minmax(0,1fr)_22rem]">
         <div className="xl:col-start-1 xl:row-start-1 space-y-6">
-          <EpisodeSelector episodes={series.episodeList} />
-          <SeriesStreamingPreview series={series} />
+          <EpisodeSelector
+            tvShowId={String(tvShow.id)}
+            seasons={tvShow.seasons}
+          />
+          <SeriesStreamingPreview series={tvShow} />
         </div>
 
         <div className="xl:col-start-1 xl:row-start-2">

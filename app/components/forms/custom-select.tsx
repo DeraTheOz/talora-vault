@@ -1,3 +1,5 @@
+"use client";
+
 import { ChevronDownIcon } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
 
@@ -10,27 +12,37 @@ interface CustomSelectProps {
   id: string;
   name: string;
   options: CustomSelectOption[];
+  value?: string;
   defaultValue?: string;
   ariaLabel?: string;
   className?: string;
+  disabled?: boolean;
+  onChange?: (value: string) => void;
 }
 
 export default function CustomSelect({
   id,
   name,
   options,
+  value,
+  disabled,
+  onChange,
   defaultValue = "",
   ariaLabel,
   className = "mt-2",
 }: CustomSelectProps) {
+  const selectValueProps = value === undefined ? { defaultValue } : { value };
+
   return (
     <div className={`relative ${className}`}>
       <select
         id={id}
         name={name}
-        defaultValue={defaultValue}
+        disabled={disabled}
+        onChange={(event) => onChange?.(event.target.value)}
         aria-label={ariaLabel}
-        className="select w-full cursor-pointer rounded-lg border border-talora-dark-blue bg-talora-dark-blue py-3 pl-4 pr-12 text-sm text-talora-white outline-none transition focus:border-talora-red">
+        {...selectValueProps}
+        className="select w-full cursor-pointer rounded-lg border border-talora-dark-blue bg-talora-dark-blue py-3 pl-4 pr-12 text-sm text-talora-white outline-none transition focus:border-talora-red disabled:cursor-not-allowed disabled:opacity-60">
         {options.map((option) => (
           <option key={option.value || "empty"} value={option.value}>
             {option.label}
