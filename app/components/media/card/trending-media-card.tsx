@@ -34,7 +34,7 @@ export default function TrendingMediaCard({
         {imageUrl ? (
           <Image
             src={imageUrl}
-            alt={`Image of ${title}`}
+            alt={`${title} poster`}
             fill
             placeholder="blur"
             blurDataURL={imageUrl}

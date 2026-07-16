@@ -1,18 +1,25 @@
+"use client";
+
 import SimilarMedia from "@/app/components/media/similar/similar-media";
-import type { SimilarSeries } from "@/app/data/series-detail";
+import { SimilarMediaSkeleton } from "../../media/media-skeletons";
+import { toSimilarMediaCardItem } from "@/features/media/similar/to-similar-media-card-item";
+import { useSimilarTvShows } from "@/features/series/hooks/use-similar-series";
 
-interface SimilarSeriesProps {
-  series: SimilarSeries[];
-}
+export default function SimilarTvShows({ id }: { id: string }) {
+  const { data, isLoading, error } = useSimilarTvShows(id);
 
-export default function SimilarSeriesList({ series }: SimilarSeriesProps) {
+  if (isLoading) return <SimilarMediaSkeleton />;
+  if (error || !data?.results?.length) return null;
+
+  const items = data.results.map((tvShow) =>
+    toSimilarMediaCardItem(tvShow, "tv"),
+  );
+
   return (
     <SimilarMedia
-      title="Similar Series"
-      titleId="similar-series-title"
-      items={series}
-      hrefBase="/series"
-      mediaLabel="TV Series"
+      title="You May Also Like"
+      titleId="similar-tv-title"
+      items={items}
     />
   );
 }
