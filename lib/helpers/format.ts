@@ -33,3 +33,15 @@ export function formatRating(voteAverage: number): string {
   if (!voteAverage || voteAverage === 0) return "N/A";
   return voteAverage.toFixed(1);
 }
+
+/**
+ * Formats a numeric count with singular/plural labels.
+ * e.g. 1 Season -> "1 Season", 3 Seasons -> "3 Seasons"
+ */
+export function formatCount(
+  value: number,
+  singular: string,
+  plural: string,
+): string {
+  return `${value} ${value === 1 ? singular : plural}`;
+}
