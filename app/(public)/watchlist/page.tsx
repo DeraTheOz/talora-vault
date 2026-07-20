@@ -1,12 +1,30 @@
+import { auth } from "@/auth";
 import SearchBar from "@/app/components/forms/search-bar";
-import MediaSection from "@/app/components/media/media-section";
+import WatchlistGrid from "@/app/components/watchlist/watchlist-grid";
+import { getWatchlistMedia } from "@/features/watchlist/api/get-watchlist-media";
+import { getUserWatchlistItems } from "@/features/watchlist/actions/watchlist-actions";
 
-export default function Page() {
+export default async function Page() {
+  const session = await auth();
+
+  if (!session?.user) {
+    return (
+      <div className="space-y-6 pb-6 md:space-y-8">
+        <WatchlistGrid media={[]} isSignedIn={false} />
+      </div>
+    );
+  }
+
+  const items = await getUserWatchlistItems();
+  const media = await getWatchlistMedia(items);
+
   return (
-    <div className="space-y-6 md:space-y-8 pb-6">
-      <SearchBar placeholder="Search for bookmarked shows" />
+    <div className="space-y-6 pb-6 md:space-y-8">
+      {media.length > 0 ? (
+        <SearchBar placeholder="Search your watchlist" />
+      ) : null}
 
-      <MediaSection title="Watchlist" id="watchlist-heading" />
+      <WatchlistGrid media={media} isSignedIn />
     </div>
   );
 }
