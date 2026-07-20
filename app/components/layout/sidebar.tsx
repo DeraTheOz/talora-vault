@@ -1,14 +1,20 @@
 import Image from "next/image";
 
 import { HugeiconsIcon } from "@hugeicons/react";
-import { Logout01Icon } from "@hugeicons/core-free-icons";
+import { Login01Icon } from "@hugeicons/core-free-icons";
 
 import Logo from "../ui/logo";
 import NavLinks from "../ui/nav-links";
 
 import avatar from "@/public/image-avatar.png";
+import { auth } from "@/auth";
+import Link from "next/link";
+import LogoutButton from "./logout-button";
 
-export default function Sidebar() {
+export default async function Sidebar() {
+  const session = await auth();
+  const user = session?.user;
+
   return (
     <>
       <aside
@@ -38,29 +44,39 @@ export default function Sidebar() {
           <NavLinks variant="desktop" />
         </nav>
 
-        <div className="flex items-center gap-4 overflow-hidden rounded-full xl:mt-auto xl:grid xl:w-full xl:grid-cols-[6rem_1fr] xl:overflow-visible xl:rounded-none xl:ring-0">
-          <div className="size-8 overflow-hidden rounded-full xl:justify-self-center">
-            <Image
-              src={avatar}
-              alt="Signed in user profile"
-              className="size-full object-cover"
-            />
-          </div>
+        <div className="flex items-center gap-4 xl:mt-auto xl:grid xl:w-full xl:grid-cols-[6rem_1fr] xl:overflow-visible xl:rounded-none xl:ring-0">
+          {user ? (
+            <>
+              <div className="size-8 overflow-hidden rounded-lg xl:justify-self-center ring-2 ring-talora-greyish-blue">
+                <Image
+                  src={user.image ?? avatar}
+                  alt={
+                    user.name
+                      ? `${user.name} profile`
+                      : "Signed in user profile"
+                  }
+                  width={32}
+                  height={32}
+                  className="size-full object-cover"
+                />
+              </div>
 
-          <button
-            type="button"
-            aria-label="Log out"
-            className="grid size-10 place-items-center rounded-md text-talora-greyish-blue transition-colors duration-200 hover:text-talora-white focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-talora-red active:scale-95 xl:ml-auto xl:mr-6 xl:w-auto xl:grid-cols-1 xl:place-items-stretch xl:items-center">
-            <span className="flex size-10 items-center justify-center xl:justify-self-center">
+              <LogoutButton />
+            </>
+          ) : (
+            <Link
+              href="/login"
+              aria-label="Login"
+              className="grid size-10 place-items-center rounded-md text-talora-greyish-blue transition-colors duration-200 hover:text-talora-white focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-talora-red active:scale-95 xl:ml-auto xl:mr-6">
               <HugeiconsIcon
-                icon={Logout01Icon}
+                icon={Login01Icon}
                 size={24}
                 color="currentColor"
                 strokeWidth={1.5}
                 aria-hidden="true"
               />
-            </span>
-          </button>
+            </Link>
+          )}
         </div>
       </aside>
 

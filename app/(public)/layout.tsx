@@ -1,10 +1,24 @@
+import { auth } from "@/auth";
 import Sidebar from "@/app/components/layout/sidebar";
+import { BookmarkProvider } from "../components/providers/bookmark-provider";
+import { getCachedUserWatchlist } from "@/features/watchlist/api/get-user-watchlist";
 
-export default function PublicLayout({
+export default async function PublicLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const session = await auth();
+
+  // Use cached watchlist fetcher
+  const watchlistItems = session?.user
+    ? await getCachedUserWatchlist(session.user.id)
+    : [];
+  const initialBookmarkItems = watchlistItems.map((item) => ({
+    tmdbId: item.tmdbId,
+    mediaType: item.mediaType,
+  }));
+
   return (
     <>
       <a
@@ -20,7 +34,11 @@ export default function PublicLayout({
           id="main-content"
           tabIndex={-1}
           className="min-h-0 min-w-0 flex-1 overflow-x-hidden overflow-y-auto scrollbar-none outline-none xl:pt-6">
-          {children}
+          <BookmarkProvider
+            initialItems={initialBookmarkItems}
+            isSignedIn={Boolean(session?.user?.id)}>
+            {children}
+          </BookmarkProvider>
         </main>
       </div>
     </>

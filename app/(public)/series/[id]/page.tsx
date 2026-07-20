@@ -1,11 +1,14 @@
 import type { Metadata } from "next";
 
+import { auth } from "@/auth";
+import { getTvDetail } from "@/features/series/api/get-series-detail";
+import { getCachedUserWatchlist } from "@/features/watchlist/api/get-user-watchlist";
+
 import SeriesFacts from "@/app/components/series/detail/series-facts";
 import SeriesHero from "@/app/components/series/detail/series-hero";
 import SeriesReviewForm from "@/app/components/series/detail/series-review-form";
 import SeriesStreamingPreview from "@/app/components/series/detail/series-streaming-preview";
 import EpisodeSelector from "@/app/components/series/episodes/episode-selector";
-import { getTvDetail } from "@/features/series/api/get-series-detail";
 import TvCast from "@/app/components/series/detail/series-cast";
 import SimilarTvShows from "@/app/components/series/detail/similar-series";
 
@@ -45,9 +48,18 @@ export default async function SeriesPage({ params }: SeriesPageProps) {
   const { id } = await params;
   const tvShow = await getTvDetail(id);
 
+  // Check watchlist on the server
+  const session = await auth();
+  const watchlist = session?.user
+    ? await getCachedUserWatchlist(session.user.id)
+    : [];
+  const isBookmarked = watchlist.some(
+    (item) => item.tmdbId === Number(id) && item.mediaType === "movie",
+  );
+
   return (
     <div className="pb-6 mb-16 sm:mb-0 xl:pr-8">
-      <SeriesHero tvShow={tvShow} />
+      <SeriesHero tvShow={tvShow} isBookmarked={isBookmarked} />
       <SeriesFacts tvShow={tvShow} />
 
       <div className="mt-8 grid grid-cols-1 gap-8 xl:grid-cols-[minmax(0,1fr)_22rem]">

@@ -81,7 +81,8 @@ export default function SeriesCard({ tvShow }: SeriesCardProps) {
       </Link>
 
       <BookmarkButton
-        bookmarkId={`tvShow:${tvShow.id}`}
+        tmdbId={Number(tvShow.id)}
+        mediaType="tv"
         label={`Add ${tvShow.name} to watchlist`}
         removeLabel={`Remove ${tvShow.name} from watchlist`}
         className="absolute right-2 top-3 z-10 size-9"

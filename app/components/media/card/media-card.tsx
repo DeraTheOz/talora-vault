@@ -10,9 +10,13 @@ import { formatRating, formatReleaseYear } from "@/lib/helpers/format";
 
 interface MediaCardProps {
   media: TmdbNowPlayingItem;
+  defaultInWatchlist?: boolean;
 }
 
-export default function MediaCard({ media }: MediaCardProps) {
+export default function MediaCard({
+  media,
+  defaultInWatchlist = false,
+}: MediaCardProps) {
   const imagePath = media.backdrop_path ?? media.poster_path;
   const imageUrl = imagePath ? getTmdbImageUrl(imagePath) : null;
   const isMovie = media.media_type === "movie";
@@ -84,9 +88,11 @@ export default function MediaCard({ media }: MediaCardProps) {
       </Link>
 
       <BookmarkButton
-        bookmarkId={`${media.media_type}:${media.id}`}
+        tmdbId={media.id}
+        mediaType={media.media_type}
         label={`Add ${media.title} to watchlist`}
         removeLabel={`Remove ${media.title} from watchlist`}
+        defaultInWatchlist={defaultInWatchlist}
         className="absolute right-2 top-3 z-10 size-9"
       />
     </article>
