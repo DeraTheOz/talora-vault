@@ -32,16 +32,17 @@ export default function RootLayout({
         <Toaster
           position="top-center"
           toastOptions={{
+            unstyled: true,
             classNames: {
-              toast: "text-talora-white",
+              toast:
+                "group !w-fit max-w-[420px] mx-auto flex items-center gap-3 rounded-xl bg-talora-semi-dark-blue shadow-xl px-4 py-3.5 transition-all duration-300",
               title: "text-base font-medium text-talora-white",
-              description: "text-sm text-talora-white",
-            },
-            style: {
-              backgroundColor: "var(--color-talora-semi-dark-blue)",
-              border: "1px solid var(--color-talora-semi-dark-blue)",
-              borderRadius: "6px",
-              color: "var(--color-talora-white)",
+              description: "text-sm text-talora-greyish-blue",
+              success: "[&_svg]:text-emerald-400 [&_svg]:shrink-0",
+              error:
+                "[&_[data-title]]:text-talora-red [&_svg]:text-talora-red [&_svg]:shrink-0",
+              info: "[&_svg]:text-blue-400 [&_svg]:shrink-0",
+              warning: "[&_svg]:text-amber-400 [&_svg]:shrink-0",
             },
           }}
         />
