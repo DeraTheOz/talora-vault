@@ -7,9 +7,13 @@ import { formatReleaseYear } from "@/lib/helpers/format";
 
 interface MovieHeroProps {
   movie: TmdbMovieDetail;
+  isBookmarked?: boolean;
 }
 
-export default function MovieHero({ movie }: MovieHeroProps) {
+export default function MovieHero({
+  movie,
+  isBookmarked = false,
+}: MovieHeroProps) {
   // Fallback to the other path if one does not exist
   const desktopPath = movie.backdrop_path ?? movie.poster_path;
   const mobilePath = movie.poster_path ?? movie.backdrop_path;
@@ -23,6 +27,8 @@ export default function MovieHero({ movie }: MovieHeroProps) {
 
   return (
     <MediaHero
+      tmdbId={movie.id}
+      mediaType="movie"
       titleId={`movie-${movie.id}`}
       title={movie.title}
       overview={movie.overview}
@@ -34,6 +40,7 @@ export default function MovieHero({ movie }: MovieHeroProps) {
       status={movieStatus}
       secondaryHref="#streaming-preview"
       secondaryLabel="Streaming preview"
+      defaultInWatchlist={isBookmarked}
     />
   );
 }

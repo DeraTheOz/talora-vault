@@ -7,9 +7,13 @@ import { formatReleaseYear } from "@/lib/helpers/format";
 
 interface SeriesHeroProps {
   tvShow: TmdbTvDetail;
+  isBookmarked?: boolean;
 }
 
-export default function SeriesHero({ tvShow }: SeriesHeroProps) {
+export default function SeriesHero({
+  tvShow,
+  isBookmarked = false,
+}: SeriesHeroProps) {
   // Fallback to the other path if one does not exist
   const desktopPath = tvShow.backdrop_path ?? tvShow.poster_path;
   const mobilePath = tvShow.poster_path ?? tvShow.backdrop_path;
@@ -24,6 +28,8 @@ export default function SeriesHero({ tvShow }: SeriesHeroProps) {
 
   return (
     <MediaHero
+      tmdbId={tvShow.id}
+      mediaType="tv"
       titleId={`tvShow-${tvShow.id}`}
       title={tvShow.name}
       overview={tvShow.overview}
@@ -35,6 +41,7 @@ export default function SeriesHero({ tvShow }: SeriesHeroProps) {
       status={tvShowStatus}
       secondaryHref="#episode-selector"
       secondaryLabel="Choose episode"
+      defaultInWatchlist={isBookmarked}
     />
   );
 }
