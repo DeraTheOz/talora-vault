@@ -10,7 +10,7 @@ export default function AuthSubmitButton({
     <button
       type="submit"
       {...props}
-      className="min-h-12 w-full rounded-md bg-talora-red px-6 text-[0.9375rem] font-light text-talora-white transition-colors hover:bg-talora-white hover:text-talora-semi-dark-blue focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-talora-red">
+      className="min-h-12 w-full rounded-md bg-talora-red px-6 text-[0.9375rem] font-light text-talora-white transition-colors duration-300 hover:bg-talora-white cursor-pointer hover:text-talora-semi-dark-blue focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-talora-red disabled:opacity-60 disabled:cursor-not-allowed">
       {children}
     </button>
   );
