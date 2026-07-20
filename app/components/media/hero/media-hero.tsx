@@ -1,9 +1,13 @@
 import Image from "next/image";
-import { BookmarkAdd02Icon, PlayCircleIcon } from "@hugeicons/core-free-icons";
+import { PlayCircleIcon } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
 import type { IconSvgElement } from "@hugeicons/react";
+import type { WatchlistMediaType } from "@/features/watchlist/schemas/watchlist-schema";
+import BookmarkButton from "../../ui/bookmark-button";
 
 interface MediaHeroProps {
+  tmdbId: number;
+  mediaType: WatchlistMediaType;
   titleId: string;
   title: string;
   overview: string;
@@ -16,12 +20,15 @@ interface MediaHeroProps {
   secondaryHref: string;
   secondaryLabel: string;
   watchlistLabel?: string;
+  defaultInWatchlist?: boolean;
 }
 
 const HERO_IMAGE_SIZES =
   "(min-width: 1280px) calc(100vw - 10.25rem), (min-width: 768px) calc(100vw - 3rem), calc(100vw - 2rem)";
 
 export default function MediaHero({
+  tmdbId,
+  mediaType,
   titleId,
   title,
   overview,
@@ -34,6 +41,7 @@ export default function MediaHero({
   secondaryHref,
   secondaryLabel,
   watchlistLabel = "Add to watchlist",
+  defaultInWatchlist = false,
 }: MediaHeroProps) {
   return (
     <section
@@ -60,7 +68,7 @@ export default function MediaHero({
       {image ? (
         <Image
           src={image}
-          alt=""
+          alt={`${title} poster`}
           fill
           priority
           blurDataURL={image}
@@ -102,16 +110,13 @@ export default function MediaHero({
         </p>
 
         <div className="mt-6 flex flex-wrap gap-3">
-          <button
-            type="button"
-            className="inline-flex min-h-12 items-center gap-2 rounded-lg bg-talora-red px-5 text-sm font-medium text-talora-white transition hover:bg-talora-red/85 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-talora-white active:scale-95">
-            <HugeiconsIcon
-              icon={BookmarkAdd02Icon}
-              size={19}
-              color="currentColor"
-            />
-            {watchlistLabel}
-          </button>
+          <BookmarkButton
+            tmdbId={tmdbId}
+            mediaType={mediaType}
+            variant="hero"
+            label={watchlistLabel}
+            defaultInWatchlist={defaultInWatchlist}
+          />
 
           <a
             href={secondaryHref}
