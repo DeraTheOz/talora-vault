@@ -81,7 +81,8 @@ export default function MovieCard({ movie }: MovieCardProps) {
       </Link>
 
       <BookmarkButton
-        bookmarkId={`movie:${movie.id}`}
+        tmdbId={Number(movie.id)}
+        mediaType="movie"
         label={`Add ${movie.title} to watchlist`}
         removeLabel={`Remove ${movie.title} from watchlist`}
         className="absolute right-2 top-3 z-10 size-9"

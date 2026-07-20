@@ -77,9 +77,10 @@ export default function TrendingMediaCard({
       </Link>
 
       <BookmarkButton
-        bookmarkId={`${trendingTitle.media_type}:${trendingTitle.id}`}
+        tmdbId={trendingTitle.id}
+        mediaType={trendingTitle.media_type}
         label={`Add ${title} to watchlist`}
-        removeLabel={`Remove ${title} from bookmarks`}
+        removeLabel={`Remove ${title} from watchlist`}
         className="absolute right-2 top-2 z-20 size-10 md:right-6 md:top-4"
       />
     </article>
