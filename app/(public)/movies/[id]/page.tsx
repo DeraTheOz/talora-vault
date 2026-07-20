@@ -1,11 +1,14 @@
 import type { Metadata } from "next";
 
+import { auth } from "@/auth";
+import { getMovieDetail } from "@/features/movie/api/get-movie-detail";
+import { getCachedUserWatchlist } from "@/features/watchlist/api/get-user-watchlist";
+
 import MovieFacts from "@/app/components/movie/detail/movie-facts";
 import MovieHero from "@/app/components/movie/detail/movie-hero";
 import ReviewForm from "@/app/components/movie/detail/review-form";
 import MovieStreamingPreview from "@/app/components/movie/detail/movie-streaming-preview";
 import MovieCast from "@/app/components/movie/detail/movie-cast";
-import { getMovieDetail } from "@/features/movie/api/get-movie-detail";
 import SimilarMovies from "@/app/components/movie/detail/similar-movies";
 
 type MoviePageProps = {
@@ -44,9 +47,18 @@ export default async function MoviePage({ params }: MoviePageProps) {
   const { id } = await params;
   const movie = await getMovieDetail(id);
 
+  // Check watchlist on the server
+  const session = await auth();
+  const watchlist = session?.user
+    ? await getCachedUserWatchlist(session.user.id)
+    : [];
+  const isBookmarked = watchlist.some(
+    (item) => item.tmdbId === Number(id) && item.mediaType === "movie",
+  );
+
   return (
     <div className="pb-6 mb-16 sm:mb-0 xl:pr-8">
-      <MovieHero movie={movie} />
+      <MovieHero movie={movie} isBookmarked={isBookmarked} />
       <MovieFacts movie={movie} />
 
       <div className="mt-8 grid grid-cols-1 gap-8 xl:grid-cols-[minmax(0,1fr)_22rem]">
