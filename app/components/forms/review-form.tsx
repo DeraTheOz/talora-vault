@@ -9,7 +9,7 @@ import { useReview } from "@/features/reviews/hooks/use-review";
 import ReviewCard from "../media/review/review-card";
 import CustomSelect from "./custom-select";
 import FormError from "./form-error";
-import AuthModal from "../modals/auth-modal";
+import LoginAuthModal from "../modals/login-auth-modal";
 import DeleteReviewModal from "../modals/delete-review-modal";
 import { ratingOptions } from "@/lib/constants/rating-options";
 
@@ -51,6 +51,7 @@ export default function ReviewForm({
     handleEdit,
     handleCancel,
     openDeleteModal,
+    isDeleting,
     handleConfirmDelete,
   } = useReview(tmdbId, mediaType);
 
@@ -151,7 +152,7 @@ export default function ReviewForm({
       {/* Delete Confirmation Modal */}
       {showDeleteModal && (
         <DeleteReviewModal
-          isSubmitting={isSubmitting}
+          isDeleting={isDeleting}
           onClose={() => setShowDeleteModal(false)}
           onConfirm={handleConfirmDelete}
         />
@@ -160,7 +161,7 @@ export default function ReviewForm({
       {/* Auth Modal */}
       {showAuthModal
         ? createPortal(
-            <AuthModal
+            <LoginAuthModal
               titleId="review-auth-title"
               title="Log in to rate & review"
               description="Share your ratings and thoughts with the community. Sign in to write a review"
