@@ -54,7 +54,7 @@ export default async function SeriesPage({ params }: SeriesPageProps) {
     ? await getCachedUserWatchlist(session.user.id)
     : [];
   const isBookmarked = watchlist.some(
-    (item) => item.tmdbId === Number(id) && item.mediaType === "movie",
+    (item) => item.tmdbId === Number(id) && item.mediaType === "tv",
   );
 
   return (
@@ -76,7 +76,7 @@ export default async function SeriesPage({ params }: SeriesPageProps) {
         </div>
 
         <div className="xl:col-start-1 xl:row-start-3">
-          <SeriesReviewForm />
+          <SeriesReviewForm tmdbId={Number(id)} />
         </div>
 
         <div className="xl:col-start-2 xl:row-span-3 xl:row-start-1">

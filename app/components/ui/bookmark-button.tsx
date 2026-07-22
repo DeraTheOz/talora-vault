@@ -3,7 +3,6 @@
 import { useState, type ButtonHTMLAttributes, type MouseEvent } from "react";
 import { usePathname } from "next/navigation";
 import { createPortal } from "react-dom";
-import Link from "next/link";
 import {
   BookmarkAdd02Icon,
   BookmarkRemove02Icon,
@@ -13,6 +12,7 @@ import { HugeiconsIcon } from "@hugeicons/react";
 import { useWatchlistItem } from "@/features/watchlist/hooks/use-watchlist-item";
 import type { WatchlistMediaType } from "@/features/watchlist/schemas/watchlist-schema";
 import { useBookmarkStore } from "@/stores/bookmark/bookmark-store";
+import LoginAuthModal from "../modals/login-auth-modal";
 
 type BookmarkButtonProps = Omit<
   ButtonHTMLAttributes<HTMLButtonElement>,
@@ -65,39 +65,6 @@ export default function BookmarkButton({
       : "bg-talora-red text-talora-white hover:bg-talora-red/85",
   ];
 
-  const authModal = (
-    <div
-      role="dialog"
-      aria-modal="true"
-      aria-labelledby="bookmark-auth-title"
-      className="fixed inset-0 z-50 grid place-items-center bg-talora-dark-blue/80 px-4 backdrop-blur-sm">
-      <div className="w-full max-w-sm rounded-2xl bg-talora-semi-dark-blue p-6 text-talora-white shadow-2xl">
-        <h2 id="bookmark-auth-title" className="text-xl font-medium">
-          Save to your watchlist
-        </h2>
-
-        <p className="mt-2 text-sm text-talora-white/70">
-          Log in to keep track of movies and TV series you want to watch later.
-        </p>
-
-        <div className="mt-6 flex flex-wrap gap-3">
-          <Link
-            href={`/login?callbackUrl=${encodeURIComponent(pathname)}`}
-            className="inline-flex min-h-11 items-center rounded-lg bg-talora-red px-6 text-sm font-medium text-talora-white transition hover:bg-talora-red/85">
-            Log in
-          </Link>
-
-          <button
-            type="button"
-            onClick={() => setShowAuthModal(false)}
-            className="inline-flex min-h-11 items-center rounded-lg bg-talora-white/10 px-6 text-sm font-medium text-talora-white cursor-pointer transition hover:bg-talora-white/15">
-            Keep browsing
-          </button>
-        </div>
-      </div>
-    </div>
-  );
-
   function onButtonClick(event: MouseEvent<HTMLButtonElement>) {
     onClick?.(event);
 
@@ -142,10 +109,30 @@ export default function BookmarkButton({
           aria-hidden="true"
         />
 
-        {isHero && (isInWatchlist ? removeLabel : label)}
+        {isHero &&
+          (isPending
+            ? isInWatchlist
+              ? "Adding..."
+              : "Removing..."
+            : isInWatchlist
+              ? removeLabel
+              : label)}
       </button>
 
-      {showAuthModal ? createPortal(authModal, document.body) : null}
+      {showAuthModal
+        ? createPortal(
+            <LoginAuthModal
+              titleId="bookmark-auth-title"
+              title="Save to your watchlist"
+              description="Log in to keep track of movies and TV series you want to watch later."
+              href={`/login?callbackUrl=${encodeURIComponent(pathname)}`}
+              onClose={() => setShowAuthModal(false)}
+              primaryButtonText="Log in"
+              secondaryButtonText="Keep browsing"
+            />,
+            document.body,
+          )
+        : null}
     </>
   );
 }
