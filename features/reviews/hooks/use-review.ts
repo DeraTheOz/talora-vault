@@ -25,6 +25,7 @@ export function useReview(tmdbId: number, mediaType: MediaType) {
   const [review, setReview] = useState<Review | null>(null);
   const [isLocked, setIsLocked] = useState(false);
   const [showAuthModal, setShowAuthModal] = useState(false);
+  const [isDeleting, setIsDeleting] = useState(false);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
 
   const form = useForm<ReviewFormValues, ReviewFormInput>({
@@ -126,16 +127,22 @@ export function useReview(tmdbId: number, mediaType: MediaType) {
 
   /** Perform deletion on user confirmation */
   async function handleConfirmDelete() {
-    const result = await deleteReview(tmdbId, mediaType);
+    setIsDeleting(true);
 
-    if (result.error) {
-      toast.error(result.error);
-    } else if (result.success) {
-      setReview(null);
-      reset({ rating: "", content: "" });
-      setIsLocked(false);
-      setShowDeleteModal(false);
-      toast.success("Review deleted successfully");
+    try {
+      const result = await deleteReview(tmdbId, mediaType);
+
+      if (result.error) {
+        toast.error(result.error);
+      } else if (result.success) {
+        setReview(null);
+        reset({ rating: "", content: "" });
+        setIsLocked(false);
+        setShowDeleteModal(false);
+        toast.success("Review deleted successfully");
+      }
+    } finally {
+      setIsDeleting(false);
     }
   }
 
@@ -151,6 +158,7 @@ export function useReview(tmdbId: number, mediaType: MediaType) {
     handleEdit,
     handleCancel,
     openDeleteModal: () => setShowDeleteModal(true),
+    isDeleting,
     handleConfirmDelete,
   };
 }
