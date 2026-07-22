@@ -6,7 +6,7 @@ import { getCachedUserWatchlist } from "@/features/watchlist/api/get-user-watchl
 
 import MovieFacts from "@/app/components/movie/detail/movie-facts";
 import MovieHero from "@/app/components/movie/detail/movie-hero";
-import ReviewForm from "@/app/components/movie/detail/review-form";
+import MovieReviewForm from "@/app/components/movie/detail/movie-review-form";
 import MovieStreamingPreview from "@/app/components/movie/detail/movie-streaming-preview";
 import MovieCast from "@/app/components/movie/detail/movie-cast";
 import SimilarMovies from "@/app/components/movie/detail/similar-movies";
@@ -71,7 +71,7 @@ export default async function MoviePage({ params }: MoviePageProps) {
         </div>
 
         <div className="xl:col-start-1 xl:row-start-3">
-          <ReviewForm />
+          <MovieReviewForm tmdbId={Number(id)} />
         </div>
 
         <div className="xl:col-start-2 xl:row-span-3 xl:row-start-1">
