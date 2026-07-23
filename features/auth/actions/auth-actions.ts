@@ -4,7 +4,7 @@ import bcrypt from "bcryptjs";
 import { AuthError } from "next-auth";
 import { and, eq } from "drizzle-orm";
 
-import { Avatar } from "@dicebear/core";
+import { Avatar, Style } from "@dicebear/core";
 import toonHead from "@dicebear/styles/toon-head.json";
 
 import { signIn, signOut } from "@/auth";
@@ -21,6 +21,7 @@ export type AuthActionState = {
   error?: string;
   success?: boolean;
   username?: string;
+  callbackUrl?: string;
 };
 
 /**
@@ -70,7 +71,7 @@ export async function signupAction(
   }
 
   const passwordHash = await bcrypt.hash(parsed.data.password, 12);
-  const avatar = new Avatar(toonHead, {
+  const avatar = new Avatar(new Style(toonHead), {
     seed: parsed.data.username,
     size: 32,
   }).toDataUri();
@@ -89,7 +90,10 @@ export async function signupAction(
  * Server Action for logging in a user.
  * We set `redirect: false` so that we can show a "Welcome back!" toast before directing the user home.
  */
-export async function loginAction(input: LoginInput): Promise<AuthActionState> {
+export async function loginAction(
+  input: LoginInput,
+  callbackUrl: string,
+): Promise<AuthActionState> {
   const parsed = loginSchema.safeParse(input);
 
   if (!parsed.success) {
@@ -133,6 +137,7 @@ export async function loginAction(input: LoginInput): Promise<AuthActionState> {
     return {
       success: true,
       username: user?.name || undefined,
+      callbackUrl,
     };
   } catch (error) {
     if (error instanceof AuthError) {
@@ -143,9 +148,9 @@ export async function loginAction(input: LoginInput): Promise<AuthActionState> {
   }
 }
 
-export async function googleSignInAction() {
+export async function googleSignInAction(redirectTo?: string) {
   await signIn("google", {
-    redirectTo: "/",
+    redirectTo: redirectTo || "/",
   });
 }
 
