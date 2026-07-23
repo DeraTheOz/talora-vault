@@ -2,7 +2,7 @@ import { auth } from "@/auth";
 import SearchBar from "@/app/components/forms/search-bar";
 import WatchlistGrid from "@/app/components/watchlist/watchlist-grid";
 import { getWatchlistMedia } from "@/features/watchlist/api/get-watchlist-media";
-import { getUserWatchlistItems } from "@/features/watchlist/actions/watchlist-actions";
+import { getCachedUserWatchlist } from "@/features/watchlist/api/get-user-watchlist";
 
 export default async function Page() {
   const session = await auth();
@@ -15,8 +15,11 @@ export default async function Page() {
     );
   }
 
-  const items = await getUserWatchlistItems();
-  const media = await getWatchlistMedia(items);
+  const watchlist = session?.user
+    ? await getCachedUserWatchlist(session.user.id)
+    : [];
+
+  const media = await getWatchlistMedia(watchlist);
 
   return (
     <div className="space-y-6 pb-6 md:space-y-8">

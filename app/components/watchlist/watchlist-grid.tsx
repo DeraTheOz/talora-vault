@@ -1,6 +1,9 @@
+"use client";
+
 import MediaCard from "@/app/components/media/card/media-card";
 import type { TmdbNowPlayingItem } from "@/features/now-playing/types/now-playing";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 
 type WatchlistGridProps = {
   media: TmdbNowPlayingItem[];
@@ -11,6 +14,8 @@ export default function WatchlistGrid({
   media,
   isSignedIn,
 }: WatchlistGridProps) {
+  const pathname = usePathname();
+
   if (media.length === 0) {
     return (
       <section aria-labelledby="watchlist-heading" className="mb-16 space-y-4">
@@ -29,7 +34,7 @@ export default function WatchlistGrid({
         <div className="flex flex-wrap gap-3 pt-2">
           {!isSignedIn ? (
             <Link
-              href="/login"
+              href={`/login?callbackUrl=${encodeURIComponent(pathname)}`}
               className="inline-flex min-h-11 items-center rounded-lg bg-talora-red px-6 text-sm font-medium text-talora-white transition hover:bg-talora-red/85 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-talora-white active:scale-95">
               Login
             </Link>
@@ -55,7 +60,11 @@ export default function WatchlistGrid({
 
       <div className="grid grid-cols-2 gap-x-4 gap-y-5 md:grid-cols-3 md:gap-x-7 md:gap-y-6 xl:grid-cols-[repeat(auto-fill,minmax(17.5rem,1fr))] xl:gap-x-10 xl:gap-y-8 xl:pr-8">
         {media.map((item) => (
-          <MediaCard key={`${item.media_type}-${item.id}`} media={item} />
+          <MediaCard
+            key={`${item.media_type}-${item.id}`}
+            media={item}
+            defaultInWatchlist={true}
+          />
         ))}
       </div>
     </section>
