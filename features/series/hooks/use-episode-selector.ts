@@ -3,7 +3,6 @@
 import { useMemo, useState } from "react";
 
 import type { CustomSelectOption } from "@/app/components/forms/custom-select";
-import type { SeriesEpisode } from "@/app/data/series-detail";
 import type {
   TmdbTvEpisode,
   TmdbTvSeasonSummary,
@@ -17,20 +16,6 @@ type UseEpisodeSelectorParams = {
 
 // Stable empty array prevents creating a new fallback array on every render.
 const emptyEpisodes: TmdbTvEpisode[] = [];
-
-// Converts the TMDB episode shape into the smaller UI-friendly episode summary.
-function toEpisodeSummary(episode?: TmdbTvEpisode): SeriesEpisode | undefined {
-  if (!episode) return undefined;
-
-  return {
-    id: String(episode.id),
-    title: episode.name,
-    overview: episode.overview || "No episode overview is available yet.",
-    seasonNumber: episode.season_number,
-    episodeNumber: episode.episode_number,
-    runtime: episode.runtime ? `${episode.runtime} min` : "Runtime unavailable",
-  };
-}
 
 export function useEpisodeSelector({
   tvShowId,
@@ -58,7 +43,6 @@ export function useEpisodeSelector({
     tvShowId,
     activeSeason,
   );
-
   const episodes = data?.episodes ?? emptyEpisodes;
 
   // Prefer the user-selected episode, but default to the first episode when none is selected.
@@ -93,7 +77,7 @@ export function useEpisodeSelector({
     episodeOptions,
     selectedSeasonValue: String(activeSeason),
     selectedEpisodeValue: episodeValue,
-    selectedEpisode: toEpisodeSummary(selectedEpisode),
+    selectedEpisode,
     isLoading,
     isError,
     isEpisodeSelectDisabled: isLoading || episodeOptions.length === 0,
