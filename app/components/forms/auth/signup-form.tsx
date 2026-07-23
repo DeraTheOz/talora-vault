@@ -1,74 +1,49 @@
 "use client";
 
-import { useState, useTransition } from "react";
-import { useRouter } from "next/navigation";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { toast } from "sonner";
-
-import {
-  signupSchema,
-  type SignupInput,
-} from "@/features/auth/schemas/auth-schema";
-import {
-  googleSignInAction,
-  signupAction,
-} from "@/features/auth/actions/auth-actions";
-import { toastStyles } from "@/lib/constants/toast";
-
 import AuthField from "./auth-field";
 import AuthGoogleButton from "./auth-google-button";
 import AuthSubmitButton from "./auth-submit-button";
 import AuthSwitchLink from "./auth-switch-link";
 import FormError from "../form-error";
+import { useSignup } from "@/features/auth/hooks/use-signup";
+import { useSearchParams } from "next/navigation";
 
 export default function SignupForm() {
-  const [formError, setFormError] = useState<string | null>(null);
-  const [isGooglePending, startGoogleTransition] = useTransition();
-  const router = useRouter();
+  const searchParams = useSearchParams();
+  const callbackUrl = searchParams.get("callbackUrl") || "/";
+
+  const loginHref = callbackUrl
+    ? `/login?callbackUrl=${encodeURIComponent(callbackUrl)}`
+    : "/login";
+
+  const {
+    form,
+    formError,
+    isGooglePending,
+    isNavigating,
+    onSubmit,
+    onGoogleClick,
+  } = useSignup();
 
   const {
     register,
     handleSubmit,
     formState: { errors, isSubmitting },
-  } = useForm<SignupInput>({
-    resolver: zodResolver(signupSchema),
-    defaultValues: {
-      email: "",
-      password: "",
-    },
-  });
+  } = form;
 
-  async function onSubmit(values: SignupInput) {
-    setFormError(null);
-
-    const result = await signupAction(values);
-
-    if (result?.error) {
-      setFormError(result.error);
-      toast.error(result.error, { id: "signup-error", ...toastStyles.error });
-    } else if (result?.success) {
-      // Toast success and redirect the user to the login page
-      toast.success("Account created successfully!");
-      router.push("/login");
-    }
-  }
-
-  function onGoogleClick() {
-    startGoogleTransition(() => {
-      void googleSignInAction();
-    });
-  }
+  const isPending = isSubmitting || isGooglePending || isNavigating;
 
   return (
     <>
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
-        <div className="space-y-2">
+        <div className="space-y-3">
           <AuthField
             label="Username"
             type="text"
             autoComplete="username"
             placeholder="Username"
+            disabled={isPending}
+            aria-disabled={isPending}
             aria-invalid={Boolean(errors.username)}
             {...register("username")}
           />
@@ -81,6 +56,8 @@ export default function SignupForm() {
             type="email"
             autoComplete="email"
             placeholder="Email address"
+            disabled={isPending}
+            aria-disabled={isPending}
             aria-invalid={Boolean(errors.email)}
             {...register("email")}
           />
@@ -93,6 +70,8 @@ export default function SignupForm() {
             type="password"
             autoComplete="new-password"
             placeholder="Password"
+            disabled={isPending}
+            aria-disabled={isPending}
             aria-invalid={Boolean(errors.password)}
             {...register("password")}
           />
@@ -105,6 +84,8 @@ export default function SignupForm() {
             type="password"
             autoComplete="new-password"
             placeholder="Repeat password"
+            disabled={isPending}
+            aria-disabled={isPending}
             aria-invalid={Boolean(errors.confirmPassword)}
             {...register("confirmPassword")}
           />
@@ -115,20 +96,20 @@ export default function SignupForm() {
 
         {formError ? <FormError errorMessage={formError} /> : null}
 
-        <AuthSubmitButton disabled={isSubmitting || isGooglePending}>
-          {isSubmitting ? "Creating account..." : "Create an account"}
+        <AuthSubmitButton disabled={isPending}>
+          {isSubmitting || isNavigating
+            ? "Creating account..."
+            : "Create an account"}
         </AuthSubmitButton>
 
-        <AuthGoogleButton
-          disabled={isSubmitting || isGooglePending}
-          onClick={onGoogleClick}>
+        <AuthGoogleButton disabled={isPending} onClick={onGoogleClick}>
           {isGooglePending ? "Opening Google..." : "Continue with Google"}
         </AuthGoogleButton>
       </form>
 
       <AuthSwitchLink
         prompt="Already have an account?"
-        href="/login"
+        href={loginHref}
         label="Login"
       />
     </>

@@ -58,28 +58,22 @@ export default async function SeriesPage({ params }: SeriesPageProps) {
   );
 
   return (
-    <div className="pb-6 mb-16 sm:mb-0 xl:pr-8">
+    <div className="pb-6 mb-16 xl:pr-8">
       <SeriesHero tvShow={tvShow} isBookmarked={isBookmarked} />
       <SeriesFacts tvShow={tvShow} />
 
       <div className="mt-8 grid grid-cols-1 gap-8 xl:grid-cols-[minmax(0,1fr)_22rem]">
-        <div className="xl:col-start-1 xl:row-start-1 space-y-6">
+        <div className="space-y-8">
           <EpisodeSelector
             tvShowId={String(tvShow.id)}
             seasons={tvShow.seasons}
           />
           <SeriesStreamingPreview series={tvShow} />
-        </div>
-
-        <div className="xl:col-start-1 xl:row-start-2">
           <TvCast id={id} />
-        </div>
-
-        <div className="xl:col-start-1 xl:row-start-3">
           <SeriesReviewForm tmdbId={Number(id)} />
         </div>
 
-        <div className="xl:col-start-2 xl:row-span-3 xl:row-start-1">
+        <div>
           <SimilarTvShows id={id} />
         </div>
       </div>

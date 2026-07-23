@@ -67,7 +67,7 @@ const authConfig = {
           id: user.id,
           name: user.name,
           email: user.email,
-          image: user.image,
+          image: user.image?.startsWith("http") ? user.image : null,
         };
       },
     }),
@@ -79,7 +79,14 @@ const authConfig = {
     jwt({ token, user }) {
       if (user) {
         token.id = user.id;
-        token.picture = user.image; // Map image to JWT picture
+
+        // Only store external HTTP URLs (Google OAuth avatars) in the JWT cookie
+        // Large SVG Data URIs (from Dicebear) stored in the DB are excluded from the cookie payload to prevent HTTP 431 errors.
+        if (user.image && user.image.startsWith("http")) {
+          token.picture = user.image;
+        } else {
+          delete token.picture;
+        }
       }
 
       return token;
@@ -87,7 +94,7 @@ const authConfig = {
     session({ session, token }) {
       if (session.user) {
         session.user.id = token.id as string;
-        session.user.image = token.picture as string; // Set session image from token
+        session.user.image = (token.picture as string) || null;
       }
 
       return session;

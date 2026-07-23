@@ -1,7 +1,7 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
-import { and, desc, eq } from "drizzle-orm";
+import { and, eq } from "drizzle-orm";
 
 import { auth } from "@/auth";
 import { db } from "@/db/client";
@@ -10,21 +10,6 @@ import {
   watchlistItemSchema,
   type WatchlistInput,
 } from "@/features/watchlist/schemas/watchlist-schema";
-
-export async function getUserWatchlistItems() {
-  const session = await auth();
-
-  if (!session?.user?.id) {
-    // Return empty list for unauthenticated users
-    return [];
-  }
-
-  return db
-    .select()
-    .from(watchlistItems)
-    .where(eq(watchlistItems.userId, session.user.id))
-    .orderBy(desc(watchlistItems.addedAt));
-}
 
 export async function toggleWatchlistItem(input: WatchlistInput) {
   const session = await auth();

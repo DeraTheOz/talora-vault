@@ -1,79 +1,14 @@
 "use client";
 
-import { useState, useTransition } from "react";
 import { createPortal } from "react-dom";
-import { useRouter } from "next/navigation";
-import { toast } from "sonner";
 import { HugeiconsIcon } from "@hugeicons/react";
 import { Logout01Icon } from "@hugeicons/core-free-icons";
-import { logoutAction } from "@/features/auth/actions/auth-actions";
+import { useLogout } from "@/features/auth/hooks/use-logout";
+import LogoutAuthModal from "../modals/logout-auth-modal";
 
 export default function LogoutButton() {
-  const [showLogoutConfirm, setShowLogoutConfirm] = useState(false);
-  const [isPending, startTransition] = useTransition();
-  const router = useRouter();
-
-  const handleLogout = () => {
-    startTransition(async () => {
-      try {
-        const result = await logoutAction();
-
-        // Check for returned error objects from the server action
-        if (result?.error) {
-          toast.error(result.error);
-          return;
-        }
-
-        toast.success("Logged out successfully");
-
-        // Close the modal, redirect the user home, and refresh state
-        setShowLogoutConfirm(false);
-        router.push("/");
-        router.refresh();
-      } catch {
-        toast.error("Failed to log out. Please try again.");
-      }
-    });
-  };
-
-  // Logout confirmation modal
-  const logoutModal = (
-    <div
-      role="dialog"
-      aria-modal="true"
-      aria-labelledby="logout-confirm-title"
-      className="fixed inset-0 z-50 grid place-items-center bg-talora-dark-blue/80 px-4 backdrop-blur-sm">
-      <div className="w-full max-w-sm rounded-2xl bg-talora-semi-dark-blue p-6 text-talora-white shadow-2xl">
-        <h2 id="logout-confirm-title" className="text-xl font-medium">
-          Are you sure you want to log out?
-        </h2>
-
-        <p className="mt-2 text-sm text-talora-white/70">
-          You will need to log back in to access your watchlist, leave reviews,
-          and view your personalized dashboard.
-        </p>
-
-        <div className="mt-6 flex flex-wrap gap-3">
-          <button
-            type="button"
-            onClick={handleLogout}
-            disabled={isPending}
-            className="inline-flex min-h-11 flex-1 items-center justify-center rounded-lg bg-talora-red px-6 text-sm font-medium text-talora-white cursor-pointer transition hover:bg-talora-red/85 
-  disabled:opacity-50">
-            {isPending ? "Logging out..." : "Log out"}
-          </button>
-
-          <button
-            type="button"
-            onClick={() => setShowLogoutConfirm(false)}
-            className="inline-flex min-h-11 flex-1 items-center justify-center rounded-lg bg-talora-white/10 px-6 text-sm font-medium text-talora-white cursor-pointer transition    
-  hover:bg-talora-white/15">
-            Cancel
-          </button>
-        </div>
-      </div>
-    </div>
-  );
+  const { isPending, showLogoutConfirm, handleLogout, setShowLogoutConfirm } =
+    useLogout();
 
   return (
     <>
@@ -81,8 +16,7 @@ export default function LogoutButton() {
         type="button"
         onClick={() => setShowLogoutConfirm(true)}
         aria-label="Log out"
-        className="grid size-10 place-items-center rounded-md text-talora-greyish-blue transition-colors duration-200 hover:text-talora-white focus-visible:outline-2 focus-         
-  visible:outline-offset-4 focus-visible:outline-talora-red active:scale-95 xl:ml-auto xl:mr-6 xl:w-auto xl:grid-cols-1 xl:place-items-stretch xl:items-center">
+        className="grid size-10 place-items-center rounded-md text-talora-greyish-blue transition-colors duration-200 cursor-pointer hover:text-talora-white focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-talora-red active:scale-95 xl:h-10 xl:w-full xl:grid-cols-[6rem_1fr] xl:items-center xl:rounded-lg xl:hover:bg-talora-greyish-blue/10">
         <span className="flex size-10 items-center justify-center xl:justify-self-center">
           <HugeiconsIcon
             icon={Logout01Icon}
@@ -92,9 +26,22 @@ export default function LogoutButton() {
             aria-hidden="true"
           />
         </span>
+
+        <span className="hidden whitespace-nowrap text-sm font-medium opacity-0 transition-opacity duration-200 xl:block xl:group-hover/sidebar:opacity-100 xl:justify-self-start">
+          Log out
+        </span>
       </button>
 
-      {showLogoutConfirm ? createPortal(logoutModal, document.body) : null}
+      {showLogoutConfirm
+        ? createPortal(
+            <LogoutAuthModal
+              isPending={isPending}
+              onConfirm={handleLogout}
+              onCancel={() => setShowLogoutConfirm(false)}
+            />,
+            document.body,
+          )
+        : null}
     </>
   );
 }

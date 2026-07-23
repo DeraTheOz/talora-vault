@@ -6,7 +6,7 @@ import { HugeiconsIcon } from "@hugeicons/react";
 import {
   Bookmark02Icon,
   Film02Icon,
-  Home04Icon,
+  Home07Icon,
   Tv01Icon,
 } from "@hugeicons/core-free-icons";
 
@@ -14,7 +14,7 @@ const navigationItems = [
   {
     href: "/",
     label: "Home",
-    icon: Home04Icon,
+    icon: Home07Icon,
   },
   {
     href: "/movies",
@@ -34,24 +34,19 @@ const navigationItems = [
 ] as const;
 
 type NavLinksProps = {
-  variant?: "default" | "tablet" | "desktop" | "bottom";
+  variant?: "desktop" | "bottom";
 };
 
-export default function NavLinks({ variant = "default" }: NavLinksProps) {
+export default function NavLinks({ variant = "bottom" }: NavLinksProps) {
   const pathname = usePathname();
   const isBottomNav = variant === "bottom";
-  const isTabletNav = variant === "tablet";
   const isDesktopNav = variant === "desktop";
 
   return (
     <ul
       className={[
         isBottomNav ? "grid grid-cols-4 items-center gap-1" : "",
-        isTabletNav ? "flex items-center gap-6 md:gap-8" : "",
         isDesktopNav ? "flex w-full flex-col gap-8" : "",
-        variant === "default"
-          ? "flex items-center gap-6 md:gap-8 xl:flex-col xl:gap-10"
-          : "",
       ].join(" ")}>
       {navigationItems.map(({ href, label, icon }) => {
         const isActive =
@@ -69,27 +64,15 @@ export default function NavLinks({ variant = "default" }: NavLinksProps) {
                 isBottomNav
                   ? "inline-flex h-12 w-full flex-col items-center justify-center gap-1"
                   : "",
-
-                isTabletNav
-                  ? "h-13 min-w-12 flex-col items-center justify-center gap-1"
-                  : "",
-
                 isDesktopNav
                   ? "grid h-10 w-72 grid-cols-[6rem_1fr] items-center hover:bg-talora-greyish-blue/10"
                   : "",
-
-                variant === "default"
-                  ? "inline-flex size-10 items-center justify-center"
-                  : "",
-
                 isActive && isDesktopNav
                   ? "text-talora-red! xl:group-hover/sidebar:bg-talora-red/15"
                   : "",
-
                 isActive && !isDesktopNav
                   ? "hover:text-talora-red! text-talora-red"
                   : "",
-
                 !isActive ? "text-talora-greyish-blue" : "",
               ].join(" ")}>
               <span
@@ -100,7 +83,7 @@ export default function NavLinks({ variant = "default" }: NavLinksProps) {
                 }>
                 <HugeiconsIcon
                   icon={icon}
-                  size={isBottomNav || isTabletNav ? 22 : 24}
+                  size={isBottomNav ? 22 : 24}
                   color="currentColor"
                   strokeWidth={1.5}
                   aria-hidden="true"
@@ -113,7 +96,7 @@ export default function NavLinks({ variant = "default" }: NavLinksProps) {
                 </span>
               ) : null}
 
-              {isBottomNav || isTabletNav ? (
+              {isBottomNav ? (
                 <span className="text-[0.6875rem] font-medium leading-none">
                   {label}
                 </span>

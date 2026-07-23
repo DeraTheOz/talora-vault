@@ -73,3 +73,17 @@ export function formatDate(date: Date | string): string {
     timeStyle: "short",
   }).format(new Date(date));
 }
+
+/**
+ * Extracts the first name from a user's full name string if it contains spaces.
+ *
+ * @param name - The user's full name or display name string, or null/undefined.
+ * @returns The first name or original display name string.
+ */
+export function formatName(name: string | null | undefined): string {
+  if (!name) return "";
+  const trimmed = name.trim();
+  const spaceIndex = trimmed.indexOf(" ");
+  if (spaceIndex === -1) return trimmed;
+  return trimmed.slice(0, spaceIndex);
+}

@@ -1,85 +1,49 @@
 "use client";
 
-import { useState, useTransition } from "react";
-import { useRouter, useSearchParams } from "next/navigation";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { toast } from "sonner";
-
-import {
-  loginSchema,
-  type LoginInput,
-} from "@/features/auth/schemas/auth-schema";
-import {
-  googleSignInAction,
-  loginAction,
-} from "@/features/auth/actions/auth-actions";
-
 import AuthField from "./auth-field";
 import AuthGoogleButton from "./auth-google-button";
 import AuthSubmitButton from "./auth-submit-button";
 import AuthSwitchLink from "./auth-switch-link";
 import FormError from "../form-error";
-
-const authErrors: Record<string, string> = {
-  OAuthAccountNotLinked:
-    "An account with this email already exists. Sign in using your email and password.",
-};
+import { useLogin } from "@/features/auth/hooks/use-login";
+import { useSearchParams } from "next/navigation";
 
 export default function LoginForm() {
-  const [formError, setFormError] = useState<string | null>(null);
-  const [isGooglePending, startGoogleTransition] = useTransition();
   const searchParams = useSearchParams();
-  const router = useRouter();
+  const callbackUrl = searchParams.get("callbackUrl") || "/";
 
-  const displayedError =
-    formError ??
-    (searchParams.get("error")
-      ? (authErrors[searchParams.get("error")!] ?? null)
-      : null);
+  const signupHref = callbackUrl
+    ? `/signup?callbackUrl=${encodeURIComponent(callbackUrl)}`
+    : "/signup";
+
+  const {
+    form,
+    isGooglePending,
+    isNavigating,
+    displayedError,
+    onSubmit,
+    onGoogleClick,
+  } = useLogin();
 
   const {
     register,
     handleSubmit,
     formState: { errors, isSubmitting },
-  } = useForm<LoginInput>({
-    resolver: zodResolver(loginSchema),
-    defaultValues: {
-      email: "",
-      password: "",
-    },
-  });
+  } = form;
 
-  async function onSubmit(values: LoginInput) {
-    setFormError(null);
-
-    const result = await loginAction(values);
-
-    if (result?.error) {
-      setFormError(result.error);
-      toast.error(result.error);
-    } else if (result?.success) {
-      toast.success(`Welcome back, ${result.username || "User"}`);
-      router.push("/");
-      router.refresh();
-    }
-  }
-
-  function onGoogleClick() {
-    startGoogleTransition(() => {
-      void googleSignInAction();
-    });
-  }
+  const isPending = isSubmitting || isGooglePending || isNavigating;
 
   return (
     <>
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
-        <div className="space-y-2">
+        <div className="space-y-3">
           <AuthField
             label="Email address"
             type="email"
             autoComplete="email"
             placeholder="Email address"
+            disabled={isPending}
+            aria-disabled={isPending}
             aria-invalid={Boolean(errors.email)}
             {...register("email")}
           />
@@ -92,6 +56,8 @@ export default function LoginForm() {
             type="password"
             autoComplete="current-password"
             placeholder="Password"
+            disabled={isPending}
+            aria-disabled={isPending}
             aria-invalid={Boolean(errors.password)}
             {...register("password")}
           />
@@ -102,20 +68,20 @@ export default function LoginForm() {
 
         {displayedError ? <FormError errorMessage={displayedError} /> : null}
 
-        <AuthSubmitButton disabled={isSubmitting || isGooglePending}>
-          {isSubmitting ? "Logging in..." : "Login to your account"}
+        <AuthSubmitButton disabled={isPending}>
+          {isSubmitting || isNavigating
+            ? "Logging in..."
+            : "Login to your account"}
         </AuthSubmitButton>
 
-        <AuthGoogleButton
-          disabled={isSubmitting || isGooglePending}
-          onClick={onGoogleClick}>
+        <AuthGoogleButton disabled={isPending} onClick={onGoogleClick}>
           {isGooglePending ? "Opening Google..." : "Continue with Google"}
         </AuthGoogleButton>
       </form>
 
       <AuthSwitchLink
         prompt="Don't have an account?"
-        href="/signup"
+        href={signupHref}
         label="Sign Up"
       />
     </>
