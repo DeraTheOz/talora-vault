@@ -1,4 +1,4 @@
-import SearchBar from "../components/forms/search-bar";
+import SearchBar from "../components/media/search/search-bar";
 import NowPlayingSection from "../components/media/now-playing-section";
 import TopRatedSection from "../components/media/top-rated-section";
 import TrendingSection from "../components/media/trending-section";
