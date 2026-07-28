@@ -37,7 +37,7 @@ export default function MediaFilter<TMedia extends MediaType>({
   ];
 
   return (
-    <div className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
+    <div className="grid gap-3 items-center grid-cols-[repeat(auto-fit,minmax(180px,1fr))] sm:grid-cols-2">
       <FilterSelect
         id="media-genre-filter"
         ariaLabel="Filter content by genre"

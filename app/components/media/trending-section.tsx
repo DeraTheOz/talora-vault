@@ -37,7 +37,7 @@ export default function TrendingSection({ title, id }: TrendingMediaProps) {
       className="min-w-0 overflow-hidden space-y-4 md:space-y-6">
       <h1
         id={id}
-        className="text-xl font-normal md:text-[2rem] md:leading-tight">
+        className="text-2xl font-normal md:text-[2rem] md:leading-tight">
         {title}
       </h1>
 
