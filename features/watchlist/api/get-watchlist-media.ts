@@ -1,16 +1,25 @@
-import type { TmdbNowPlayingItem } from "@/features/now-playing/types/now-playing";
 import type { WatchlistMediaType } from "@/features/watchlist/schemas/watchlist-schema";
 import { getMovieDetail } from "@/features/movie/api/get-movie-detail";
 import { getTvDetail } from "@/features/series/api/get-series-detail";
+import type { WatchlistMediaItem } from "../types/watchlist";
 
 type WatchlistDbItem = {
   tmdbId: number;
   mediaType: WatchlistMediaType;
+  addedAt: Date;
 };
 
+/**
+ * Enriches raw watchlist DB rows with full TMDB metadata.
+ * Preserves the `addedAt` timestamp from the database so the client
+ * can sort by "Recently added".
+ *
+ * @param items - Raw watchlist rows from the database (includes addedAt).
+ * @returns An array of enriched media items with TMDB data + addedAt.
+ */
 export async function getWatchlistMedia(
   items: WatchlistDbItem[],
-): Promise<TmdbNowPlayingItem[]> {
+): Promise<WatchlistMediaItem[]> {
   return Promise.all(
     items.map(async (item) => {
       if (item.mediaType === "movie") {
@@ -25,6 +34,7 @@ export async function getWatchlistMedia(
           media_type: "movie" as const,
           vote_average: movie.vote_average,
           popularity: 0,
+          addedAt: item.addedAt,
         };
       }
 
@@ -39,6 +49,7 @@ export async function getWatchlistMedia(
         media_type: "tv" as const,
         vote_average: tv.vote_average,
         popularity: 0,
+        addedAt: item.addedAt,
       };
     }),
   );
