@@ -48,11 +48,11 @@ export default function MovieSection({ title, id }: MovieProps) {
   }
 
   return (
-    <section aria-labelledby={id} className="space-y-4 md:space-y-6 mb-16">
-      <div className="flex flex-col gap-6 pr-8 sm:flex-row justify-between">
+    <section aria-labelledby={id} className="space-y-8 mb-16">
+      <div className="flex flex-col gap-6 justify-between sm:flex-row xl:pr-8">
         <h2
           id={id}
-          className="text-xl font-normal md:text-[2rem] md:leading-tight">
+          className="text-2xl font-normal md:text-[2rem] md:leading-tight">
           {title}
         </h2>
 
@@ -71,7 +71,7 @@ export default function MovieSection({ title, id }: MovieProps) {
           No movies found for this filter.
         </p>
       ) : (
-        <div className="grid grid-cols-2 gap-x-4 gap-y-5 md:grid-cols-3 md:gap-x-7 md:gap-y-6 xl:pr-8 xl:grid-cols-[repeat(auto-fill,minmax(17.5rem,1fr))] xl:gap-x-10 xl:gap-y-8">
+        <div className="grid max-[369px]:grid-cols-1 grid-cols-2 gap-x-4 gap-y-5 md:grid-cols-3 md:gap-x-7 md:gap-y-6 xl:pr-8 xl:grid-cols-[repeat(auto-fill,minmax(17.5rem,1fr))] xl:gap-x-10 xl:gap-y-8">
           {movies.map((movie) => (
             <MovieCard key={`${movie.title}-${movie.id}`} movie={movie} />
           ))}
