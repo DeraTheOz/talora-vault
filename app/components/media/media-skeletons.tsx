@@ -41,7 +41,7 @@ export function MediaSectionSkeleton({
   return (
     <section className="space-y-4 md:space-y-6 mb-16">
       {title || filters ? (
-        <div className="flex flex-col gap-6 pr-8 sm:flex-row sm:justify-between">
+        <div className="flex flex-col gap-6 justify-between sm:flex-row xl:pr-8">
           {title ? <Skeleton className="h-8 w-44 md:h-10" /> : null}
 
           {filters ? (
