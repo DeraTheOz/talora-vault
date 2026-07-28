@@ -16,7 +16,7 @@ export default function LogoutButton() {
         type="button"
         onClick={() => setShowLogoutConfirm(true)}
         aria-label="Log out"
-        className="grid size-10 place-items-center rounded-md text-talora-greyish-blue transition-colors duration-200 cursor-pointer hover:text-talora-white focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-talora-red active:scale-95 xl:h-10 xl:w-full xl:grid-cols-[6rem_1fr] xl:items-center xl:rounded-lg xl:hover:bg-talora-greyish-blue/10">
+        className="grid size-10 place-items-center rounded-md text-talora-red transition-colors duration-200 cursor-pointer focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-talora-red active:scale-95 xl:h-10 xl:w-full xl:grid-cols-[6rem_1fr] xl:items-center xl:rounded-lg xl:hover:bg-talora-greyish-blue/10">
         <span className="flex size-10 items-center justify-center xl:justify-self-center">
           <HugeiconsIcon
             icon={Logout01Icon}
