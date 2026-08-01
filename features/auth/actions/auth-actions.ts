@@ -3,6 +3,7 @@
 import bcrypt from "bcryptjs";
 import { AuthError } from "next-auth";
 import { and, eq } from "drizzle-orm";
+import { cookies } from "next/headers";
 
 import { Avatar, Style } from "@dicebear/core";
 import toonHead from "@dicebear/styles/toon-head.json";
@@ -16,6 +17,7 @@ import {
   type LoginInput,
   type SignupInput,
 } from "@/features/auth/schemas/auth-schema";
+import { isLocale, localeCookieName } from "@/i18n/config";
 
 export type AuthActionState = {
   error?: string;
@@ -105,6 +107,7 @@ export async function loginAction(
     .select({
       id: users.id,
       name: users.name,
+      language: users.language,
       passwordHash: users.passwordHash,
     })
     .from(users)
@@ -133,6 +136,16 @@ export async function loginAction(
       password: parsed.data.password,
       redirect: false,
     });
+
+    // Make the user's preferred language the active app locale for this browser.
+    if (isLocale(user?.language)) {
+      const store = await cookies();
+      store.set(localeCookieName, user.language, {
+        path: "/",
+        maxAge: 60 * 60 * 24 * 365,
+        sameSite: "lax",
+      });
+    }
 
     return {
       success: true,
