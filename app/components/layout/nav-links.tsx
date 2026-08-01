@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { useTranslations } from "next-intl";
 import { HugeiconsIcon } from "@hugeicons/react";
 import {
   Bookmark02Icon,
@@ -10,37 +11,38 @@ import {
   Tv01Icon,
 } from "@hugeicons/core-free-icons";
 
-const navigationItems = [
-  {
-    href: "/",
-    label: "Home",
-    icon: Home07Icon,
-  },
-  {
-    href: "/movies",
-    label: "Movies",
-    icon: Film02Icon,
-  },
-  {
-    href: "/series",
-    label: "TV series",
-    icon: Tv01Icon,
-  },
-  {
-    href: "/watchlist",
-    label: "Watchlist",
-    icon: Bookmark02Icon,
-  },
-] as const;
-
 type NavLinksProps = {
   variant?: "desktop" | "bottom";
 };
 
 export default function NavLinks({ variant = "bottom" }: NavLinksProps) {
   const pathname = usePathname();
+  const t = useTranslations("navigation");
   const isBottomNav = variant === "bottom";
   const isDesktopNav = variant === "desktop";
+
+  const navigationItems = [
+    {
+      href: "/",
+      label: t("home"),
+      icon: Home07Icon,
+    },
+    {
+      href: "/movies",
+      label: t("movies"),
+      icon: Film02Icon,
+    },
+    {
+      href: "/series",
+      label: t("series"),
+      icon: Tv01Icon,
+    },
+    {
+      href: "/watchlist",
+      label: t("watchlist"),
+      icon: Bookmark02Icon,
+    },
+  ] as const;
 
   return (
     <ul
