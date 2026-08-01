@@ -75,6 +75,21 @@ export function formatDate(date: Date | string): string {
 }
 
 /**
+ * Formats a Date object or date string into a full date with long time format.
+ * e.g. "October 12, 2023,"
+ *
+ * @param createdAt - The Date object or date string to format.
+ * @returns Formatted date string in `en-US` locale.
+ */
+export function formatRegistrationDate(createdAt: Date | string) {
+  return new Intl.DateTimeFormat("en-US", {
+    day: "numeric",
+    month: "long",
+    year: "numeric",
+  }).format(new Date(createdAt));
+}
+
+/**
  * Extracts the first name from a user's full name string if it contains spaces.
  *
  * @param name - The user's full name or display name string, or null/undefined.

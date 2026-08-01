@@ -76,16 +76,27 @@ const authConfig = {
     authorized({ auth }) {
       return Boolean(auth?.user);
     },
-    jwt({ token, user }) {
+    async jwt({ token, user }) {
       if (user) {
         token.id = user.id;
+      }
 
-        // Only store external HTTP URLs (Google OAuth avatars) in the JWT cookie
-        // Large SVG Data URIs (from Dicebear) stored in the DB are excluded from the cookie payload to prevent HTTP 431 errors.
-        if (user.image && user.image.startsWith("http")) {
-          token.picture = user.image;
-        } else {
-          delete token.picture;
+      // Always keep the token in sync with the DB so a regenerated avatar or a language change shows up on the next request
+      if (token.id) {
+        const [dbUser] = await db
+          .select({ image: users.image, language: users.language })
+          .from(users)
+          .where(eq(users.id, token.id as string))
+          .limit(1);
+
+        if (dbUser) {
+          // Only store external HTTP URLs (Google OAuth avatars) in the JWT cookie
+          // Large SVG Data URIs (from Dicebear) stored in the DB are excluded from the cookie payload to prevent HTTP 431 errors.
+          if (dbUser.image && dbUser.image.startsWith("http")) {
+            token.picture = dbUser.image;
+          } else {
+            delete token.picture;
+          }
         }
       }
 
@@ -95,6 +106,7 @@ const authConfig = {
       if (session.user) {
         session.user.id = token.id as string;
         session.user.image = (token.picture as string) || null;
+        session.user.locale = token.locale;
       }
 
       return session;

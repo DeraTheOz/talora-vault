@@ -1,35 +1,45 @@
-import Image from "next/image";
-
+import { getTranslations } from "next-intl/server";
 import Logo from "./logo";
 import NavLinks from "./nav-links";
+import SidebarProfileLink from "./sidebar-profile-link";
 
-import avatar from "@/public/image-avatar.png";
 import { auth } from "@/auth";
 import LogoutButton from "./logout-button";
 import LoginButton from "./login-button";
-import { formatName } from "@/lib/helpers/format";
 import { db } from "@/db/client";
 import { eq } from "drizzle-orm";
 import { users } from "@/db/schema";
 
 export default async function Sidebar() {
   const session = await auth();
+  const t = await getTranslations("navigation");
   const user = session?.user;
-  let profileImage = user?.image;
+  let profileImage = user?.image ?? null;
+  let profileName = user?.name ?? null;
+  let emailVerified: Date | null = null;
 
-  if (user?.id && !profileImage) {
+  if (user?.id) {
     const [dbUser] = await db
-      .select({ image: users.image })
+      .select({
+        name: users.name,
+        image: users.image,
+        emailVerified: users.emailVerified,
+      })
       .from(users)
       .where(eq(users.id, user.id))
       .limit(1);
-    profileImage = dbUser?.image ?? null;
+
+    if (dbUser) {
+      if (!profileImage) profileImage = dbUser.image;
+      if (dbUser.name) profileName = dbUser.name;
+      emailVerified = dbUser.emailVerified;
+    }
   }
 
   return (
     <>
       <aside
-        aria-label="Primary navigation"
+        aria-label={t("primaryNavigation")}
         className="group/sidebar z-30 flex h-14 shrink-0 items-center justify-between rounded-[0.625rem] bg-talora-semi-dark-blue px-4 transition-[width] duration-300 ease-out md:h-20 md:rounded-[1.25rem] md:px-6 xl:sticky xl:top-0 xl:h-dvh xl:w-24 xl:flex-col xl:items-start xl:justify-start xl:overflow-hidden xl:rounded-none xl:px-0 xl:py-8 xl:hover:w-72">
         <div className="flex items-center xl:grid xl:w-full xl:grid-cols-[6rem_1fr]">
           <div className="flex items-center justify-center">
@@ -44,7 +54,7 @@ export default async function Sidebar() {
         </div>
 
         <nav
-          aria-label="Desktop main menu"
+          aria-label={t("desktopMenu")}
           className="hidden xl:mt-16 xl:flex xl:w-full xl:flex-1">
           <NavLinks variant="desktop" />
         </nav>
@@ -53,25 +63,11 @@ export default async function Sidebar() {
           {user ? (
             <>
               {/* Profile row */}
-              <div className="flex items-center xl:grid xl:h-10 xl:w-full xl:grid-cols-[6rem_1fr] xl:rounded-lg xl:hover:bg-talora-greyish-blue/10">
-                <div className="size-8 overflow-hidden rounded-lg ring-2 ring-talora-greyish-blue xl:justify-self-center">
-                  <Image
-                    src={profileImage ?? avatar}
-                    alt={
-                      user.name
-                        ? `${user.name} profile`
-                        : "Signed in user profile"
-                    }
-                    width={32}
-                    height={32}
-                    className="size-full object-cover"
-                  />
-                </div>
-
-                <span className="hidden whitespace-nowrap text-sm font-medium text-talora-white opacity-0 transition-opacity duration-200 xl:block xl:group-hover/sidebar:opacity-100">
-                  {formatName(user.name)}
-                </span>
-              </div>
+              <SidebarProfileLink
+                name={profileName}
+                image={profileImage}
+                emailVerified={emailVerified}
+              />
 
               {/* Logout button row */}
               <LogoutButton />
@@ -84,7 +80,7 @@ export default async function Sidebar() {
 
       {/* Bottom navigation(mobile / tablet) */}
       <nav
-        aria-label="Main menu"
+        aria-label={t("mainMenu")}
         className="fixed -mx-4 inset-x-4 bottom-0 z-30 rounded-t-[0.625rem] bg-talora-semi-dark-blue px-3 py-2 sm:py-4 sm:rounded-t-2xl xl:hidden">
         <NavLinks variant="bottom" />
       </nav>
