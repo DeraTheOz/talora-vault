@@ -15,6 +15,13 @@
       "when": 1784892454919,
       "tag": "0001_shocking_dexter_bennett",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1785538299693,
+      "tag": "0002_add_profile_bio_language",
+      "breakpoints": true
     }
   ]
 }
