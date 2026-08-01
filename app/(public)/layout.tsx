@@ -1,5 +1,6 @@
 import { auth } from "@/auth";
 import Sidebar from "@/app/components/layout/sidebar";
+import { getTranslations } from "next-intl/server";
 import { BookmarkProvider } from "../components/providers/bookmark-provider";
 import { getCachedUserWatchlist } from "@/features/watchlist/api/get-user-watchlist";
 
@@ -9,6 +10,7 @@ export default async function PublicLayout({
   children: React.ReactNode;
 }>) {
   const session = await auth();
+  const t = await getTranslations("common");
 
   // Use cached watchlist fetcher
   const watchlistItems = session?.user
@@ -24,7 +26,7 @@ export default async function PublicLayout({
       <a
         href="#main-content"
         className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-50 focus:rounded focus:bg-talora-white focus:px-4 focus:py-2 focus:text-talora-dark-blue">
-        Skip to main content
+        {t("skipToContent")}
       </a>
 
       <div className="mx-auto flex h-dvh w-full flex-col overflow-hidden gap-6 px-4 py-4 md:px-6 md:py-6 xl:flex-row xl:gap-9 xl:px-0 xl:py-0">

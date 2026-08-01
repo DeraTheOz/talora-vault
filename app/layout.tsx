@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
 import { Outfit } from "next/font/google";
+import { getLocale } from "next-intl/server";
+import { NextIntlClientProvider } from "next-intl";
 import "./globals.css";
 import QueryProvider from "./components/providers/query-provider";
 import { Toaster } from "sonner";
@@ -16,18 +18,22 @@ export const metadata: Metadata = {
     "Discover movies and TV series with Talora Vault — watchlists, recommendations, and entertainment insights.",
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const locale = await getLocale();
+
   return (
     <html
-      lang="en"
+      lang={locale}
       className={`${outfit.className} h-full antialiased`}
       data-scroll-behavior="smooth">
       <body className="min-h-dvh flex flex-col">
-        <QueryProvider>{children}</QueryProvider>
+        <NextIntlClientProvider>
+          <QueryProvider>{children}</QueryProvider>
+        </NextIntlClientProvider>
 
         <Toaster
           position="top-center"
