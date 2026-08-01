@@ -1,9 +1,23 @@
-import { getTranslations } from "next-intl/server";
+"use client";
+
+import { useTranslations } from "next-intl";
 import { Delete02Icon } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
+import { useState } from "react";
+import { createPortal } from "react-dom";
+import DeleteAccountModal from "../modals/delete-account-modal";
 
-export default async function DeleteAccount() {
-  const t = await getTranslations("profile");
+interface DeleteAccountProps {
+  authProvider: "google" | "credentials";
+  email: string;
+}
+
+export default function DeleteAccount({
+  authProvider,
+  email,
+}: DeleteAccountProps) {
+  const t = useTranslations("profile");
+  const [isOpen, setIsOpen] = useState(false);
 
   return (
     <section
@@ -22,11 +36,23 @@ export default async function DeleteAccount() {
         <button
           type="button"
           aria-label={t("delete")}
+          onClick={() => setIsOpen(true)}
           className="inline-flex min-h-11 shrink-0 items-center gap-2 rounded-lg bg-talora-red/15 px-5 text-sm font-medium text-talora-red cursor-pointer transition hover:bg-talora-red/25 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-talora-red active:scale-95">
           <HugeiconsIcon icon={Delete02Icon} size={18} />
           {t("delete")}
         </button>
       </div>
+
+      {isOpen
+        ? createPortal(
+            <DeleteAccountModal
+              authProvider={authProvider}
+              email={email}
+              onClose={() => setIsOpen(false)}
+            />,
+            document.body,
+          )
+        : null}
     </section>
   );
 }

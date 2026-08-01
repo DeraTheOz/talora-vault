@@ -106,7 +106,7 @@ export default async function ProfilePage() {
         recentReviews={recentReviews}
       />
 
-      <DeleteAccount />
+      <DeleteAccount authProvider={user.authProvider} email={user.email} />
     </div>
   );
 }
