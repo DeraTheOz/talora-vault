@@ -1,4 +1,4 @@
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { useState, useTransition } from "react";
 import { logoutAction } from "../actions/auth-actions";
 import { toast } from "sonner";
@@ -7,6 +7,7 @@ export function useLogout() {
   const [showLogoutConfirm, setShowLogoutConfirm] = useState(false);
   const [isPending, startTransition] = useTransition();
   const router = useRouter();
+  const pathname = usePathname();
 
   function handleLogout() {
     startTransition(async () => {
@@ -20,7 +21,11 @@ export function useLogout() {
 
         // Defer UI update & toast until router.refresh finishes
         startTransition(() => {
-          router.refresh();
+          if (pathname.startsWith("/profile")) {
+            router.push("/");
+          } else {
+            router.refresh();
+          }
           setShowLogoutConfirm(false);
           toast.success("Logged out successfully");
         });
