@@ -10,7 +10,7 @@ type CastItemProps = {
 
 export default function CastItem({ name, image, role }: CastItemProps) {
   return (
-    <article className="group flex items-center gap-3 rounded-md border border-talora-white/20 hover:border-talora-greyish-blue p-2.5 transition duration-300 hover:bg-talora-dark-blue">
+    <article className="group flex items-center gap-3 rounded-md p-2.5 transition duration-300 hover:bg-talora-dark-blue">
       <div className="relative size-14 shrink-0 overflow-hidden rounded-full sm:size-16 xl:size-14">
         {image ? (
           <Image

@@ -5,6 +5,7 @@ import { db } from "@/db/client";
 import { users } from "@/db/schema";
 import { eq } from "drizzle-orm";
 import bcrypt from "bcryptjs";
+import { getTranslations } from "next-intl/server";
 
 export async function deleteAccountAction({
   confirmInput,
@@ -13,9 +14,11 @@ export async function deleteAccountAction({
   confirmInput: string;
   authProvider: "google" | "credentials";
 }) {
+  const t = await getTranslations("deleteAccount.errors");
+
   const session = await auth();
   if (!session?.user?.id) {
-    return { success: false, error: "Unauthorized" };
+    return { success: false, error: t("unauthorized") };
   }
 
   const [user] = await db
@@ -25,12 +28,12 @@ export async function deleteAccountAction({
     .limit(1);
 
   if (!user) {
-    return { success: false, error: "User not found" };
+    return { success: false, error: t("userNotFound") };
   }
 
   if (authProvider === "credentials") {
     if (!user.passwordHash) {
-      return { success: false, error: "Invalid credentials" };
+      return { success: false, error: t("invalidCredentials") };
     }
 
     const passwordsMatch = await bcrypt.compare(
@@ -38,11 +41,11 @@ export async function deleteAccountAction({
       user.passwordHash,
     );
     if (!passwordsMatch) {
-      return { success: false, error: "Incorrect password." };
+      return { success: false, error: t("currentPasswordIncorrect") };
     }
   } else if (authProvider === "google") {
     if (confirmInput !== session.user.email) {
-      return { success: false, error: "Email confirmation does not match." };
+      return { success: false, error: t("emailMismatch") };
     }
   }
 

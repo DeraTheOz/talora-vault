@@ -44,9 +44,6 @@
     "addedOn": "Añadido {date}",
     "createdOn": "Creado {date}",
     "noImage": "Sin imagen",
-    "deleteAccount": "Eliminar cuenta",
-    "deleteAccountDescription": "Elimina permanentemente tu cuenta y todos los datos asociados. Esta acción no se puede deshacer.",
-    "delete": "Eliminar",
     "toastProfileUpdated": "Perfil actualizado correctamente",
     "toastProfileUpdateFailed": "No se pudo actualizar tu perfil. Inténtalo de nuevo.",
     "toastEmailVerified": "Email verificado correctamente",
@@ -78,6 +75,57 @@
       "usernameMax": "El nombre de usuario debe tener como máximo 15 caracteres",
       "usernamePattern": "El nombre de usuario solo puede contener letras, números, puntos, guiones bajos y guiones",
       "bioMax": "La biografía debe tener como máximo 200 caracteres"
+    }
+  },
+  "changePassword": {
+    "title": "Cambiar contraseña",
+    "description": "Mantén tu cuenta segura actualizando tu contraseña con regularidad.",
+    "currentPasswordLabel": "Contraseña actual",
+    "currentPasswordPlaceholder": "Introduce tu contraseña actual",
+    "newPasswordLabel": "Nueva contraseña",
+    "newPasswordPlaceholder": "Introduce una nueva contraseña",
+    "newPasswordHint": "Al menos 8 caracteres",
+    "confirmPasswordLabel": "Confirmar nueva contraseña",
+    "confirmPasswordPlaceholder": "Vuelve a introducir tu nueva contraseña",
+    "updateButton": "Cambiar contraseña",
+    "saving": "Cambiando...",
+    "toastPasswordChanged": "Contraseña cambiada correctamente",
+    "errors": {
+      "invalid": "Revisa los datos de tu contraseña e inténtalo de nuevo.",
+      "notAuthenticated": "Debes iniciar sesión para cambiar tu contraseña.",
+      "noPassword": "Esta cuenta no tiene contraseña. Usa Continuar con Google en su lugar.",
+      "currentPasswordIncorrect": "La contraseña actual es incorrecta.",
+      "updateFailed": "No se pudo cambiar tu contraseña. Inténtalo de nuevo.",
+      "currentPasswordRequired": "Introduce tu contraseña actual",
+      "newPasswordMin": "La nueva contraseña debe tener al menos 8 caracteres",
+      "newPasswordMax": "La nueva contraseña debe tener como máximo 72 caracteres",
+      "confirmPasswordRequired": "Confirma tu nueva contraseña",
+      "passwordSameAsCurrent": "La nueva contraseña debe ser diferente de la actual",
+      "passwordsDoNotMatch": "Las contraseñas no coinciden"
+    }
+  },
+  "deleteAccount": {
+    "sectionTitle": "Eliminar cuenta",
+    "sectionDescription": "Elimina permanentemente tu cuenta y todos los datos asociados. Esta acción no se puede deshacer.",
+    "deleteButton": "Eliminar",
+    "modalTitle": "Eliminar cuenta",
+    "modalDescription": "Esta acción es permanente y no se puede deshacer. Se eliminarán todas tus listas, reseñas y valoraciones.",
+    "typeToConfirm": "Escribe <strong>{email}</strong> para confirmar:",
+    "enterPasswordToConfirm": "Introduce tu contraseña para confirmar:",
+    "passwordPlaceholder": "Introduce tu contraseña",
+    "deleting": "Eliminando...",
+    "confirmDelete": "Eliminar cuenta",
+    "toastDeleted": "Cuenta eliminada correctamente",
+    "toastFailed": "No se pudo eliminar la cuenta",
+    "errors": {
+      "unauthorized": "No autorizado",
+      "userNotFound": "Usuario no encontrado",
+      "invalidCredentials": "Credenciales no válidas",
+      "currentPasswordIncorrect": "Contraseña incorrecta.",
+      "emailMismatch": "La confirmación del email no coincide.",
+      "confirmInputRequired": "Se requiere la confirmación",
+      "confirmEmailMismatch": "Escribe \"{email}\" para confirmar la eliminación.",
+      "passwordRequired": "Se requiere la contraseña."
     }
   }
 }
