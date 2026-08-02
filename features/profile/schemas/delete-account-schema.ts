@@ -1,12 +1,17 @@
 import { z } from "zod";
 
-export const createDeleteAccountSchema = (
+/**
+ * Creates the delete-account schema with translated validation messages.
+ * `t` must resolve keys under `deleteAccount.errors` (e.g. `confirmInputRequired`).
+ */
+export function createDeleteAccountSchema(
+  t: (key: string, values?: Record<string, string>) => string,
   authProvider: "google" | "credentials",
   userEmail: string,
-) =>
-  z
+) {
+  return z
     .object({
-      confirmInput: z.string().min(1, "Confirmation input is required"),
+      confirmInput: z.string().min(1, t("confirmInputRequired")),
     })
     .refine(
       (data) => {
@@ -18,8 +23,9 @@ export const createDeleteAccountSchema = (
       {
         message:
           authProvider === "google"
-            ? `Please type "${userEmail}" to confirm deletion.`
-            : "Password is required.",
+            ? t("confirmEmailMismatch", { email: userEmail })
+            : t("passwordRequired"),
         path: ["confirmInput"],
       },
     );
+}
