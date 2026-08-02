@@ -44,9 +44,6 @@
     "addedOn": "Added {date}",
     "createdOn": "Created {date}",
     "noImage": "No image",
-    "deleteAccount": "Delete Account",
-    "deleteAccountDescription": "Permanently delete your account and all associated data. This action cannot be undone.",
-    "delete": "Delete",
     "toastProfileUpdated": "Profile updated successfully",
     "toastProfileUpdateFailed": "Failed to update your profile. Please try again.",
     "toastEmailVerified": "Email verified successfully",
@@ -78,6 +75,57 @@
       "usernameMax": "Username must be at most 15 characters",
       "usernamePattern": "Username may only contain letters, numbers, periods, underscores, and hyphens",
       "bioMax": "Bio must be at most 200 characters"
+    }
+  },
+  "changePassword": {
+    "title": "Change Password",
+    "description": "Keep your account secure by updating your password regularly.",
+    "currentPasswordLabel": "Current password",
+    "currentPasswordPlaceholder": "Enter your current password",
+    "newPasswordLabel": "New password",
+    "newPasswordPlaceholder": "Enter a new password",
+    "newPasswordHint": "At least 8 characters",
+    "confirmPasswordLabel": "Confirm new password",
+    "confirmPasswordPlaceholder": "Re-enter your new password",
+    "updateButton": "Change password",
+    "saving": "Changing...",
+    "toastPasswordChanged": "Password changed successfully",
+    "errors": {
+      "invalid": "Check your password details and try again.",
+      "notAuthenticated": "You must be logged in to change your password.",
+      "noPassword": "This account does not have a password. Use Continue with Google instead.",
+      "currentPasswordIncorrect": "Current password is incorrect.",
+      "updateFailed": "Failed to change your password. Please try again.",
+      "currentPasswordRequired": "Enter your current password",
+      "newPasswordMin": "New password must be at least 8 characters",
+      "newPasswordMax": "New password must be at most 72 characters",
+      "confirmPasswordRequired": "Confirm your new password",
+      "passwordSameAsCurrent": "New password must be different from your current password",
+      "passwordsDoNotMatch": "Passwords do not match"
+    }
+  },
+  "deleteAccount": {
+    "sectionTitle": "Delete Account",
+    "sectionDescription": "Permanently delete your account and all associated data. This action cannot be undone.",
+    "deleteButton": "Delete",
+    "modalTitle": "Delete Account",
+    "modalDescription": "This action is permanent and cannot be undone. All your watchlists, reviews, and ratings will be deleted.",
+    "typeToConfirm": "Type <strong>{email}</strong> to confirm:",
+    "enterPasswordToConfirm": "Enter your password to confirm:",
+    "passwordPlaceholder": "Enter your password",
+    "deleting": "Deleting...",
+    "confirmDelete": "Delete Account",
+    "toastDeleted": "Account deleted successfully",
+    "toastFailed": "Failed to delete account",
+    "errors": {
+      "unauthorized": "Unauthorized",
+      "userNotFound": "User not found",
+      "invalidCredentials": "Invalid credentials",
+      "currentPasswordIncorrect": "Incorrect password.",
+      "emailMismatch": "Email confirmation does not match.",
+      "confirmInputRequired": "Confirmation input is required",
+      "confirmEmailMismatch": "Please type \"{email}\" to confirm deletion.",
+      "passwordRequired": "Password is required."
     }
   }
 }

@@ -44,9 +44,6 @@
     "addedOn": "Ajouté le {date}",
     "createdOn": "Créé le {date}",
     "noImage": "Aucune image",
-    "deleteAccount": "Supprimer le compte",
-    "deleteAccountDescription": "Supprime définitivement votre compte et toutes les données associées. Cette action est irréversible.",
-    "delete": "Supprimer",
     "toastProfileUpdated": "Profil mis à jour avec succès",
     "toastProfileUpdateFailed": "Échec de la mise à jour du profil. Veuillez réessayer.",
     "toastEmailVerified": "E-mail vérifié avec succès",
@@ -78,6 +75,57 @@
       "usernameMax": "Le nom d'utilisateur doit contenir au plus 15 caractères",
       "usernamePattern": "Le nom d'utilisateur ne peut contenir que des lettres, des chiffres, des points, des tirets bas et des tirets",
       "bioMax": "La biographie doit contenir au plus 200 caractères"
+    }
+  },
+  "changePassword": {
+    "title": "Modifier le mot de passe",
+    "description": "Sécurisez votre compte en mettant régulièrement votre mot de passe à jour.",
+    "currentPasswordLabel": "Mot de passe actuel",
+    "currentPasswordPlaceholder": "Saisissez votre mot de passe actuel",
+    "newPasswordLabel": "Nouveau mot de passe",
+    "newPasswordPlaceholder": "Saisissez un nouveau mot de passe",
+    "newPasswordHint": "Au moins 8 caractères",
+    "confirmPasswordLabel": "Confirmer le nouveau mot de passe",
+    "confirmPasswordPlaceholder": "Saisissez à nouveau votre nouveau mot de passe",
+    "updateButton": "Modifier le mot de passe",
+    "saving": "Modification...",
+    "toastPasswordChanged": "Mot de passe modifié avec succès",
+    "errors": {
+      "invalid": "Vérifiez les informations de votre mot de passe et réessayez.",
+      "notAuthenticated": "Vous devez être connecté pour modifier votre mot de passe.",
+      "noPassword": "Ce compte n'a pas de mot de passe. Utilisez plutôt « Continuer avec Google ».",
+      "currentPasswordIncorrect": "Le mot de passe actuel est incorrect.",
+      "updateFailed": "Échec de la modification du mot de passe. Veuillez réessayer.",
+      "currentPasswordRequired": "Saisissez votre mot de passe actuel",
+      "newPasswordMin": "Le nouveau mot de passe doit contenir au moins 8 caractères",
+      "newPasswordMax": "Le nouveau mot de passe doit contenir au plus 72 caractères",
+      "confirmPasswordRequired": "Confirmez votre nouveau mot de passe",
+      "passwordSameAsCurrent": "Le nouveau mot de passe doit être différent du mot de passe actuel",
+      "passwordsDoNotMatch": "Les mots de passe ne correspondent pas"
+    }
+  },
+  "deleteAccount": {
+    "sectionTitle": "Supprimer le compte",
+    "sectionDescription": "Supprime définitivement votre compte et toutes les données associées. Cette action est irréversible.",
+    "deleteButton": "Supprimer",
+    "modalTitle": "Supprimer le compte",
+    "modalDescription": "Cette action est définitive et irréversible. Toutes vos listes, avis et notes seront supprimés.",
+    "typeToConfirm": "Saisissez <strong>{email}</strong> pour confirmer :",
+    "enterPasswordToConfirm": "Saisissez votre mot de passe pour confirmer :",
+    "passwordPlaceholder": "Saisissez votre mot de passe",
+    "deleting": "Suppression...",
+    "confirmDelete": "Supprimer le compte",
+    "toastDeleted": "Compte supprimé avec succès",
+    "toastFailed": "Échec de la suppression du compte",
+    "errors": {
+      "unauthorized": "Non autorisé",
+      "userNotFound": "Utilisateur introuvable",
+      "invalidCredentials": "Identifiants non valides",
+      "currentPasswordIncorrect": "Mot de passe incorrect.",
+      "emailMismatch": "La confirmation de l'e-mail ne correspond pas.",
+      "confirmInputRequired": "La confirmation est requise",
+      "confirmEmailMismatch": "Saisissez \"{email}\" pour confirmer la suppression.",
+      "passwordRequired": "Le mot de passe est requis."
     }
   }
 }
