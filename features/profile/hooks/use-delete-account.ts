@@ -7,12 +7,18 @@ import { useForm } from "react-hook-form";
 import { createDeleteAccountSchema } from "../schemas/delete-account-schema";
 import { toast } from "sonner";
 import { deleteAccountAction } from "../actions/delete-account";
+import { useTranslations } from "next-intl";
 
 export function useDeleteAccount(
   authProvider: "google" | "credentials",
   email: string,
 ) {
-  const schema = createDeleteAccountSchema(authProvider, email);
+  const t = useTranslations("deleteAccount");
+  const schema = createDeleteAccountSchema(
+    (key, values) => t(`errors.${key}`, values),
+    authProvider,
+    email,
+  );
   const [isDeleting, startDeleteAccountTransition] = useTransition();
   const router = useRouter();
 
@@ -35,10 +41,10 @@ export function useDeleteAccount(
 
       if (!result.success) {
         setError("confirmInput", { message: result.error });
-        toast.error(result.error || "Failed to delete account");
+        toast.error(result.error || t("toastFailed"));
         return;
       }
-      toast.success("Account deleted successfully");
+      toast.success(t("toastDeleted"));
       router.push("/");
     });
   }
