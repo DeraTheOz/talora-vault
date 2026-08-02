@@ -1,5 +1,7 @@
 "use client";
 
+import { useTranslations } from "next-intl";
+
 import { useDeleteAccount } from "@/features/profile/hooks/use-delete-account";
 import FormError from "../forms/form-error";
 
@@ -16,6 +18,10 @@ export default function DeleteAccountModal({
 }: DeleteAccountModalProps) {
   const { errors, isSubmitting, isDeleting, register, handleSubmit, onSubmit } =
     useDeleteAccount(authProvider, email);
+  const t = useTranslations("deleteAccount");
+  const cancel = useTranslations("common");
+
+  const isDisabled = isSubmitting || isDeleting;
 
   return (
     <div
@@ -27,12 +33,11 @@ export default function DeleteAccountModal({
         <h2
           id="delete-account-title"
           className="text-xl font-medium text-talora-red">
-          Delete Account
+          {t("modalTitle")}
         </h2>
 
         <p className="mt-2 text-sm text-talora-white/70">
-          This action is permanent and cannot be undone. All your watchlists,
-          reviews, and ratings will be deleted.
+          {t("modalDescription")}
         </p>
 
         <form
@@ -41,15 +46,14 @@ export default function DeleteAccountModal({
           className="mt-5 space-y-4">
           <div className="space-y-1.5">
             <label htmlFor="confirmInput" className="block text-sm font-medium">
-              {authProvider === "google" ? (
-                <>
-                  Type{" "}
-                  <span className="font-bold text-talora-red">{email}</span> to
-                  confirm:
-                </>
-              ) : (
-                "Enter your password to confirm:"
-              )}
+              {authProvider === "google"
+                ? t.rich("typeToConfirm", {
+                    email,
+                    strong: (chunks) => (
+                      <span className="font-bold text-talora-red">{chunks}</span>
+                    ),
+                  })
+                : t("enterPasswordToConfirm")}
             </label>
 
             <input
@@ -58,11 +62,13 @@ export default function DeleteAccountModal({
               autoComplete={
                 authProvider === "google" ? "off" : "current-password"
               }
-              disabled={isSubmitting || isDeleting}
-              aria-disabled={isSubmitting || isDeleting}
+              disabled={isDisabled}
+              aria-disabled={isDisabled}
               aria-invalid={Boolean(errors.confirmInput)}
               placeholder={
-                authProvider === "google" ? email : "Enter your password"
+                authProvider === "google"
+                  ? email
+                  : t("passwordPlaceholder")
               }
               {...register("confirmInput")}
               className="w-full rounded-lg border border-talora-greyish-blue/30 bg-talora-dark-blue px-4 py-3 text-sm text-talora-white outline-none transition placeholder:text-talora-white/35 focus:border-talora-red disabled:cursor-not-allowed disabled:opacity-60"
@@ -77,16 +83,16 @@ export default function DeleteAccountModal({
             <button
               type="button"
               onClick={onClose}
-              disabled={isSubmitting || isDeleting}
+              disabled={isDisabled}
               className="inline-flex min-h-10 items-center rounded-lg bg-talora-white/10 px-5 text-sm font-medium text-talora-white cursor-pointer transition hover:bg-talora-white/15 disabled:cursor-not-allowed disabled:opacity-60">
-              Cancel
+              {cancel("cancel")}
             </button>
 
             <button
               type="submit"
-              disabled={isSubmitting || isDeleting}
+              disabled={isDisabled}
               className="inline-flex min-h-10 items-center rounded-lg bg-talora-red px-5 text-sm font-medium text-talora-white cursor-pointer transition hover:bg-talora-red/85       disabled:cursor-not-allowed disabled:opacity-60">
-              {isSubmitting || isDeleting ? "Deleting..." : "Delete Account"}
+              {isDisabled ? t("deleting") : t("confirmDelete")}
             </button>
           </div>
         </form>
