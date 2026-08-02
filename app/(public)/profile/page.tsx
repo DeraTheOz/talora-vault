@@ -12,6 +12,7 @@ import {
   enrichReviewsWithTmdbData,
 } from "@/features/reviews/api/get-user-reviews";
 import DeleteAccount from "@/app/components/profile/delete-account";
+import ChangePassword from "@/app/components/profile/change-password";
 import { getTranslations } from "next-intl/server";
 
 export default async function ProfilePage() {
@@ -105,6 +106,8 @@ export default async function ProfilePage() {
         recentWatchlist={recentWatchlistItems}
         recentReviews={recentReviews}
       />
+
+      {user.authProvider === "credentials" ? <ChangePassword /> : null}
 
       <DeleteAccount authProvider={user.authProvider} email={user.email} />
     </div>
