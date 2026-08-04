@@ -6,9 +6,11 @@ import type {
 export async function getMovies(
   page = 1,
   filters: MovieFilters = {},
+  lang = "en",
 ): Promise<TmdbMovieApiResponse> {
   const searchParams = new URLSearchParams({
     page: String(page),
+    lang,
   });
 
   if (filters.genreId) {

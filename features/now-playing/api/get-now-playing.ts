@@ -3,8 +3,10 @@ import {
   TmdbNowPlayingItem,
 } from "../types/now-playing";
 
-export async function getNowPlaying(): Promise<TmdbNowPlayingItem[]> {
-  const response = await fetch("/api/tmdb/now-playing");
+export async function getNowPlaying(
+  lang: string,
+): Promise<TmdbNowPlayingItem[]> {
+  const response = await fetch(`/api/tmdb/now-playing?lang=${lang}`);
 
   if (!response.ok) {
     throw new Error("Unable to load now playing content");
