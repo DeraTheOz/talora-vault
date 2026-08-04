@@ -1,31 +1,40 @@
 "use client";
 
 import { useRouter, useSearchParams } from "next/navigation";
-import { useState, useTransition } from "react";
+import { useMemo, useState, useTransition } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useTranslations } from "next-intl";
 
-import { loginSchema, type LoginInput } from "../schemas/auth-schema";
+import {
+  createLoginSchema,
+  type LoginInput,
+} from "../schemas/auth-schema";
 import { googleSignInAction, loginAction } from "../actions/auth-actions";
 import { toast } from "sonner";
 
-const authErrors: Record<string, string> = {
-  OAuthAccountNotLinked:
-    "An account with this email already exists. Sign in using your email and password.",
-};
-
 export function useLogin() {
+  const t = useTranslations("auth");
   const [formError, setFormError] = useState<string | null>(null);
   const [isGooglePending, startGoogleTransition] = useTransition();
   const [isNavigating, startNavigationTransition] = useTransition();
   const searchParams = useSearchParams();
   const router = useRouter();
 
+  const authErrors = useMemo<Record<string, string>>(
+    () => ({
+      OAuthAccountNotLinked: t("oAuthAccountNotLinked"),
+    }),
+    [t],
+  );
+
   const displayedError =
     formError ??
     (searchParams.get("error")
       ? (authErrors[searchParams.get("error")!] ?? null)
       : null);
+
+  const loginSchema = useMemo(() => createLoginSchema(t), [t]);
 
   const form = useForm<LoginInput>({
     resolver: zodResolver(loginSchema),
@@ -48,7 +57,9 @@ export function useLogin() {
       startNavigationTransition(() => {
         router.push(`${result.callbackUrl}`);
         router.refresh();
-        toast.success(`Welcome back, ${result.username || "User"}`);
+        toast.success(
+          t("welcomeBack", { username: result.username || "User" }),
+        );
       });
     }
   }

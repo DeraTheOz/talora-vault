@@ -1,9 +1,13 @@
+"use client";
+
 import { usePathname, useRouter } from "next/navigation";
 import { useState, useTransition } from "react";
 import { logoutAction } from "../actions/auth-actions";
 import { toast } from "sonner";
+import { useTranslations } from "next-intl";
 
 export function useLogout() {
+  const t = useTranslations("auth");
   const [showLogoutConfirm, setShowLogoutConfirm] = useState(false);
   const [isPending, startTransition] = useTransition();
   const router = useRouter();
@@ -27,10 +31,10 @@ export function useLogout() {
             router.refresh();
           }
           setShowLogoutConfirm(false);
-          toast.success("Logged out successfully");
+          toast.success(t("loggedOutSuccessfully"));
         });
       } catch {
-        toast.error("Failed to log out. Please try again.");
+        toast.error(t("logoutFailedGeneric"));
       }
     });
   }
