@@ -1,5 +1,6 @@
 "use client";
 
+import { useTranslations } from "next-intl";
 import { HugeiconsIcon } from "@hugeicons/react";
 import {
   FilterHorizontalIcon,
@@ -28,8 +29,9 @@ export default function MediaFilter<TMedia extends MediaType>({
   sortOptions,
   onFiltersChange,
 }: MediaFilterProps<TMedia>) {
+  const t = useTranslations("browse");
   const genreOptions: FilterSelectOption[] = [
-    { label: "All genres", value: "all" },
+    { label: t("allGenres"), value: "all" },
     ...genres.map((genre) => ({
       label: genre.name,
       value: String(genre.id),
@@ -40,7 +42,7 @@ export default function MediaFilter<TMedia extends MediaType>({
     <div className="grid gap-3 items-center grid-cols-[repeat(auto-fit,minmax(180px,1fr))] sm:grid-cols-2">
       <FilterSelect
         id="media-genre-filter"
-        ariaLabel="Filter content by genre"
+        ariaLabel={t("genreFilterAria")}
         value={filters.genreId ? String(filters.genreId) : "all"}
         options={genreOptions}
         icon={
@@ -56,7 +58,7 @@ export default function MediaFilter<TMedia extends MediaType>({
 
       <FilterSelect
         id="media-sort-filter"
-        ariaLabel="Sort content"
+        ariaLabel={t("sortFilterAria")}
         value={filters.sortBy ?? sortOptions[0]?.value ?? "popularity.desc"}
         options={sortOptions}
         icon={

@@ -1,6 +1,7 @@
 import Image from "next/image";
 import { PlayCircleIcon } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
+import { getTranslations } from "next-intl/server";
 import type { IconSvgElement } from "@hugeicons/react";
 import type { WatchlistMediaType } from "@/features/watchlist/schemas/watchlist-schema";
 import BookmarkButton from "../../ui/bookmark-button";
@@ -26,7 +27,7 @@ interface MediaHeroProps {
 const HERO_IMAGE_SIZES =
   "(min-width: 1280px) calc(100vw - 10.25rem), (min-width: 768px) calc(100vw - 3rem), calc(100vw - 2rem)";
 
-export default function MediaHero({
+export default async function MediaHero({
   tmdbId,
   mediaType,
   titleId,
@@ -40,9 +41,13 @@ export default function MediaHero({
   status,
   secondaryHref,
   secondaryLabel,
-  watchlistLabel = "Add to watchlist",
+  watchlistLabel,
   defaultInWatchlist = false,
 }: MediaHeroProps) {
+  const t = await getTranslations("detail");
+  const mediaT = await getTranslations("media");
+  const bookmarkLabel = watchlistLabel ?? t("addToWatchlist");
+
   return (
     <section
       aria-labelledby={titleId}
@@ -51,7 +56,7 @@ export default function MediaHero({
       {mobileImage ? (
         <Image
           src={mobileImage}
-          alt={`${title} poster`}
+          alt={mediaT("posterAlt", { title })}
           fill
           priority
           blurDataURL={mobileImage}
@@ -60,7 +65,7 @@ export default function MediaHero({
         />
       ) : (
         <div className="flex h-full w-full mb-6 text-xs uppercase text-talora-red md:hidden">
-          Display is currently unavailable
+          {t("displayUnavailable")}
         </div>
       )}
 
@@ -68,7 +73,7 @@ export default function MediaHero({
       {image ? (
         <Image
           src={image}
-          alt={`${title} poster`}
+          alt={mediaT("posterAlt", { title })}
           fill
           priority
           blurDataURL={image}
@@ -77,7 +82,7 @@ export default function MediaHero({
         />
       ) : (
         <div className="hidden md:flex h-full w-full mb-6 text-xs uppercase text-talora-red">
-          Display is currently unavailable
+          {t("displayUnavailable")}
         </div>
       )}
 
@@ -114,7 +119,7 @@ export default function MediaHero({
             tmdbId={tmdbId}
             mediaType={mediaType}
             variant="hero"
-            label={watchlistLabel}
+            label={bookmarkLabel}
             defaultInWatchlist={defaultInWatchlist}
           />
 
