@@ -1,16 +1,17 @@
 "use client";
 
+import { useTranslations } from "next-intl";
 import { useNowPlaying } from "@/features/now-playing/hooks/use-now-playing";
 import MediaCard from "./card/media-card";
 import { MediaSectionSkeleton } from "./media-skeletons";
 import MediaErrorState from "./media-error-state";
 
 interface NowPlayingProps {
-  title: string;
   id: string;
 }
 
-export default function NowPlayingSection({ title, id }: NowPlayingProps) {
+export default function NowPlayingSection({ id }: NowPlayingProps) {
+  const t = useTranslations("home");
   const {
     data: nowPlaying = [],
     isLoading,
@@ -26,7 +27,7 @@ export default function NowPlayingSection({ title, id }: NowPlayingProps) {
   if (error) {
     return (
       <MediaErrorState
-        message="Could not load now playing content."
+        message={t("nowPlayingError")}
         onRetry={() => void refetch()}
         isRetrying={isFetching}
       />
@@ -38,7 +39,7 @@ export default function NowPlayingSection({ title, id }: NowPlayingProps) {
       <h2
         id={id}
         className="text-2xl font-normal md:text-[2rem] md:leading-tight">
-        {title}
+        {t("nowPlaying")}
       </h2>
 
       <div className="grid max-[369px]:grid-cols-1 grid-cols-2 gap-x-4 gap-y-5 md:grid-cols-3 md:gap-x-7 md:gap-y-6 xl:pr-8 xl:grid-cols-[repeat(auto-fill,minmax(17.5rem,1fr))] xl:gap-x-10 xl:gap-y-8">
