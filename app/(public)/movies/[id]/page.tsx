@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 
 import { auth } from "@/auth";
+import { getLocale, getTranslations } from "next-intl/server";
 import { getMovieDetail } from "@/features/movie/api/get-movie-detail";
 import { getCachedUserWatchlist } from "@/features/watchlist/api/get-user-watchlist";
 
@@ -19,15 +20,16 @@ export async function generateMetadata({
   params,
 }: MoviePageProps): Promise<Metadata> {
   const { id } = await params;
+  const locale = await getLocale();
+  const t = await getTranslations({ locale, namespace: "detail" });
 
   try {
-    const movie = await getMovieDetail(id);
+    const movie = await getMovieDetail(id, locale);
 
     return {
       title: `${movie.title} | Talora Vault`,
       description:
-        movie.overview ||
-        `View ${movie.title}, ratings, cast, similar movies, reviews, and legal streaming options on Talora Vault.`,
+        movie.overview || t("metadataMovieDescription", { title: movie.title }),
       openGraph: {
         title: `${movie.title} | Talora Vault`,
         description: movie.overview,
@@ -36,16 +38,16 @@ export async function generateMetadata({
     };
   } catch {
     return {
-      title: "Movie | Talora Vault",
-      description:
-        "View movie ratings, cast, similar titles, and legal streaming options on Talora Vault.",
+      title: t("metadataMovieFallbackTitle"),
+      description: t("metadataMovieFallbackDescription"),
     };
   }
 }
 
 export default async function MoviePage({ params }: MoviePageProps) {
   const { id } = await params;
-  const movie = await getMovieDetail(id);
+  const locale = await getLocale();
+  const movie = await getMovieDetail(id, locale);
 
   // Check watchlist on the server
   const session = await auth();

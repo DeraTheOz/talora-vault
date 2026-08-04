@@ -1,18 +1,21 @@
+import { getTranslations } from "next-intl/server";
 import SearchBar from "../components/media/search/search-bar";
 import NowPlayingSection from "../components/media/now-playing-section";
 import TopRatedSection from "../components/media/top-rated-section";
 import TrendingSection from "../components/media/trending-section";
 
-export default function Page() {
+export default async function Page() {
+  const t = await getTranslations("home");
+
   return (
     <div className="space-y-6 md:space-y-8 pb-6">
-      <SearchBar placeholder="Search for movies or TV series" />
+      <SearchBar placeholder={t("searchPlaceholder")} />
 
-      <TrendingSection title="Trending" id="trending-heading" />
+      <TrendingSection id="trending-heading" />
 
-      <TopRatedSection title="Top Rated" id="top-rated-heading" />
+      <TopRatedSection id="top-rated-heading" />
 
-      <NowPlayingSection title="Now Playing" id="now-playing-heading" />
+      <NowPlayingSection id="now-playing-heading" />
     </div>
   );
 }
