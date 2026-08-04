@@ -2,12 +2,13 @@
 
 import { revalidatePath } from "next/cache";
 import { and, eq } from "drizzle-orm";
+import { getLocale, getTranslations } from "next-intl/server";
 
 import { auth } from "@/auth";
 import { db } from "@/db/client";
 import { reviews } from "@/db/schema";
 import {
-  reviewSchema,
+  createReviewSchema,
   type ReviewInput,
 } from "@/features/reviews/schemas/review-schema";
 import { MediaType } from "@/features/media/types/media";
@@ -38,19 +39,21 @@ export async function getReview(tmdbId: number, mediaType: MediaType) {
  * Save or Update a user's review
  */
 export async function saveReview(input: ReviewInput) {
+  const locale = await getLocale();
+  const t = await getTranslations({ locale, namespace: "detail" });
   const session = await auth();
 
   if (!session?.user?.id) {
     return {
       authRequired: true,
-      error: "Log in to rate and review titles.",
+      error: t("loginToRateTitles"),
     };
   }
 
-  const parsed = reviewSchema.safeParse(input);
+  const parsed = createReviewSchema(t).safeParse(input);
 
   if (!parsed.success) {
-    return { error: "Invalid review inputs." };
+    return { error: t("invalidReviewInputs") };
   }
 
   const { tmdbId, mediaType, rating, content } = parsed.data;
@@ -80,7 +83,7 @@ export async function saveReview(input: ReviewInput) {
     return { success: true, review: savedReview };
   } catch (err) {
     console.error("Failed to save review:", err);
-    return { error: "Failed to save your review. Please try again." };
+    return { error: t("failedToSaveReview") };
   }
 }
 
@@ -88,12 +91,14 @@ export async function saveReview(input: ReviewInput) {
  * Delete a user's review
  */
 export async function deleteReview(tmdbId: number, mediaType: MediaType) {
+  const locale = await getLocale();
+  const t = await getTranslations({ locale, namespace: "detail" });
   const session = await auth();
 
   if (!session?.user?.id) {
     return {
       authRequired: true,
-      error: "Log in to manage reviews.",
+      error: t("loginToManageReviews"),
     };
   }
 
@@ -112,6 +117,6 @@ export async function deleteReview(tmdbId: number, mediaType: MediaType) {
     return { success: true };
   } catch (err) {
     console.error("Failed to delete review:", err);
-    return { error: "Failed to delete your review. Please try again." };
+    return { error: t("failedToDeleteReview") };
   }
 }
