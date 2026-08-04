@@ -1,14 +1,16 @@
 import { NextRequest, NextResponse } from "next/server";
 
 import type { TmdbCreditsResponse } from "@/features/media/types/media";
+import { toTmdbLocale } from "@/lib/tmdb/tmdb-locale";
 
 const TOP_CAST_LIMIT = 20;
 
 export async function GET(
-  _req: NextRequest,
+  request: NextRequest,
   { params }: { params: Promise<{ id: string }> },
 ) {
   const { id } = await params;
+  const lang = request.nextUrl.searchParams.get("lang") ?? undefined;
   const token = process.env.TMDB_ACCESS_TOKEN;
   const baseUrl = process.env.TMDB_BASE_URL ?? "https://api.themoviedb.org/3";
 
@@ -29,7 +31,7 @@ export async function GET(
     };
 
     const response = await fetch(
-      `${baseUrl}/movie/${id}/credits?language=en-US`,
+      `${baseUrl}/movie/${id}/credits?language=${toTmdbLocale(lang ?? "en")}`,
       options,
     );
 

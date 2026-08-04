@@ -1,13 +1,15 @@
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 
 import {
   TmdbTrendingTitles,
   TmdbTrendingTitlesApiResponse,
 } from "@/features/trending/types/trending";
+import { toTmdbLocale } from "@/lib/tmdb/tmdb-locale";
 
-export async function GET() {
+export async function GET(request: NextRequest) {
   const token = process.env.TMDB_ACCESS_TOKEN;
   const baseUrl = process.env.TMDB_BASE_URL ?? "https://api.themoviedb.org/3";
+  const lang = request.nextUrl.searchParams.get("lang") ?? undefined;
 
   if (!token) {
     return NextResponse.json(
@@ -28,7 +30,7 @@ export async function GET() {
     };
 
     const response = await fetch(
-      `${baseUrl}/trending/all/week?language=en-US`,
+      `${baseUrl}/trending/all/day?language=${toTmdbLocale(lang ?? "en")}`,
       options,
     );
 

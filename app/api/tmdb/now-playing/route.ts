@@ -1,4 +1,4 @@
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 
 import {
   TmdbMovieListResponse,
@@ -6,10 +6,13 @@ import {
   TmdbNowPlayingItem,
   TmdbTvListResponse,
 } from "@/features/now-playing/types/now-playing";
+import { toTmdbLocale } from "@/lib/tmdb/tmdb-locale";
 
-export async function GET() {
+export async function GET(request: NextRequest) {
   const token = process.env.TMDB_ACCESS_TOKEN;
   const baseUrl = process.env.TMDB_BASE_URL ?? "https://api.themoviedb.org/3";
+  const lang = request.nextUrl.searchParams.get("lang") ?? undefined;
+  const tmdbLocale = toTmdbLocale(lang ?? "en");
 
   if (!token) {
     return NextResponse.json(
@@ -30,8 +33,8 @@ export async function GET() {
     };
 
     const [moviesRes, tvRes] = await Promise.all([
-      fetch(`${baseUrl}/discover/movie`, options),
-      fetch(`${baseUrl}/discover/tv`, options),
+      fetch(`${baseUrl}/discover/movie?language=${tmdbLocale}`, options),
+      fetch(`${baseUrl}/discover/tv?language=${tmdbLocale}`, options),
     ]);
 
     if (!moviesRes.ok || !tvRes.ok) {

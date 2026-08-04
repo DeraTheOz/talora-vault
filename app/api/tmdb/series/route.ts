@@ -4,6 +4,7 @@ import type {
   TmdbTvApiResponse,
   TvSortOption,
 } from "@/features/media/types/media";
+import { toTmdbLocale } from "@/lib/tmdb/tmdb-locale";
 
 const SORT_OPTIONS = new Set<TvSortOption>([
   "popularity.desc",
@@ -23,6 +24,7 @@ export async function GET(request: NextRequest) {
   const pageParam = Number(request.nextUrl.searchParams.get("page"));
   const genreIdParam = Number(request.nextUrl.searchParams.get("genreId"));
   const sortByParam = request.nextUrl.searchParams.get("sortBy");
+  const lang = request.nextUrl.searchParams.get("lang") ?? undefined;
 
   const page = Number.isFinite(pageParam) && pageParam > 0 ? pageParam : 1;
   const genreId =
@@ -52,7 +54,7 @@ export async function GET(request: NextRequest) {
     };
 
     const searchParams = new URLSearchParams({
-      language: "en-US",
+      language: toTmdbLocale(lang ?? "en"),
       page: String(page),
       sort_by: sortBy,
       include_adult: "false",

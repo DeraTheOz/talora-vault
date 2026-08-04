@@ -1,13 +1,15 @@
 import { NextRequest, NextResponse } from "next/server";
 import { TmdbSimilarMediaResponse } from "@/features/media/types/media";
+import { toTmdbLocale } from "@/lib/tmdb/tmdb-locale";
 
 const RESULT_LIMIT = 14;
 
 export async function GET(
-  _req: NextRequest,
+  request: NextRequest,
   { params }: { params: Promise<{ id: string }> },
 ) {
   const { id } = await params;
+  const lang = request.nextUrl.searchParams.get("lang") ?? undefined;
   const token = process.env.TMDB_ACCESS_TOKEN;
   const baseUrl = process.env.TMDB_BASE_URL ?? "https://api.themoviedb.org/3";
 
@@ -28,9 +30,9 @@ export async function GET(
 
   try {
     const [similarRes, recommendedRes] = await Promise.all([
-      fetch(`${baseUrl}/movie/${id}/similar?language=en-US&page=1`, options),
+      fetch(`${baseUrl}/movie/${id}/similar?language=${toTmdbLocale(lang ?? "en")}&page=1`, options),
       fetch(
-        `${baseUrl}/movie/${id}/recommendations?language=en-US&page=1`,
+        `${baseUrl}/movie/${id}/recommendations?language=${toTmdbLocale(lang ?? "en")}&page=1`,
         options,
       ),
     ]);
