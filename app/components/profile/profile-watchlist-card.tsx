@@ -1,6 +1,6 @@
 "use client";
 
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 import { RecentWatchlistItem } from "@/features/profile/types/profile";
 import { formatDate } from "@/lib/helpers/format";
 import { getTmdbImageUrl } from "@/lib/tmdb/tmdb-image";
@@ -15,6 +15,7 @@ export default function ProfileWatchlistCard({
   item,
 }: ProfileWatchlistCardProps) {
   const t = useTranslations("profile");
+  const locale = useLocale();
   const imageUrl = item.posterPath
     ? getTmdbImageUrl(item.posterPath, "w92")
     : null;
@@ -49,7 +50,7 @@ export default function ProfileWatchlistCard({
           {item.title}
         </p>
         <p className="mt-0.5 text-xs text-talora-white/50">
-          {t("addedOn", { date: formatDate(item.addedAt) })}
+          {t("addedOn", { date: formatDate(item.addedAt, locale) })}
         </p>
       </div>
     </Link>

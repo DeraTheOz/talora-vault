@@ -4,6 +4,7 @@ import {
   Film02Icon,
   StarIcon,
 } from "@hugeicons/core-free-icons";
+import { getTranslations } from "next-intl/server";
 
 import MediaFacts, {
   type MediaFactItem,
@@ -19,7 +20,9 @@ interface MovieFactsProps {
   movie: TmdbMovieDetail;
 }
 
-export default function MovieFacts({ movie }: MovieFactsProps) {
+export default async function MovieFacts({ movie }: MovieFactsProps) {
+  const t = await getTranslations("detail");
+
   const facts: MediaFactItem[] = [
     {
       id: "rating",
@@ -44,5 +47,5 @@ export default function MovieFacts({ movie }: MovieFactsProps) {
     })),
   ];
 
-  return <MediaFacts items={facts} ariaLabel="Movie facts" />;
+  return <MediaFacts items={facts} ariaLabel={t("movieFactsAria")} />;
 }

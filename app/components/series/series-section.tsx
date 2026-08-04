@@ -1,5 +1,7 @@
 "use client";
 
+import { useTranslations } from "next-intl";
+
 import {
   MediaGridSkeleton,
   MediaSectionSkeleton,
@@ -9,15 +11,18 @@ import SeriesCard from "./series-card";
 import MediaFilter from "../media/filter/media-filter";
 import MediaErrorState from "../media/media-error-state";
 
-import { tvSortOptions } from "@/lib/constants/sort-options";
+import {
+  toFilterSelectOptions,
+  tvSortOptions,
+} from "@/lib/constants/sort-options";
 import { useSeriesSection } from "@/features/series/hooks/use-series-section";
 
 interface TvProps {
-  title: string;
   id: string;
 }
 
-export default function SeriesSection({ title, id }: TvProps) {
+export default function SeriesSection({ id }: TvProps) {
+  const t = useTranslations("browse");
   const {
     series,
     genres,
@@ -40,7 +45,7 @@ export default function SeriesSection({ title, id }: TvProps) {
   if (error || genreError) {
     return (
       <MediaErrorState
-        message="Could not load TV shows."
+        message={t("tvError")}
         onRetry={handleRetry}
         isRetrying={isRetrying}
       />
@@ -53,13 +58,13 @@ export default function SeriesSection({ title, id }: TvProps) {
         <h2
           id={id}
           className="text-2xl font-normal md:text-[2rem] md:leading-tight">
-          {title}
+          {t("tvSeries")}
         </h2>
 
         <MediaFilter
           genres={genres}
           filters={filters}
-          sortOptions={tvSortOptions}
+          sortOptions={toFilterSelectOptions(tvSortOptions, (key) => t(key))}
           onFiltersChange={setFilters}
         />
       </div>
@@ -68,7 +73,7 @@ export default function SeriesSection({ title, id }: TvProps) {
         <MediaGridSkeleton />
       ) : series.length === 0 ? (
         <p className="text-sm text-talora-white">
-          No tv shows found for this filter.
+          {t("noTvForFilter")}
         </p>
       ) : (
         <div className="grid max-[369px]:grid-cols-1 grid-cols-2 gap-x-4 gap-y-5 md:grid-cols-3 md:gap-x-7 md:gap-y-6 xl:pr-8 xl:grid-cols-[repeat(auto-fill,minmax(17.5rem,1fr))] xl:gap-x-10 xl:gap-y-8">

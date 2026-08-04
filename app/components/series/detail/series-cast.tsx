@@ -1,5 +1,7 @@
 "use client";
 
+import { useTranslations } from "next-intl";
+
 import { getTmdbImageUrl } from "@/lib/tmdb/tmdb-image";
 import Cast from "@/app/components/media/cast/cast";
 import type { CastMember } from "@/app/components/media/cast/cast";
@@ -11,6 +13,7 @@ interface TvCastProps {
 }
 
 export default function TvCast({ id }: TvCastProps) {
+  const t = useTranslations("detail");
   const { data, isLoading, error } = useTvCredits(id);
 
   if (isLoading) return <CastSkeleton />;
@@ -20,7 +23,7 @@ export default function TvCast({ id }: TvCastProps) {
 
   const cast: CastMember[] = data.cast.map((member) => ({
     name: member.name,
-    role: member.character || "Unknown role",
+    role: member.character || t("unknownRole"),
     image: member.profile_path
       ? getTmdbImageUrl(member.profile_path, "w300")
       : null,

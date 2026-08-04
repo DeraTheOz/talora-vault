@@ -1,5 +1,7 @@
 "use client";
 
+import { useTranslations } from "next-intl";
+
 import {
   MediaGridSkeleton,
   MediaSectionSkeleton,
@@ -10,14 +12,17 @@ import MediaFilter from "../media/filter/media-filter";
 import MediaErrorState from "../media/media-error-state";
 
 import { useMovieSection } from "@/features/movie/hooks/use-movie-section";
-import { movieSortOptions } from "@/lib/constants/sort-options";
+import {
+  movieSortOptions,
+  toFilterSelectOptions,
+} from "@/lib/constants/sort-options";
 
 interface MovieProps {
-  title: string;
   id: string;
 }
 
-export default function MovieSection({ title, id }: MovieProps) {
+export default function MovieSection({ id }: MovieProps) {
+  const t = useTranslations("browse");
   const {
     movies,
     genres,
@@ -40,7 +45,7 @@ export default function MovieSection({ title, id }: MovieProps) {
   if (error || genreError) {
     return (
       <MediaErrorState
-        message="Could not load movies."
+        message={t("moviesError")}
         onRetry={handleRetry}
         isRetrying={isRetrying}
       />
@@ -53,13 +58,15 @@ export default function MovieSection({ title, id }: MovieProps) {
         <h2
           id={id}
           className="text-2xl font-normal md:text-[2rem] md:leading-tight">
-          {title}
+          {t("movies")}
         </h2>
 
         <MediaFilter
           genres={genres}
           filters={filters}
-          sortOptions={movieSortOptions}
+          sortOptions={toFilterSelectOptions(movieSortOptions, (key) =>
+            t(key),
+          )}
           onFiltersChange={setFilters}
         />
       </div>
@@ -68,7 +75,7 @@ export default function MovieSection({ title, id }: MovieProps) {
         <MediaGridSkeleton />
       ) : movies.length === 0 ? (
         <p className="text-sm text-talora-white">
-          No movies found for this filter.
+          {t("noMoviesForFilter")}
         </p>
       ) : (
         <div className="grid max-[369px]:grid-cols-1 grid-cols-2 gap-x-4 gap-y-5 md:grid-cols-3 md:gap-x-7 md:gap-y-6 xl:pr-8 xl:grid-cols-[repeat(auto-fill,minmax(17.5rem,1fr))] xl:gap-x-10 xl:gap-y-8">
