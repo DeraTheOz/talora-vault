@@ -1,5 +1,8 @@
+"use client";
+
 import Image from "next/image";
 import Link from "next/link";
+import { useTranslations } from "next-intl";
 import { HugeiconsIcon } from "@hugeicons/react";
 import { Film02Icon, Tv01Icon } from "@hugeicons/core-free-icons";
 
@@ -16,11 +19,12 @@ interface TrendingMediaProps {
 export default function TrendingMediaCard({
   trendingTitle,
 }: TrendingMediaProps) {
-  const title = trendingTitle.title ?? trendingTitle.name ?? "Untitled";
+  const t = useTranslations("media");
+  const title = trendingTitle.title ?? trendingTitle.name ?? t("untitled");
   const imagePath = trendingTitle.backdrop_path ?? trendingTitle.poster_path;
   const imageUrl = imagePath ? getTmdbImageUrl(imagePath) : null;
   const isMovie = trendingTitle.media_type === "movie";
-  const mediaType = isMovie ? "Movie" : "TV Series";
+  const mediaType = isMovie ? t("movie") : t("tvSeries");
   const href = isMovie
     ? `/movies/${trendingTitle.id}`
     : `/series/${trendingTitle.id}`;
@@ -34,7 +38,7 @@ export default function TrendingMediaCard({
         {imageUrl ? (
           <Image
             src={imageUrl}
-            alt={`${title} poster`}
+            alt={t("posterAlt", { title })}
             fill
             placeholder="blur"
             blurDataURL={imageUrl}
@@ -43,7 +47,7 @@ export default function TrendingMediaCard({
           />
         ) : (
           <div className="flex h-full w-full items-center justify-center bg-talora-semi-dark-blue text-xs text-talora-white/60">
-            No display image
+            {t("noDisplayImage")}
           </div>
         )}
 
@@ -79,8 +83,8 @@ export default function TrendingMediaCard({
       <BookmarkButton
         tmdbId={trendingTitle.id}
         mediaType={trendingTitle.media_type}
-        label={`Add ${title} to watchlist`}
-        removeLabel={`Remove ${title} from watchlist`}
+        label={t("addToWatchlist", { title })}
+        removeLabel={t("removeFromWatchlist", { title })}
         className="absolute right-2 top-2 z-20 size-10 md:right-6 md:top-4"
       />
     </article>

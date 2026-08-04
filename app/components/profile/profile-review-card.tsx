@@ -1,6 +1,6 @@
 "use client";
 
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 import { RecentReviewItem } from "@/features/profile/types/profile";
 import { formatDate } from "@/lib/helpers/format";
 import { StarIcon } from "@hugeicons/core-free-icons";
@@ -13,6 +13,7 @@ interface ProfileReviewCardProps {
 
 export default function ProfileReviewCard({ item }: ProfileReviewCardProps) {
   const t = useTranslations("profile");
+  const locale = useLocale();
   const href =
     item.mediaType === "movie"
       ? `/movies/${item.tmdbId}`
@@ -37,7 +38,7 @@ export default function ProfileReviewCard({ item }: ProfileReviewCardProps) {
           </div>
         </div>
         <span className="shrink-0 text-xs text-talora-white/50">
-          {t("createdOn", { date: formatDate(item.createdAt) })}
+          {t("createdOn", { date: formatDate(item.createdAt, locale) })}
         </span>
       </div>
 

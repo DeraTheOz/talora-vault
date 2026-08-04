@@ -1,5 +1,8 @@
+"use client";
+
 import Image from "next/image";
 import Link from "next/link";
+import { useTranslations } from "next-intl";
 import { Film02Icon, StarIcon, Tv01Icon } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
 
@@ -17,10 +20,11 @@ export default function MediaCard({
   media,
   defaultInWatchlist = false,
 }: MediaCardProps) {
+  const t = useTranslations("media");
   const imagePath = media.backdrop_path ?? media.poster_path;
   const imageUrl = imagePath ? getTmdbImageUrl(imagePath) : null;
   const isMovie = media.media_type === "movie";
-  const mediaType = isMovie ? "Movie" : "TV Series";
+  const mediaType = isMovie ? t("movie") : t("tvSeries");
   const mediaIcon = isMovie ? Film02Icon : Tv01Icon;
 
   const href = isMovie ? `/movies/${media.id}` : `/series/${media.id}`;
@@ -34,7 +38,7 @@ export default function MediaCard({
           {imageUrl ? (
             <Image
               src={imageUrl}
-              alt={`${media.title} poster`}
+              alt={t("posterAlt", { title: media.title })}
               fill
               placeholder="blur"
               blurDataURL={imageUrl}
@@ -43,7 +47,7 @@ export default function MediaCard({
             />
           ) : (
             <div className="flex h-full w-full items-center justify-center bg-talora-semi-dark-blue text-xs text-talora-white/60">
-              No display image
+              {t("noDisplayImage")}
             </div>
           )}
 
@@ -90,8 +94,8 @@ export default function MediaCard({
       <BookmarkButton
         tmdbId={media.id}
         mediaType={media.media_type}
-        label={`Add ${media.title} to watchlist`}
-        removeLabel={`Remove ${media.title} from watchlist`}
+        label={t("addToWatchlist", { title: media.title })}
+        removeLabel={t("removeFromWatchlist", { title: media.title })}
         defaultInWatchlist={defaultInWatchlist}
         className="absolute right-2 top-3 z-10 size-9"
       />
