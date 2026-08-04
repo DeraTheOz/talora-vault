@@ -1,9 +1,10 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { toast } from "sonner";
+import { useTranslations } from "next-intl";
 
 import { useBookmarkStore } from "@/stores/bookmark/bookmark-store";
 import {
@@ -12,14 +13,15 @@ import {
   saveReview,
 } from "@/features/reviews/actions/review-actions";
 import {
+  createReviewFormSchema,
   ReviewFormInput,
-  reviewFormSchema,
   ReviewFormValues,
 } from "@/features/reviews/schemas/review-form-schema";
 import { MediaType } from "@/features/media/types/media";
 import type { Review } from "@/app/components/forms/review-form";
 
 export function useReview(tmdbId: number, mediaType: MediaType) {
+  const t = useTranslations("detail");
   const isSignedIn = useBookmarkStore((state) => state.isSignedIn);
 
   const [review, setReview] = useState<Review | null>(null);
@@ -28,8 +30,10 @@ export function useReview(tmdbId: number, mediaType: MediaType) {
   const [isDeleting, setIsDeleting] = useState(false);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
 
+  const formSchema = useMemo(() => createReviewFormSchema(t), [t]);
+
   const form = useForm<ReviewFormValues, ReviewFormInput>({
-    resolver: zodResolver(reviewFormSchema),
+    resolver: zodResolver(formSchema),
     defaultValues: { rating: "", content: "" },
   });
 
@@ -52,9 +56,9 @@ export function useReview(tmdbId: number, mediaType: MediaType) {
       })
       .catch((error) => {
         console.error("Failed to load review", error);
-        toast.error("Failed to load review");
+        toast.error(t("failedToLoadReview"));
       });
-  }, [isSignedIn, tmdbId, mediaType, reset]);
+  }, [isSignedIn, tmdbId, mediaType, reset, t]);
 
   /** Create or edit existing review */
   async function onSubmit(data: ReviewFormInput) {
@@ -83,7 +87,7 @@ export function useReview(tmdbId: number, mediaType: MediaType) {
         content: result.review.content || "",
       });
       setIsLocked(true);
-      toast.success("Review uploaded successfully");
+      toast.success(t("reviewUploaded"));
     }
   }
 
@@ -139,7 +143,7 @@ export function useReview(tmdbId: number, mediaType: MediaType) {
         reset({ rating: "", content: "" });
         setIsLocked(false);
         setShowDeleteModal(false);
-        toast.success("Review deleted successfully");
+        toast.success(t("reviewDeleted"));
       }
     } finally {
       setIsDeleting(false);
