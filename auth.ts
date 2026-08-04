@@ -12,7 +12,7 @@ import {
   users,
   verificationTokens,
 } from "@/db/schema/auth";
-import { loginSchema } from "@/features/auth/schemas/auth-schema";
+import { createLoginSchema } from "@/features/auth/schemas/auth-schema";
 
 const authConfig = {
   adapter: DrizzleAdapter(db, {
@@ -38,6 +38,7 @@ const authConfig = {
         password: {},
       },
       async authorize(credentials) {
+        const loginSchema = createLoginSchema((key) => key);
         const parsed = loginSchema.safeParse(credentials);
 
         if (!parsed.success) {
