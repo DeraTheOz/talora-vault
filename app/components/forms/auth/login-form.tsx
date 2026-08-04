@@ -6,9 +6,11 @@ import AuthSubmitButton from "./auth-submit-button";
 import AuthSwitchLink from "./auth-switch-link";
 import FormError from "../form-error";
 import { useLogin } from "@/features/auth/hooks/use-login";
+import { useTranslations } from "next-intl";
 import { useSearchParams } from "next/navigation";
 
 export default function LoginForm() {
+  const t = useTranslations("auth");
   const searchParams = useSearchParams();
   const callbackUrl = searchParams.get("callbackUrl") || "/";
 
@@ -38,10 +40,10 @@ export default function LoginForm() {
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
         <div className="space-y-3">
           <AuthField
-            label="Email address"
+            label={t("emailAddress")}
             type="email"
             autoComplete="email"
-            placeholder="Email address"
+            placeholder={t("emailAddress")}
             disabled={isPending}
             aria-disabled={isPending}
             aria-invalid={Boolean(errors.email)}
@@ -52,10 +54,10 @@ export default function LoginForm() {
           ) : null}
 
           <AuthField
-            label="Password"
+            label={t("password")}
             type="password"
             autoComplete="current-password"
-            placeholder="Password"
+            placeholder={t("password")}
             disabled={isPending}
             aria-disabled={isPending}
             aria-invalid={Boolean(errors.password)}
@@ -70,19 +72,19 @@ export default function LoginForm() {
 
         <AuthSubmitButton disabled={isPending}>
           {isSubmitting || isNavigating
-            ? "Logging in..."
-            : "Login to your account"}
+            ? t("loggingIn")
+            : t("loginToYourAccount")}
         </AuthSubmitButton>
 
         <AuthGoogleButton disabled={isPending} onClick={onGoogleClick}>
-          {isGooglePending ? "Opening Google..." : "Continue with Google"}
+          {isGooglePending ? t("openingGoogle") : t("continueWithGoogle")}
         </AuthGoogleButton>
       </form>
 
       <AuthSwitchLink
-        prompt="Don't have an account?"
+        prompt={t("dontHaveAccount")}
         href={signupHref}
-        label="Sign Up"
+        label={t("signUpLink")}
       />
     </>
   );
