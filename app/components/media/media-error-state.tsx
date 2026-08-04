@@ -1,5 +1,7 @@
 "use client";
 
+import { useTranslations } from "next-intl";
+
 interface MediaErrorStateProps {
   message: string;
   onRetry?: () => void;
@@ -11,8 +13,10 @@ export default function MediaErrorState({
   message,
   onRetry,
   isRetrying = false,
-  retryLabel = "Retry",
+  retryLabel,
 }: MediaErrorStateProps) {
+  const t = useTranslations("common");
+
   return (
     <div
       role="alert"
@@ -25,7 +29,7 @@ export default function MediaErrorState({
           onClick={onRetry}
           disabled={isRetrying}
           className="rounded-md bg-talora-red px-4 py-2 text-sm font-medium transition cursor-pointer hover:bg-talora-red/80 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-talora-white disabled:cursor-not-allowed disabled:opacity-60">
-          {isRetrying ? "Retrying..." : retryLabel}
+          {isRetrying ? t("retrying") : (retryLabel ?? t("retry"))}
         </button>
       ) : null}
     </div>

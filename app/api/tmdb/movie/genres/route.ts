@@ -1,9 +1,11 @@
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import type { TmdbGenreApiResponse } from "@/features/media/types/media";
+import { toTmdbLocale } from "@/lib/tmdb/tmdb-locale";
 
-export async function GET() {
+export async function GET(request: NextRequest) {
   const token = process.env.TMDB_ACCESS_TOKEN;
   const baseUrl = process.env.TMDB_BASE_URL ?? "https://api.themoviedb.org/3";
+  const lang = request.nextUrl.searchParams.get("lang") ?? undefined;
 
   if (!token) {
     return NextResponse.json(
@@ -24,7 +26,7 @@ export async function GET() {
     };
 
     const response = await fetch(
-      `${baseUrl}/genre/movie/list?language=en-US`,
+      `${baseUrl}/genre/movie/list?language=${toTmdbLocale(lang ?? "en")}`,
       options,
     );
 

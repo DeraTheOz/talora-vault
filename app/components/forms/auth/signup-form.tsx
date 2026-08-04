@@ -6,9 +6,11 @@ import AuthSubmitButton from "./auth-submit-button";
 import AuthSwitchLink from "./auth-switch-link";
 import FormError from "../form-error";
 import { useSignup } from "@/features/auth/hooks/use-signup";
+import { useTranslations } from "next-intl";
 import { useSearchParams } from "next/navigation";
 
 export default function SignupForm() {
+  const t = useTranslations("auth");
   const searchParams = useSearchParams();
   const callbackUrl = searchParams.get("callbackUrl") || "/";
 
@@ -38,10 +40,10 @@ export default function SignupForm() {
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
         <div className="space-y-3">
           <AuthField
-            label="Username"
+            label={t("username")}
             type="text"
             autoComplete="username"
-            placeholder="Username"
+            placeholder={t("username")}
             disabled={isPending}
             aria-disabled={isPending}
             aria-invalid={Boolean(errors.username)}
@@ -52,10 +54,10 @@ export default function SignupForm() {
           ) : null}
 
           <AuthField
-            label="Email address"
+            label={t("emailAddress")}
             type="email"
             autoComplete="email"
-            placeholder="Email address"
+            placeholder={t("emailAddress")}
             disabled={isPending}
             aria-disabled={isPending}
             aria-invalid={Boolean(errors.email)}
@@ -66,10 +68,10 @@ export default function SignupForm() {
           ) : null}
 
           <AuthField
-            label="Password"
+            label={t("password")}
             type="password"
             autoComplete="new-password"
-            placeholder="Password"
+            placeholder={t("password")}
             disabled={isPending}
             aria-disabled={isPending}
             aria-invalid={Boolean(errors.password)}
@@ -80,10 +82,10 @@ export default function SignupForm() {
           ) : null}
 
           <AuthField
-            label="Repeat password"
+            label={t("repeatPassword")}
             type="password"
             autoComplete="new-password"
-            placeholder="Repeat password"
+            placeholder={t("repeatPassword")}
             disabled={isPending}
             aria-disabled={isPending}
             aria-invalid={Boolean(errors.confirmPassword)}
@@ -98,19 +100,19 @@ export default function SignupForm() {
 
         <AuthSubmitButton disabled={isPending}>
           {isSubmitting || isNavigating
-            ? "Creating account..."
-            : "Create an account"}
+            ? t("creatingAccount")
+            : t("createAnAccount")}
         </AuthSubmitButton>
 
         <AuthGoogleButton disabled={isPending} onClick={onGoogleClick}>
-          {isGooglePending ? "Opening Google..." : "Continue with Google"}
+          {isGooglePending ? t("openingGoogle") : t("continueWithGoogle")}
         </AuthGoogleButton>
       </form>
 
       <AuthSwitchLink
-        prompt="Already have an account?"
+        prompt={t("alreadyHaveAccount")}
         href={loginHref}
-        label="Login"
+        label={t("login")}
       />
     </>
   );

@@ -1,3 +1,4 @@
+import { getTranslations } from "next-intl/server";
 import type { IconSvgElement } from "@hugeicons/react";
 
 import MediaFactPill from "./media-fact-pill";
@@ -14,12 +15,14 @@ interface MediaFactsProps {
   ariaLabel?: string;
 }
 
-export default function MediaFacts({
+export default async function MediaFacts({
   items,
-  ariaLabel = "Media facts",
+  ariaLabel,
 }: MediaFactsProps) {
+  const t = await getTranslations("detail");
+
   return (
-    <section aria-label={ariaLabel} className="mt-6">
+    <section aria-label={ariaLabel ?? t("movieFactsAria")} className="mt-6">
       <div className="flex flex-wrap gap-3">
         {items.map((item) => (
           <MediaFactPill

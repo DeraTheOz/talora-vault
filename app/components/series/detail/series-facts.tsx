@@ -5,6 +5,7 @@ import {
   Tv01Icon,
   Video01Icon,
 } from "@hugeicons/core-free-icons";
+import { getTranslations } from "next-intl/server";
 
 import MediaFacts, {
   type MediaFactItem,
@@ -20,7 +21,9 @@ interface SeriesFactsProps {
   tvShow: TmdbTvDetail;
 }
 
-export default function SeriesFacts({ tvShow }: SeriesFactsProps) {
+export default async function SeriesFacts({ tvShow }: SeriesFactsProps) {
+  const t = await getTranslations("detail");
+
   const facts: MediaFactItem[] = [
     {
       id: "rating",
@@ -36,12 +39,20 @@ export default function SeriesFacts({ tvShow }: SeriesFactsProps) {
     {
       id: "seasons",
       icon: Tv01Icon,
-      label: formatCount(tvShow.number_of_seasons, "Season", "Seasons"),
+      label: formatCount(
+        tvShow.number_of_seasons,
+        t("seasonCount"),
+        t("seasonCountPlural"),
+      ),
     },
     {
       id: "episodes",
       icon: Video01Icon,
-      label: formatCount(tvShow.number_of_episodes, "Episode", "Episodes"),
+      label: formatCount(
+        tvShow.number_of_episodes,
+        t("episodeCount"),
+        t("episodeCountPlural"),
+      ),
     },
     ...tvShow.genres.map((genre) => ({
       id: `genre-${genre.id}`,
@@ -50,5 +61,5 @@ export default function SeriesFacts({ tvShow }: SeriesFactsProps) {
     })),
   ];
 
-  return <MediaFacts items={facts} ariaLabel="Series facts" />;
+  return <MediaFacts items={facts} ariaLabel={t("seriesFactsAria")} />;
 }

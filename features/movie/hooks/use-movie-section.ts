@@ -2,6 +2,7 @@
 
 import { useEffect, useRef } from "react";
 import { toast } from "sonner";
+import { useTranslations } from "next-intl";
 
 import { useMovies } from "./use-movies";
 import { useMovieGenres } from "./use-movie-genres";
@@ -9,6 +10,7 @@ import { useMovieFilterStore } from "@/stores/movie/movie-filter-store";
 import { toastStyles } from "@/lib/constants/toast";
 
 export function useMovieSection() {
+  const t = useTranslations("browse");
   const loadMoreRef = useRef<HTMLDivElement | null>(null);
   const filters = useMovieFilterStore((state) => state.filters);
   const setFilters = useMovieFilterStore((state) => state.setFilters);
@@ -42,23 +44,22 @@ export function useMovieSection() {
   useEffect(() => {
     if (!error) return;
 
-    toast.error("Could not load movies", {
+    toast.error(t("toastMoviesLoadError"), {
       id: "movies-load-error",
-      description: "Please try again or change your filters.",
+      description: t("toastMoviesLoadErrorDescription"),
       ...toastStyles.error,
     });
-  }, [error]);
+  }, [error, t]);
 
   useEffect(() => {
     if (!genreError) return;
 
-    toast.error("Could not load movie genres", {
+    toast.error(t("toastMovieGenresError"), {
       id: "movie-genres-load-error",
-      description:
-        "The movie list may still work, but filters are unavailable.",
+      description: t("toastMovieGenresErrorDescription"),
       ...toastStyles.error,
     });
-  }, [genreError]);
+  }, [genreError, t]);
 
   useEffect(() => {
     const loadMoreElement = loadMoreRef.current;

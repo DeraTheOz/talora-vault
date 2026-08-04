@@ -14,6 +14,7 @@ import {
 import avatar from "@/public/image-avatar.png";
 import GoogleIcon from "@/public/google.svg";
 import { formatName, formatRegistrationDate } from "@/lib/helpers/format";
+import { useLocale } from "next-intl";
 import { createPortal } from "react-dom";
 import EmailVerificationModal from "../modals/email-verification-modal";
 import EditProfileModal from "../modals/edit-profile-modal";
@@ -41,6 +42,7 @@ export default function ProfileHeader({
   authProvider,
   emailVerified,
 }: ProfileHeaderProps) {
+  const locale = useLocale();
   const {
     t,
     isOpen,
@@ -123,7 +125,7 @@ export default function ProfileHeader({
             <span className="inline-flex items-center gap-1.5">
               <HugeiconsIcon icon={Calendar01Icon} size={16} />
               {t("memberSince", {
-                date: formatRegistrationDate(createdAt),
+                date: formatRegistrationDate(createdAt, locale),
               })}
             </span>
           </div>

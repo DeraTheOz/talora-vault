@@ -1,11 +1,14 @@
 "use client";
 
+import { useTranslations } from "next-intl";
+
 import { useSimilarMovies } from "@/features/movie/hooks/use-similar-movies";
 import SimilarMedia from "@/app/components/media/similar/similar-media";
 import { SimilarMediaSkeleton } from "../../media/media-skeletons";
 import { toSimilarMediaCardItem } from "@/features/media/similar/to-similar-media-card-item";
 
 export default function SimilarMovies({ id }: { id: string }) {
+  const t = useTranslations("detail");
   const { data, isLoading, error } = useSimilarMovies(id);
 
   if (isLoading) return <SimilarMediaSkeleton />;
@@ -17,7 +20,7 @@ export default function SimilarMovies({ id }: { id: string }) {
 
   return (
     <SimilarMedia
-      title="You May Also Like"
+      title={t("youMayAlsoLike")}
       titleId="similar-movies-title"
       items={items}
     />

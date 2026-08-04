@@ -1,5 +1,6 @@
 import { TmdbSearchApiResponse } from "@/features/search/types/search";
 import { NextRequest, NextResponse } from "next/server";
+import { toTmdbLocale } from "@/lib/tmdb/tmdb-locale";
 
 const SEARCH_TYPE_MAP = {
   multi: "multi",
@@ -22,6 +23,7 @@ export async function GET(request: NextRequest) {
   const query = request.nextUrl.searchParams.get("q");
   const typeParam = request.nextUrl.searchParams.get("type") ?? "multi";
   const pageParam = Number(request.nextUrl.searchParams.get("page"));
+  const lang = request.nextUrl.searchParams.get("lang") ?? undefined;
 
   // Validate search query is present and non-empty
   if (!query || query.trim().length === 0) {
@@ -57,7 +59,7 @@ export async function GET(request: NextRequest) {
     // Build the TMDB search URL with required params
     const searchParams = new URLSearchParams({
       query: query.trim(),
-      language: "en-US",
+      language: toTmdbLocale(lang ?? "en"),
       page: String(page),
       include_adult: "false",
     });

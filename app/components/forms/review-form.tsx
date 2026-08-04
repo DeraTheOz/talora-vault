@@ -3,6 +3,7 @@
 import { usePathname } from "next/navigation";
 import { createPortal } from "react-dom";
 import { Controller } from "react-hook-form";
+import { useTranslations } from "next-intl";
 
 import { MediaType } from "@/features/media/types/media";
 import { useReview } from "@/features/reviews/hooks/use-review";
@@ -11,7 +12,7 @@ import CustomSelect from "./custom-select";
 import FormError from "./form-error";
 import LoginAuthModal from "../modals/login-auth-modal";
 import DeleteReviewModal from "../modals/delete-review-modal";
-import { ratingOptions } from "@/lib/constants/rating-options";
+import { createRatingOptions } from "@/lib/constants/rating-options";
 
 /** Database review row shape (returned by server actions). */
 export interface Review {
@@ -35,10 +36,12 @@ interface ReviewFormProps {
 export default function ReviewForm({
   tmdbId,
   mediaType,
-  submitLabel = "Save review",
-  reviewPlaceholder = "Share what stood out...",
+  submitLabel,
+  reviewPlaceholder,
 }: ReviewFormProps) {
   const pathname = usePathname();
+  const t = useTranslations("detail");
+  const commonT = useTranslations("common");
   const {
     form,
     review,
@@ -61,6 +64,8 @@ export default function ReviewForm({
     formState: { errors, isSubmitting },
   } = form;
 
+  const ratingOptions = createRatingOptions(t);
+
   return (
     <section aria-labelledby="review-title" className="space-y-6">
       {/* Saved Review Card */}
@@ -76,7 +81,7 @@ export default function ReviewForm({
       {/* Review Form */}
       <div id="review-form" className="scroll-mt-6">
         <h2 id="review-title" className="mb-4 text-2xl font-normal">
-          Rate and Review
+          {t("rateAndReview")}
         </h2>
 
         <form
@@ -85,7 +90,7 @@ export default function ReviewForm({
           <label
             htmlFor="rating"
             className="block text-sm font-medium text-talora-white">
-            Your rating
+            {t("yourRating")}
           </label>
 
           <Controller
@@ -99,7 +104,7 @@ export default function ReviewForm({
                 value={String(field.value ?? "")}
                 onChange={(value) => field.onChange(value)}
                 disabled={isLocked || isSubmitting}
-                ariaLabel="Choose your rating"
+                ariaLabel={t("chooseYourRating")}
               />
             )}
           />
@@ -108,9 +113,9 @@ export default function ReviewForm({
           <label
             htmlFor="content"
             className="mt-5 block text-sm font-medium text-talora-white">
-            Leave a review{" "}
+            {t("leaveAReview")}{" "}
             <span className="text-xs text-talora-white/40 font-normal">
-              (optional)
+              ({t("optional")})
             </span>
           </label>
 
@@ -118,7 +123,7 @@ export default function ReviewForm({
             id="content"
             rows={5}
             disabled={isLocked || isSubmitting}
-            placeholder={reviewPlaceholder}
+            placeholder={reviewPlaceholder ?? t("movieReviewPlaceholder")}
             {...register("content")}
             className="mt-2 w-full resize-none rounded-lg border border-talora-dark-blue bg-talora-dark-blue px-4 py-3 text-sm text-talora-white outline-none placeholder:text-talora-white/35 focus:border-talora-red"
           />
@@ -132,7 +137,7 @@ export default function ReviewForm({
                 type="submit"
                 disabled={isSubmitting}
                 className="inline-flex min-h-11 items-center rounded-lg bg-talora-red px-5 text-sm font-medium text-talora-white cursor-pointer transition hover:bg-talora-red/85 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-talora-white active:scale-95 disabled:cursor-not-allowed">
-                {isSubmitting ? "Saving..." : submitLabel}
+                {isSubmitting ? t("saving") : (submitLabel ?? t("saveReview"))}
               </button>
 
               {review && review.rating >= 1 && (
@@ -141,7 +146,7 @@ export default function ReviewForm({
                   onClick={handleCancel}
                   disabled={isSubmitting}
                   className="inline-flex min-h-11 items-center rounded-lg bg-talora-white/10 px-6 text-sm font-medium text-talora-white cursor-pointer transition hover:bg-talora-white/15 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-talora-white active:scale-95 disabled:cursor-not-allowed">
-                  Cancel
+                  {commonT("cancel")}
                 </button>
               )}
             </div>
@@ -163,12 +168,12 @@ export default function ReviewForm({
         ? createPortal(
             <LoginAuthModal
               titleId="review-auth-title"
-              title="Log in to rate & review"
-              description="Share your ratings and thoughts with the community. Sign in to write a review"
+              title={t("loginToRateReviewTitle")}
+              description={t("loginToRateReviewDescription")}
               href={`/login?callbackUrl=${encodeURIComponent(pathname)}`}
               onClose={() => setShowAuthModal(false)}
-              primaryButtonText="Log in"
-              secondaryButtonText="Cancel"
+              primaryButtonText={t("login")}
+              secondaryButtonText={commonT("cancel")}
             />,
             document.body,
           )

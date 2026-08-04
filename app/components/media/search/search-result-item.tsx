@@ -1,5 +1,8 @@
+"use client";
+
 import Image from "next/image";
 import Link from "next/link";
+import { useTranslations } from "next-intl";
 import { Film02Icon, Tv01Icon } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
 
@@ -17,6 +20,9 @@ export default function SearchResultItem({
   isHighlighted,
   onSelect,
 }: SearchResultItemProps) {
+  const t = useTranslations("search");
+  const mediaT = useTranslations("media");
+
   // Determine the route based on media type
   const href =
     result.mediaType === "movie"
@@ -25,7 +31,7 @@ export default function SearchResultItem({
 
   // Choose the appropriate icon and label for the media type badge
   const isMovie = result.mediaType === "movie";
-  const mediaTypeLabel = isMovie ? "Movie" : "TV";
+  const mediaTypeLabel = isMovie ? t("movie") : t("tv");
   const mediaTypeIcon = isMovie ? Film02Icon : Tv01Icon;
 
   return (
@@ -46,14 +52,14 @@ export default function SearchResultItem({
           {result.posterPath ? (
             <Image
               src={getTmdbImageUrl(result.posterPath, "w92")}
-              alt={`${result.title} poster`}
+              alt={mediaT("posterAlt", { title: result.title })}
               fill
               sizes="32px"
               className="object-cover"
             />
           ) : (
             <div className="flex h-full w-full items-center justify-center text-[0.5rem] text-talora-white/40">
-              N/A
+              {t("notAvailable")}
             </div>
           )}
         </div>

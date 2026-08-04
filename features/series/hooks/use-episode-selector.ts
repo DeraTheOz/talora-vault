@@ -1,6 +1,7 @@
 "use client";
 
 import { useMemo, useState } from "react";
+import { useTranslations } from "next-intl";
 
 import type { CustomSelectOption } from "@/app/components/forms/custom-select";
 import type {
@@ -21,6 +22,7 @@ export function useEpisodeSelector({
   tvShowId,
   seasons,
 }: UseEpisodeSelectorParams) {
+  const t = useTranslations("detail");
   // Exclude specials/season 0 so the selector starts with regular seasons only.
   const availableSeasons = useMemo(
     () => seasons.filter((season) => season.season_number > 0),
@@ -56,14 +58,17 @@ export function useEpisodeSelector({
   const seasonOptions: CustomSelectOption[] = availableSeasons.map(
     (season) => ({
       value: String(season.season_number),
-      label: season.name || `Season ${season.season_number}`,
+      label: season.name || t("seasonLabel", { season: season.season_number }),
     }),
   );
 
   // Shape episodes for the custom select component.
   const episodeOptions: CustomSelectOption[] = episodes.map((episode) => ({
     value: String(episode.id),
-    label: `E${episode.episode_number} - ${episode.name}`,
+    label: t("episodeOptionLabel", {
+      episode: episode.episode_number,
+      name: episode.name,
+    }),
   }));
 
   function handleSeasonChange(value: string) {

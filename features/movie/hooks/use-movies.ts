@@ -1,13 +1,16 @@
 "use client";
 
+import { useLocale } from "next-intl";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { getMovies } from "../api/get-movies";
 import { MovieFilters } from "@/features/media/types/media";
 
 export function useMovies(filters: MovieFilters = {}) {
+  const locale = useLocale();
+
   return useInfiniteQuery({
-    queryKey: ["movies", filters],
-    queryFn: ({ pageParam }) => getMovies(pageParam, filters),
+    queryKey: ["movies", filters, locale],
+    queryFn: ({ pageParam }) => getMovies(pageParam, filters, locale),
     initialPageParam: 1,
     placeholderData: (previousData) => previousData,
     getNextPageParam: (lastPage) => {

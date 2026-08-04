@@ -65,10 +65,14 @@ export function formatCount(
  * e.g. "Oct 12, 2023, 3:45 PM"
  *
  * @param date - The Date object or date string to format.
- * @returns Formatted date and time string in `en-US` locale.
+ * @param locale - The BCP-47 locale tag used for formatting (e.g. "en", "es", "fr").
+ * @returns Formatted date and time string in the given locale.
  */
-export function formatDate(date: Date | string): string {
-  return new Intl.DateTimeFormat("en-US", {
+export function formatDate(
+  date: Date | string,
+  locale = "en-US",
+): string {
+  return new Intl.DateTimeFormat(locale, {
     dateStyle: "medium",
     timeStyle: "short",
   }).format(new Date(date));
@@ -79,10 +83,14 @@ export function formatDate(date: Date | string): string {
  * e.g. "October 12, 2023,"
  *
  * @param createdAt - The Date object or date string to format.
- * @returns Formatted date string in `en-US` locale.
+ * @param locale - The BCP-47 locale tag used for formatting (e.g. "en", "es", "fr").
+ * @returns Formatted date string in the given locale.
  */
-export function formatRegistrationDate(createdAt: Date | string) {
-  return new Intl.DateTimeFormat("en-US", {
+export function formatRegistrationDate(
+  createdAt: Date | string,
+  locale = "en-US",
+) {
+  return new Intl.DateTimeFormat(locale, {
     day: "numeric",
     month: "long",
     year: "numeric",

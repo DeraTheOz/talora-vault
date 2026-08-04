@@ -2,6 +2,7 @@
 
 import { useEffect, useRef } from "react";
 import { toast } from "sonner";
+import { useTranslations } from "next-intl";
 
 import { useSeries } from "./use-series";
 import { useSeriesGenres } from "./use-series-genre";
@@ -9,6 +10,7 @@ import { useTvFilterStore } from "@/stores/series/series-filter-store";
 import { toastStyles } from "@/lib/constants/toast";
 
 export function useSeriesSection() {
+  const t = useTranslations("browse");
   const loadMoreRef = useRef<HTMLDivElement | null>(null);
   const filters = useTvFilterStore((state) => state.filters);
   const setFilters = useTvFilterStore((state) => state.setFilters);
@@ -42,23 +44,22 @@ export function useSeriesSection() {
   useEffect(() => {
     if (!error) return;
 
-    toast.error("Could not load TV shows", {
+    toast.error(t("toastTvLoadError"), {
       id: "series-load-error",
-      description: "Please try again or change your filters.",
+      description: t("toastTvLoadErrorDescription"),
       ...toastStyles.error,
     });
-  }, [error]);
+  }, [error, t]);
 
   useEffect(() => {
     if (!genreError) return;
 
-    toast.error("Could not load TV show genres", {
+    toast.error(t("toastTvGenresError"), {
       id: "series-genres-load-error",
-      description:
-        "The series list may still work, but filters are unavailable.",
+      description: t("toastTvGenresErrorDescription"),
       ...toastStyles.error,
     });
-  }, [genreError]);
+  }, [genreError, t]);
 
   useEffect(() => {
     const loadMoreElement = loadMoreRef.current;

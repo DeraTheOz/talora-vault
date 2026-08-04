@@ -24,11 +24,12 @@ export const getCachedUserReviews = cache(async (userId: string) => {
 
 export async function enrichReviewsWithTmdbData(
   items: Array<{ tmdbId: number; mediaType: "movie" | "tv"; rating: number; content: string | null; createdAt: Date }>,
+  locale = "en",
 ): Promise<UserReviewItem[]> {
   return Promise.all(
     items.map(async (item) => {
       if (item.mediaType === "movie") {
-        const movie = await getMovieDetail(String(item.tmdbId));
+        const movie = await getMovieDetail(String(item.tmdbId), locale);
         return {
           tmdbId: item.tmdbId,
           title: movie.title,
@@ -39,7 +40,7 @@ export async function enrichReviewsWithTmdbData(
         };
       }
 
-      const tv = await getTvDetail(String(item.tmdbId));
+      const tv = await getTvDetail(String(item.tmdbId), locale);
       return {
         tmdbId: item.tmdbId,
         title: tv.name,

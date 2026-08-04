@@ -2,6 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { HugeiconsIcon } from "@hugeicons/react";
 import { Film02Icon, Tv01Icon } from "@hugeicons/core-free-icons";
+import { useTranslations } from "next-intl";
 import type { SimilarMediaCardItem } from "@/features/media/types/media";
 
 interface SimilarMediaCardProps extends SimilarMediaCardItem {
@@ -15,6 +16,7 @@ export default function SimilarMediaCard({
   year,
   mediaType,
 }: SimilarMediaCardProps) {
+  const t = useTranslations("media");
   const icon = mediaType === "movie" ? Film02Icon : Tv01Icon;
 
   return (
@@ -43,7 +45,7 @@ export default function SimilarMediaCard({
         </h3>
 
         <p className="mt-1 text-xs text-talora-white/60">
-          {mediaType === "movie" ? "Movie" : "TV Series"} • {year}
+          {mediaType === "movie" ? t("movie") : t("tvSeries")} • {year}
         </p>
       </article>
     </Link>

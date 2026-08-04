@@ -1,5 +1,8 @@
+"use client";
+
 import Link from "next/link";
 import Image from "next/image";
+import { useTranslations } from "next-intl";
 
 import { StarIcon, Tv01Icon } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
@@ -15,6 +18,7 @@ interface SeriesCardProps {
 }
 
 export default function SeriesCard({ tvShow }: SeriesCardProps) {
+  const t = useTranslations("media");
   const imagePath = tvShow.backdrop_path ?? tvShow.poster_path;
   const imageUrl = imagePath ? getTmdbImageUrl(imagePath) : null;
 
@@ -27,7 +31,7 @@ export default function SeriesCard({ tvShow }: SeriesCardProps) {
           {imageUrl ? (
             <Image
               src={imageUrl}
-              alt={`${tvShow.name} poster`}
+              alt={t("posterAlt", { title: tvShow.name })}
               fill
               placeholder="blur"
               blurDataURL={imageUrl}
@@ -36,7 +40,7 @@ export default function SeriesCard({ tvShow }: SeriesCardProps) {
             />
           ) : (
             <div className="flex h-full w-full items-center justify-center bg-talora-semi-dark-blue text-xs text-talora-white/60">
-              No display image
+              {t("noDisplayImage")}
             </div>
           )}
 
@@ -70,7 +74,7 @@ export default function SeriesCard({ tvShow }: SeriesCardProps) {
                 color="currentColor"
                 aria-hidden="true"
               />
-              TV Series
+              {t("tvSeries")}
             </span>
           </p>
 
@@ -83,8 +87,8 @@ export default function SeriesCard({ tvShow }: SeriesCardProps) {
       <BookmarkButton
         tmdbId={Number(tvShow.id)}
         mediaType="tv"
-        label={`Add ${tvShow.name} to watchlist`}
-        removeLabel={`Remove ${tvShow.name} from watchlist`}
+        label={t("addToWatchlist", { title: tvShow.name })}
+        removeLabel={t("removeFromWatchlist", { title: tvShow.name })}
         className="absolute right-2 top-3 z-10 size-9"
       />
     </article>

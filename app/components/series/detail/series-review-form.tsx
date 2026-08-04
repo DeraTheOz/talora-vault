@@ -1,11 +1,19 @@
+import { getTranslations } from "next-intl/server";
+
 import ReviewForm from "@/app/components/forms/review-form";
 
-export default function SeriesReviewForm({ tmdbId }: { tmdbId: number }) {
+export default async function SeriesReviewForm({
+  tmdbId,
+}: {
+  tmdbId: number;
+}) {
+  const t = await getTranslations("detail");
+
   return (
     <ReviewForm
       tmdbId={tmdbId}
       mediaType="tv"
-      reviewPlaceholder="Share your thoughts on this series..."
+      reviewPlaceholder={t("seriesReviewPlaceholder")}
     />
   );
 }

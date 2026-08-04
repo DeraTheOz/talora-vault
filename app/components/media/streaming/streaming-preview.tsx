@@ -1,6 +1,7 @@
 import Image from "next/image";
 import { PlayCircleIcon } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
+import { getTranslations } from "next-intl/server";
 
 interface StreamingPreviewProps {
   title: string;
@@ -10,20 +11,22 @@ interface StreamingPreviewProps {
   description?: string;
 }
 
-export default function StreamingPreview({
+export default async function StreamingPreview({
   title,
   image,
-  heading = "Stream",
+  heading,
   playLabel,
-  description = "Embed or redirect module will mount here during streaming integration.",
+  description,
 }: StreamingPreviewProps) {
-  const accessiblePlayLabel = playLabel ?? `Play ${title} preview placeholder`;
+  const t = await getTranslations("detail");
+  const accessiblePlayLabel =
+    playLabel ?? t("playPreviewPlaceholder", { title });
 
   return (
     <section id="streaming-preview" aria-labelledby="streaming-title">
       <div className="mb-4 flex items-center justify-between gap-4">
         <h2 id="streaming-title" className="text-2xl font-normal">
-          {heading}
+          {heading ?? t("streamMovie")}
         </h2>
       </div>
 
@@ -51,7 +54,7 @@ export default function StreamingPreview({
           </button>
 
           <p className="max-w-sm px-6 text-sm text-talora-white/70">
-            {description}
+            {description ?? t("streamingDescription")}
           </p>
         </div>
       </div>

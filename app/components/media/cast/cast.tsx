@@ -1,5 +1,6 @@
 import { UserMultipleIcon } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
+import { useTranslations } from "next-intl";
 import CastItem from "./cast-item";
 
 export interface CastMember {
@@ -13,14 +14,16 @@ interface CastProps {
   title?: string;
 }
 
-export default function Cast({ cast, title = "Top Cast" }: CastProps) {
+export default function Cast({ cast, title }: CastProps) {
+  const t = useTranslations("detail");
+
   return (
     <section aria-labelledby="cast-title" className="rounded-lg">
       <h2
         id="cast-title"
         className="flex items-center gap-2 text-2xl font-normal">
         <HugeiconsIcon icon={UserMultipleIcon} size={22} color="currentColor" />
-        {title}
+        {title ?? t("topCast")}
       </h2>
 
       <div className="mt-5 flex gap-3 overflow-x-auto scrollbar-none pb-2">

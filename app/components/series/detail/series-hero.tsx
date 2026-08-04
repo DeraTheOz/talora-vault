@@ -1,4 +1,5 @@
 import { Tv01Icon } from "@hugeicons/core-free-icons";
+import { getTranslations } from "next-intl/server";
 
 import MediaHero from "@/app/components/media/hero/media-hero";
 import { getTmdbImageUrl } from "@/lib/tmdb/tmdb-image";
@@ -10,10 +11,12 @@ interface SeriesHeroProps {
   isBookmarked?: boolean;
 }
 
-export default function SeriesHero({
+export default async function SeriesHero({
   tvShow,
   isBookmarked = false,
 }: SeriesHeroProps) {
+  const t = await getTranslations("detail");
+
   // Fallback to the other path if one does not exist
   const desktopPath = tvShow.backdrop_path ?? tvShow.poster_path;
   const mobilePath = tvShow.poster_path ?? tvShow.backdrop_path;
@@ -35,12 +38,13 @@ export default function SeriesHero({
       overview={tvShow.overview}
       image={imageUrl}
       mobileImage={mobileImageUrl}
-      mediaLabel="TV Series"
+      mediaLabel={t("tvSeries")}
       mediaIcon={Tv01Icon}
       year={formatReleaseYear(tvShow.first_air_date)}
       status={tvShowStatus}
       secondaryHref="#episode-selector"
-      secondaryLabel="Choose episode"
+      secondaryLabel={t("chooseEpisode")}
+      watchlistLabel={t("addToWatchlist")}
       defaultInWatchlist={isBookmarked}
     />
   );

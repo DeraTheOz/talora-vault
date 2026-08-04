@@ -1,5 +1,7 @@
 "use client";
 
+import { useTranslations } from "next-intl";
+
 import { useMovieCredits } from "@/features/movie/hooks/use-movie-credits";
 import { getTmdbImageUrl } from "@/lib/tmdb/tmdb-image";
 import Cast from "@/app/components/media/cast/cast";
@@ -11,6 +13,7 @@ interface MovieCastProps {
 }
 
 export default function MovieCast({ id }: MovieCastProps) {
+  const t = useTranslations("detail");
   const { data, isLoading, error } = useMovieCredits(id);
 
   if (isLoading) return <CastSkeleton />;
@@ -20,7 +23,7 @@ export default function MovieCast({ id }: MovieCastProps) {
 
   const cast: CastMember[] = data.cast.map((member) => ({
     name: member.name,
-    role: member.character || "Unknown role",
+    role: member.character || t("unknownRole"),
     image: member.profile_path
       ? getTmdbImageUrl(member.profile_path, "w300")
       : null,

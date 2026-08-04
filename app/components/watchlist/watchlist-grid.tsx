@@ -1,5 +1,6 @@
 "use client";
 
+import { useTranslations } from "next-intl";
 import MediaCard from "@/app/components/media/card/media-card";
 import type { WatchlistMediaItem } from "@/features/watchlist/types/watchlist";
 import Link from "next/link";
@@ -14,6 +15,7 @@ export default function WatchlistGrid({
   media,
   isSignedIn,
 }: WatchlistGridProps) {
+  const t = useTranslations("watchlist");
   const pathname = usePathname();
 
   // Empty state — not signed in
@@ -23,25 +25,24 @@ export default function WatchlistGrid({
         <h1
           id="watchlist-heading"
           className="text-xl font-normal md:text-[2rem] md:leading-tight">
-          Watchlist
+          {t("title")}
         </h1>
 
         <p className="max-w-xl text-sm text-talora-white/70">
-          Login to keep track of movies and TV series you like and want to watch
-          later.
+          {t("loginPrompt")}
         </p>
 
         <div className="flex flex-wrap gap-3 pt-2">
           <Link
             href={`/login?callbackUrl=${encodeURIComponent(pathname)}`}
             className="inline-flex min-h-11 items-center rounded-lg bg-talora-red px-6 text-sm font-medium text-talora-white transition hover:bg-talora-red/85 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-talora-white active:scale-95">
-            Login
+            {t("login")}
           </Link>
 
           <Link
             href="/"
             className="ml-1 inline-flex min-h-11 items-center rounded-lg bg-talora-white/10 px-6 text-sm font-medium text-talora-white ring-1 ring-talora-white/15 transition hover:bg-talora-white/15 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-talora-white">
-            Explore titles
+            {t("exploreTitles")}
           </Link>
         </div>
       </section>
@@ -55,19 +56,18 @@ export default function WatchlistGrid({
         <h1
           id="watchlist-heading"
           className="text-xl font-normal md:text-[2rem] md:leading-tight">
-          Your Watchlist
+          {t("yourWatchlist")}
         </h1>
 
         <p className="max-w-xl text-sm text-talora-white/70">
-          Your watchlist is empty. Explore titles and add movies and TV series
-          you like using the bookmark button.
+          {t("emptyWatchlist")}
         </p>
 
         <div className="flex flex-wrap gap-3 pt-2">
           <Link
             href="/"
             className="ml-1 inline-flex min-h-11 items-center rounded-lg bg-talora-white/10 px-6 text-sm font-medium text-talora-white ring-1 ring-talora-white/15 transition hover:bg-talora-white/15 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-talora-white">
-            Explore titles
+            {t("exploreTitles")}
           </Link>
         </div>
       </section>

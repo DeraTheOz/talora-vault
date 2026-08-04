@@ -1,6 +1,7 @@
 "use client";
 
 import { useMemo } from "react";
+import { useTranslations } from "next-intl";
 
 import { useWatchlistFilterStore } from "@/stores/watchlist/watchlist-filter-store";
 import type { WatchlistMediaItem } from "@/features/watchlist/types/watchlist";
@@ -44,6 +45,7 @@ function sortWatchlist(
 }
 
 export default function WatchlistSection({ media }: WatchlistSectionProps) {
+  const t = useTranslations("watchlist");
   const filters = useWatchlistFilterStore((state) => state.filters);
   const hasHydrated = useWatchlistFilterStore((state) => state._hasHydrated);
 
@@ -65,7 +67,7 @@ export default function WatchlistSection({ media }: WatchlistSectionProps) {
         <h1
           id="watchlist-heading"
           className="text-2xl font-normal md:text-[2rem] md:leading-tight">
-          Your Watchlist
+          {t("yourWatchlist")}
         </h1>
 
         {media.length > 0 ? <WatchlistFilter /> : null}
@@ -75,13 +77,11 @@ export default function WatchlistSection({ media }: WatchlistSectionProps) {
         <WatchlistGrid media={filteredMedia} isSignedIn />
       ) : (
         <p className="text-sm text-talora-white/70">
-          No{" "}
           {filters.mediaType === "movie"
-            ? "movies"
+            ? t("noMoviesFound")
             : filters.mediaType === "tv"
-              ? "TV series"
-              : "titles"}{" "}
-          found in your watchlist.
+              ? t("noTvFound")
+              : t("noTitlesFound")}
         </p>
       )}
     </section>

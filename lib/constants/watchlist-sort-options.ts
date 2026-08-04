@@ -1,7 +1,7 @@
-import type { FilterSelectOption } from "@/features/media/hooks/use-filter-select";
+import type { SortOptionKey } from "./sort-options";
 
-export const watchlistSortOptions: FilterSelectOption[] = [
-  { label: "Recently added", value: "added_at.desc" },
-  { label: "Title A–Z", value: "title.asc" },
-  { label: "Title Z–A", value: "title.desc" },
+export const watchlistSortOptions: SortOptionKey[] = [
+  { labelKey: "sortRecentlyAdded", value: "added_at.desc" },
+  { labelKey: "sortTitleAZ", value: "title.asc" },
+  { labelKey: "sortTitleZA", value: "title.desc" },
 ];

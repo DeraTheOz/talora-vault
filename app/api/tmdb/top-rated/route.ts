@@ -1,10 +1,12 @@
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 
 import { TmdbTopRatedApiResponse } from "@/features/top-rated/types/top-rated";
+import { toTmdbLocale } from "@/lib/tmdb/tmdb-locale";
 
-export async function GET() {
+export async function GET(request: NextRequest) {
   const token = process.env.TMDB_ACCESS_TOKEN;
   const baseUrl = process.env.TMDB_BASE_URL ?? "https://api.themoviedb.org/3";
+  const lang = request.nextUrl.searchParams.get("lang") ?? undefined;
 
   if (!token) {
     return NextResponse.json(
@@ -25,7 +27,7 @@ export async function GET() {
     };
 
     const response = await fetch(
-      `${baseUrl}/movie/top_rated?language=en-US`,
+      `${baseUrl}/movie/top_rated?language=${toTmdbLocale(lang ?? "en")}`,
       options,
     );
 

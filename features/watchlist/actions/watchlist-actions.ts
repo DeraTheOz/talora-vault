@@ -2,6 +2,7 @@
 
 import { revalidatePath } from "next/cache";
 import { and, eq } from "drizzle-orm";
+import { getLocale, getTranslations } from "next-intl/server";
 
 import { auth } from "@/auth";
 import { db } from "@/db/client";
@@ -12,19 +13,21 @@ import {
 } from "@/features/watchlist/schemas/watchlist-schema";
 
 export async function toggleWatchlistItem(input: WatchlistInput) {
+  const locale = await getLocale();
+  const t = await getTranslations({ locale, namespace: "detail" });
   const session = await auth();
 
   if (!session?.user?.id) {
     return {
       authRequired: true,
-      error: "Log in to add titles to your watchlist",
+      error: t("loginToAddToWatchlist"),
     };
   }
 
   const parsed = watchlistItemSchema.safeParse(input);
 
   if (!parsed.success) {
-    return { error: "Invalid watchlist item." };
+    return { error: t("invalidWatchlistItem") };
   }
 
   const [existingItem] = await db

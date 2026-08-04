@@ -1,5 +1,6 @@
 "use client";
 
+import { useTranslations } from "next-intl";
 import { HugeiconsIcon } from "@hugeicons/react";
 import {
   FilterHorizontalIcon,
@@ -8,26 +9,25 @@ import {
 
 import FilterSelect from "@/app/components/media/filter/filter-select";
 import { useWatchlistFilterStore } from "@/stores/watchlist/watchlist-filter-store";
+import { toFilterSelectOptions } from "@/lib/constants/sort-options";
 import { watchlistSortOptions } from "@/lib/constants/watchlist-sort-options";
 
-/**
- * Media type filter options.
- * "all" shows both movies and TV, "movie" and "tv" filter to that type.
- */
-const mediaTypeOptions = [
-  { label: "All", value: "all" },
-  { label: "Movies", value: "movie" },
-  { label: "TV Series", value: "tv" },
-];
-
 export default function WatchlistFilter() {
+  const t = useTranslations("watchlist");
+  const sortT = useTranslations("browse");
   const { filters, setMediaType, setSortBy } = useWatchlistFilterStore();
+
+  const mediaTypeOptions = [
+    { label: t("mediaTypeAll"), value: "all" },
+    { label: t("mediaTypeMovies"), value: "movie" },
+    { label: t("mediaTypeTvSeries"), value: "tv" },
+  ];
 
   return (
     <div className="grid gap-3 items-center grid-cols-[repeat(auto-fit,minmax(180px,1fr))] sm:grid-cols-2">
       <FilterSelect
         id="watchlist-media-type-filter"
-        ariaLabel="Filter by media type"
+        ariaLabel={t("filterByMediaTypeAria")}
         value={filters.mediaType}
         options={mediaTypeOptions}
         icon={
@@ -38,9 +38,11 @@ export default function WatchlistFilter() {
 
       <FilterSelect
         id="watchlist-sort-filter"
-        ariaLabel="Sort watchlist"
+        ariaLabel={t("sortAria")}
         value={filters.sortBy}
-        options={watchlistSortOptions}
+        options={toFilterSelectOptions(watchlistSortOptions, (key) =>
+          sortT(key),
+        )}
         icon={
           <HugeiconsIcon
             icon={FilterHorizontalIcon}

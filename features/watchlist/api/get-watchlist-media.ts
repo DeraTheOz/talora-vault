@@ -19,11 +19,12 @@ type WatchlistDbItem = {
  */
 export async function getWatchlistMedia(
   items: WatchlistDbItem[],
+  locale = "en",
 ): Promise<WatchlistMediaItem[]> {
   return Promise.all(
     items.map(async (item) => {
       if (item.mediaType === "movie") {
-        const movie = await getMovieDetail(String(item.tmdbId));
+        const movie = await getMovieDetail(String(item.tmdbId), locale);
 
         return {
           id: movie.id,
@@ -38,7 +39,7 @@ export async function getWatchlistMedia(
         };
       }
 
-      const tv = await getTvDetail(String(item.tmdbId));
+      const tv = await getTvDetail(String(item.tmdbId), locale);
 
       return {
         id: tv.id,

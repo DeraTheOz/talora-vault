@@ -8,6 +8,7 @@ import {
   BookmarkRemove02Icon,
 } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
+import { useTranslations } from "next-intl";
 
 import { useWatchlistItem } from "@/features/watchlist/hooks/use-watchlist-item";
 import type { WatchlistMediaType } from "@/features/watchlist/schemas/watchlist-schema";
@@ -36,7 +37,7 @@ export default function BookmarkButton({
   tmdbId,
   mediaType,
   label,
-  removeLabel = "Remove from watchlist",
+  removeLabel,
   defaultInWatchlist = false,
   variant = "icon",
   className = "",
@@ -44,6 +45,7 @@ export default function BookmarkButton({
   disabled,
   ...props
 }: BookmarkButtonProps) {
+  const t = useTranslations("detail");
   const [showAuthModal, setShowAuthModal] = useState(false);
   const pathname = usePathname();
   const isSignedIn = useBookmarkStore((state) => state.isSignedIn);
@@ -52,6 +54,7 @@ export default function BookmarkButton({
     mediaType,
     defaultInWatchlist,
   });
+  const bookmarkRemoveLabel = removeLabel ?? t("removeFromWatchlist");
 
   const isHero = variant === "hero";
 
@@ -80,7 +83,7 @@ export default function BookmarkButton({
     <>
       <button
         type="button"
-        aria-label={isInWatchlist ? removeLabel : label}
+        aria-label={isInWatchlist ? bookmarkRemoveLabel : label}
         aria-pressed={isInWatchlist}
         data-bookmarked={isInWatchlist}
         disabled={disabled || isPending}
@@ -112,10 +115,10 @@ export default function BookmarkButton({
         {isHero &&
           (isPending
             ? isInWatchlist
-              ? "Adding..."
-              : "Removing..."
+              ? t("addingToWatchlist")
+              : t("removingFromWatchlistProgress")
             : isInWatchlist
-              ? removeLabel
+              ? bookmarkRemoveLabel
               : label)}
       </button>
 
@@ -123,12 +126,12 @@ export default function BookmarkButton({
         ? createPortal(
             <LoginAuthModal
               titleId="bookmark-auth-title"
-              title="Save to your watchlist"
-              description="Log in to keep track of movies and TV series you want to watch later."
+              title={t("saveToWatchlistTitle")}
+              description={t("saveToWatchlistDescription")}
               href={`/login?callbackUrl=${encodeURIComponent(pathname)}`}
               onClose={() => setShowAuthModal(false)}
-              primaryButtonText="Log in"
-              secondaryButtonText="Keep browsing"
+              primaryButtonText={t("login")}
+              secondaryButtonText={t("keepBrowsing")}
             />,
             document.body,
           )

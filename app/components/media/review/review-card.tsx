@@ -1,5 +1,6 @@
 import { HugeiconsIcon } from "@hugeicons/react";
 import { Delete02Icon, Edit02Icon, StarIcon } from "@hugeicons/core-free-icons";
+import { useLocale, useTranslations } from "next-intl";
 import { formatDate } from "@/lib/helpers/format";
 import type { Review } from "../../forms/review-form";
 
@@ -16,6 +17,8 @@ export default function ReviewCard({
   onDelete,
   isSubmitting,
 }: ReviewCardProps) {
+  const t = useTranslations("detail");
+  const locale = useLocale();
   const isUpdated =
     new Date(review.updatedAt).getTime() !==
     new Date(review.createdAt).getTime();
@@ -25,7 +28,7 @@ export default function ReviewCard({
       <div className="flex items-start justify-between gap-4">
         <div className="space-y-1">
           <span className="text-xs font-semibold uppercase tracking-wider text-talora-red">
-            Your Review
+            {t("yourReview")}
           </span>
           <div className="flex items-center gap-1.5 text-lg font-bold text-talora-white">
             <HugeiconsIcon
@@ -42,7 +45,7 @@ export default function ReviewCard({
           <button
             type="button"
             onClick={onEdit}
-            aria-label="Edit review"
+            aria-label={t("editReview")}
             className="inline-flex h-9 w-9 items-center justify-center rounded-lg bg-talora-white/5 text-talora-white/60 cursor-pointer transition hover:bg-talora-white/10 hover:text-talora-white active:scale-95">
             <HugeiconsIcon icon={Edit02Icon} size={18} />
           </button>
@@ -50,7 +53,7 @@ export default function ReviewCard({
             type="button"
             disabled={isSubmitting}
             onClick={onDelete}
-            aria-label="Delete review"
+            aria-label={t("deleteReview")}
             className="inline-flex h-9 w-9 items-center justify-center rounded-lg bg-talora-white/5 text-talora-white/60 cursor-pointer transition hover:bg-talora-red/10 hover:text-talora-red active:scale-95 disabled:opacity-50">
             <HugeiconsIcon icon={Delete02Icon} size={18} />
           </button>
@@ -64,8 +67,14 @@ export default function ReviewCard({
       )}
 
       <div className="mt-4 flex flex-wrap gap-x-4 gap-y-1 text-xs text-talora-white/50">
-        <span>Posted: {formatDate(review.createdAt)}</span>
-        {isUpdated && <span>• Updated: {formatDate(review.updatedAt)}</span>}
+        <span>
+          {t("postedOn", { date: formatDate(review.createdAt, locale) })}
+        </span>
+        {isUpdated && (
+          <span>
+            • {t("updatedOn", { date: formatDate(review.updatedAt, locale) })}
+          </span>
+        )}
       </div>
     </div>
   );

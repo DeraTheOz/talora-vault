@@ -2,6 +2,7 @@
 
 import { useTransition } from "react";
 import { toast } from "sonner";
+import { useTranslations } from "next-intl";
 
 import { useBookmarkStore } from "@/stores/bookmark/bookmark-store";
 
@@ -22,6 +23,7 @@ export function useWatchlistItem({
   mediaType,
   defaultInWatchlist = false,
 }: UseWatchlistItemOptions) {
+  const t = useTranslations("detail");
   const item: WatchlistInput = { tmdbId, mediaType };
 
   const isInWatchlist = useBookmarkStore((state) =>
@@ -52,8 +54,8 @@ export function useWatchlistItem({
 
       toast.success(
         result?.isInWatchlist
-          ? "Added to watchlist successfully"
-          : "Removed from watchlist successfully",
+          ? t("addedToWatchlist")
+          : t("removedFromWatchlist"),
       );
     });
   }

@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 
 import { auth } from "@/auth";
+import { getLocale, getTranslations } from "next-intl/server";
 import { getTvDetail } from "@/features/series/api/get-series-detail";
 import { getCachedUserWatchlist } from "@/features/watchlist/api/get-user-watchlist";
 
@@ -20,15 +21,16 @@ export async function generateMetadata({
   params,
 }: SeriesPageProps): Promise<Metadata> {
   const { id } = await params;
+  const locale = await getLocale();
+  const t = await getTranslations({ locale, namespace: "detail" });
 
   try {
-    const tvShow = await getTvDetail(id);
+    const tvShow = await getTvDetail(id, locale);
 
     return {
       title: `${tvShow.name} | Talora Vault`,
       description:
-        tvShow.overview ||
-        `View ${tvShow.name}, episodes, ratings, cast, similar series, reviews, and legal streaming options on Talora Vault.`,
+        tvShow.overview || t("metadataSeriesDescription", { name: tvShow.name }),
       openGraph: {
         title: `${tvShow.name} | Talora Vault`,
         description: tvShow.overview,
@@ -37,16 +39,16 @@ export async function generateMetadata({
     };
   } catch {
     return {
-      title: "TV Show | Talora Vault",
-      description:
-        "View episodes, ratings, cast, similar series, reviews, and legal streaming options on Talora Vault.",
+      title: t("metadataSeriesFallbackTitle"),
+      description: t("metadataSeriesFallbackDescription"),
     };
   }
 }
 
 export default async function SeriesPage({ params }: SeriesPageProps) {
   const { id } = await params;
-  const tvShow = await getTvDetail(id);
+  const locale = await getLocale();
+  const tvShow = await getTvDetail(id, locale);
 
   // Check watchlist on the server
   const session = await auth();

@@ -13,11 +13,13 @@ export async function getSearchResults(
   query: string,
   type: SearchType = "multi",
   page = 1,
+  lang = "en",
 ): Promise<TmdbSearchApiResponse> {
   const searchParams = new URLSearchParams({
     q: query,
     type,
     page: String(page),
+    lang,
   });
 
   const response = await fetch(`/api/tmdb/search?${searchParams.toString()}`);

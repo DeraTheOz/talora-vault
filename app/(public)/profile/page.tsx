@@ -13,11 +13,12 @@ import {
 } from "@/features/reviews/api/get-user-reviews";
 import DeleteAccount from "@/app/components/profile/delete-account";
 import ChangePassword from "@/app/components/profile/change-password";
-import { getTranslations } from "next-intl/server";
+import { getLocale, getTranslations } from "next-intl/server";
 
 export default async function ProfilePage() {
   const session = await auth();
   const t = await getTranslations("profile");
+  const locale = await getLocale();
 
   const [dbUser] = await db
     .select({
@@ -58,7 +59,7 @@ export default async function ProfilePage() {
   ).length;
   const tvCount = watchlist.filter((item) => item.mediaType === "tv").length;
   const watchlistCount = movieCount + tvCount;
-  const recentWatchlist = await getWatchlistMedia(watchlist.slice(0, 5));
+  const recentWatchlist = await getWatchlistMedia(watchlist.slice(0, 5), locale);
   const recentWatchlistItems = recentWatchlist.map((item) => ({
     tmdbId: item.id,
     title: item.title,
@@ -77,6 +78,7 @@ export default async function ProfilePage() {
       : null;
   const recentReviews = await enrichReviewsWithTmdbData(
     userReviews.slice(0, 3),
+    locale,
   );
 
   return (

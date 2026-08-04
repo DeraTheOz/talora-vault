@@ -1,4 +1,5 @@
 import { auth } from "@/auth";
+import { getLocale } from "next-intl/server";
 import WatchlistGrid from "@/app/components/watchlist/watchlist-grid";
 import WatchlistSection from "@/app/components/watchlist/watchlist-section";
 import { getWatchlistMedia } from "@/features/watchlist/api/get-watchlist-media";
@@ -6,6 +7,7 @@ import { getCachedUserWatchlist } from "@/features/watchlist/api/get-user-watchl
 
 export default async function Page() {
   const session = await auth();
+  const locale = await getLocale();
 
   // Not signed in — show empty state with login CTA
   if (!session?.user) {
@@ -28,7 +30,7 @@ export default async function Page() {
   }
 
   // Has items — enrich with TMDB data and pass to WatchlistSection
-  const media = await getWatchlistMedia(watchlist);
+  const media = await getWatchlistMedia(watchlist, locale);
 
   return (
     <div className="space-y-6 pb-6 md:space-y-8 pl-1.5">

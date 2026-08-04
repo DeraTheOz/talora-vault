@@ -1,7 +1,11 @@
 import type { TmdbTvDetail } from "../types/series-detail";
 import { notFound } from "next/navigation";
+import { toTmdbLocale } from "@/lib/tmdb/tmdb-locale";
 
-export async function getTvDetail(id: string): Promise<TmdbTvDetail> {
+export async function getTvDetail(
+  id: string,
+  locale = "en",
+): Promise<TmdbTvDetail> {
   const token = process.env.TMDB_ACCESS_TOKEN;
   const baseUrl = process.env.TMDB_BASE_URL ?? "https://api.themoviedb.org/3";
 
@@ -9,7 +13,9 @@ export async function getTvDetail(id: string): Promise<TmdbTvDetail> {
     throw new Error("TMDB_ACCESS_TOKEN is missing");
   }
 
-  const response = await fetch(`${baseUrl}/tv/${id}?language=en-US`, {
+  const response = await fetch(
+    `${baseUrl}/tv/${id}?language=${toTmdbLocale(locale)}`,
+    {
     headers: {
       accept: "application/json",
       Authorization: `Bearer ${token}`,

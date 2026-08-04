@@ -1,12 +1,14 @@
 import { NextRequest, NextResponse } from "next/server";
 
 import type { TmdbTvSeasonDetail } from "@/features/series/types/series-detail";
+import { toTmdbLocale } from "@/lib/tmdb/tmdb-locale";
 
 export async function GET(
-  _req: NextRequest,
+  request: NextRequest,
   { params }: { params: Promise<{ id: string; seasonNumber: string }> },
 ) {
   const { id, seasonNumber } = await params;
+  const lang = request.nextUrl.searchParams.get("lang") ?? undefined;
   const token = process.env.TMDB_ACCESS_TOKEN;
   const baseUrl = process.env.TMDB_BASE_URL ?? "https://api.themoviedb.org/3";
 
@@ -27,7 +29,7 @@ export async function GET(
 
   try {
     const response = await fetch(
-      `${baseUrl}/tv/${id}/season/${seasonNumber}?language=en-US`,
+      `${baseUrl}/tv/${id}/season/${seasonNumber}?language=${toTmdbLocale(lang ?? "en")}`,
       options,
     );
 

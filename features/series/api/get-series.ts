@@ -6,9 +6,11 @@ import type {
 export async function getSeries(
   page = 1,
   filters: TvFilters = {},
+  lang = "en",
 ): Promise<TmdbTvApiResponse> {
   const searchParams = new URLSearchParams({
     page: String(page),
+    lang,
   });
 
   if (filters.genreId) {
