@@ -1,3 +1,6 @@
+"use client";
+
+import { useTranslations } from "next-intl";
 import { Clock01Icon, Delete02Icon } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
 
@@ -16,6 +19,8 @@ export default function SearchHistoryItem({
   onSelect,
   onDelete,
 }: SearchHistoryItemProps) {
+  const t = useTranslations("search");
+
   return (
     <li id={`search-history-${id}`} role="option" aria-selected={isHighlighted}>
       <div
@@ -44,7 +49,7 @@ export default function SearchHistoryItem({
             onDelete(id);
           }}
           className="shrink-0 rounded p-1 text-talora-white/30 hover:text-talora-red transition-colors cursor-pointer"
-          aria-label={`Remove "${query}" from search history`}>
+          aria-label={t("removeFromHistory", { query })}>
           <HugeiconsIcon icon={Delete02Icon} size={16} color="currentColor" />
         </button>
       </div>

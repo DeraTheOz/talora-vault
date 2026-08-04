@@ -1,5 +1,6 @@
 "use client";
 
+import { useTranslations } from "next-intl";
 import type { SearchResult } from "@/features/search/types/search";
 import SearchResultItem from "./search-result-item";
 import SearchHistoryItem from "./search-history-item";
@@ -37,6 +38,8 @@ export default function SearchDropdown({
   onHistorySelect,
   onHistoryDelete,
 }: SearchDropdownProps) {
+  const t = useTranslations("search");
+
   if (!isOpen) return null;
 
   const hasQuery = query.trim().length >= 2;
@@ -56,7 +59,7 @@ export default function SearchDropdown({
     <div
       id="search-dropdown"
       role="listbox"
-      aria-label="Search results"
+      aria-label={t("resultsLabel")}
       className="absolute left-0 right-0 top-full z-50 mt-4 max-h-96 overflow-y-auto rounded-xl bg-talora-semi-dark-blue shadow-lg shadow-black/40 scrollbar-none xl:right-6">
       {/* Loading state */}
       {hasQuery && isResultsLoading && <SearchLoadingSkeleton />}
@@ -68,7 +71,7 @@ export default function SearchDropdown({
       {showRecentSearches && (
         <div className="p-3">
           <p className="mb-1 px-3 text-xs font-medium uppercase tracking-wider text-talora-white/40">
-            Recent Searches
+            {t("recentSearches")}
           </p>
           <ul className="space-y-0.5">
             {recentSearches.map((search, index) => (
@@ -89,7 +92,7 @@ export default function SearchDropdown({
       {showResults && (
         <div className="p-3">
           <p className="mb-1 px-3 text-xs font-medium uppercase tracking-wider text-talora-white/40">
-            Results
+            {t("results")}
           </p>
           <ul className="space-y-0.5">
             {results.map((result, index) => (
