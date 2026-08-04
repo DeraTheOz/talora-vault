@@ -4,6 +4,7 @@ import bcrypt from "bcryptjs";
 import { AuthError } from "next-auth";
 import { and, eq } from "drizzle-orm";
 import { cookies } from "next/headers";
+import { getLocale, getTranslations } from "next-intl/server";
 
 import { Avatar, Style } from "@dicebear/core";
 import toonHead from "@dicebear/styles/toon-head.json";
@@ -12,8 +13,8 @@ import { signIn, signOut } from "@/auth";
 import { db } from "@/db/client";
 import { accounts, users } from "@/db/schema/auth";
 import {
-  loginSchema,
-  signupSchema,
+  createLoginSchema,
+  createSignupSchema,
   type LoginInput,
   type SignupInput,
 } from "@/features/auth/schemas/auth-schema";
@@ -33,10 +34,13 @@ export type AuthActionState = {
 export async function signupAction(
   input: SignupInput,
 ): Promise<AuthActionState> {
+  const locale = await getLocale();
+  const t = await getTranslations({ locale, namespace: "auth" });
+  const signupSchema = createSignupSchema(t);
   const parsed = signupSchema.safeParse(input);
 
   if (!parsed.success) {
-    return { error: "Check your signup details and try again." };
+    return { error: t("checkSignupDetails") };
   }
 
   // Get existing user
@@ -61,14 +65,12 @@ export async function signupAction(
 
     if (googleAccount) {
       return {
-        error:
-          "This email is already registered with Google. Use Continue with Google instead.",
+        error: t("emailRegisteredWithGoogle"),
       };
     }
 
     return {
-      error:
-        "An account with this email already exists. Please sign in with your email and password.",
+      error: t("accountAlreadyExists"),
     };
   }
 
@@ -96,10 +98,13 @@ export async function loginAction(
   input: LoginInput,
   callbackUrl: string,
 ): Promise<AuthActionState> {
+  const locale = await getLocale();
+  const t = await getTranslations({ locale, namespace: "auth" });
+  const loginSchema = createLoginSchema(t);
   const parsed = loginSchema.safeParse(input);
 
   if (!parsed.success) {
-    return { error: "Enter a valid email and password." };
+    return { error: t("enterValidEmailPassword") };
   }
 
   // Get existing user
@@ -124,8 +129,7 @@ export async function loginAction(
 
     if (googleAccount) {
       return {
-        error:
-          "This account was created with Google. Use Continue with Google instead.",
+        error: t("accountCreatedWithGoogle"),
       };
     }
   }
@@ -154,7 +158,7 @@ export async function loginAction(
     };
   } catch (error) {
     if (error instanceof AuthError) {
-      return { error: "Invalid email or password." };
+      return { error: t("invalidEmailOrPassword") };
     }
 
     throw error;
@@ -168,6 +172,9 @@ export async function googleSignInAction(redirectTo?: string) {
 }
 
 export async function logoutAction() {
+  const locale = await getLocale();
+  const t = await getTranslations({ locale, namespace: "auth" });
+
   try {
     await signOut({
       redirect: false,
@@ -175,7 +182,7 @@ export async function logoutAction() {
     return { success: true };
   } catch (error) {
     if (error instanceof AuthError) {
-      return { error: "Logout failed. Try again." };
+      return { error: t("logoutFailed") };
     }
 
     throw error;
