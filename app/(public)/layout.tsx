@@ -2,6 +2,7 @@ import { auth } from "@/auth";
 import Sidebar from "@/app/components/layout/sidebar";
 import { getTranslations } from "next-intl/server";
 import { BookmarkProvider } from "../components/providers/bookmark-provider";
+import { WatchProgressProvider } from "../components/providers/watch-progress-provider";
 import { getCachedUserWatchlist } from "@/features/watchlist/api/get-user-watchlist";
 
 export default async function PublicLayout({
@@ -36,11 +37,13 @@ export default async function PublicLayout({
           id="main-content"
           tabIndex={-1}
           className="min-h-0 min-w-0 flex-1 overflow-x-hidden overflow-y-auto scrollbar-none outline-none xl:pt-6">
-          <BookmarkProvider
-            initialItems={initialBookmarkItems}
-            isSignedIn={Boolean(session?.user?.id)}>
-            {children}
-          </BookmarkProvider>
+          <WatchProgressProvider isSignedIn={Boolean(session?.user?.id)}>
+            <BookmarkProvider
+              initialItems={initialBookmarkItems}
+              isSignedIn={Boolean(session?.user?.id)}>
+              {children}
+            </BookmarkProvider>
+          </WatchProgressProvider>
         </main>
       </div>
     </>
