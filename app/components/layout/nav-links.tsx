@@ -7,6 +7,7 @@ import { HugeiconsIcon } from "@hugeicons/react";
 import {
   Bookmark02Icon,
   Film02Icon,
+  HistoryIcon,
   Home07Icon,
   Tv01Icon,
 } from "@hugeicons/core-free-icons";
@@ -42,12 +43,17 @@ export default function NavLinks({ variant = "bottom" }: NavLinksProps) {
       label: t("watchlist"),
       icon: Bookmark02Icon,
     },
+    {
+      href: "/watch-history",
+      label: t("watchHistory"),
+      icon: HistoryIcon,
+    },
   ] as const;
 
   return (
     <ul
       className={[
-        isBottomNav ? "grid grid-cols-4 items-center gap-1" : "",
+        isBottomNav ? "grid grid-cols-5 items-center gap-1" : "",
         isDesktopNav ? "flex w-full flex-col gap-8" : "",
       ].join(" ")}>
       {navigationItems.map(({ href, label, icon }) => {
