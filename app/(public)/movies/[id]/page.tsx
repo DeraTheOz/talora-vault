@@ -8,9 +8,10 @@ import { getCachedUserWatchlist } from "@/features/watchlist/api/get-user-watchl
 import MovieFacts from "@/app/components/movie/detail/movie-facts";
 import MovieHero from "@/app/components/movie/detail/movie-hero";
 import MovieReviewForm from "@/app/components/movie/detail/movie-review-form";
-import MovieStreamingPreview from "@/app/components/movie/detail/movie-streaming-preview";
+import StreamingPreview from "@/app/components/media/streaming/streaming-preview";
 import MovieCast from "@/app/components/movie/detail/movie-cast";
 import SimilarMovies from "@/app/components/movie/detail/similar-movies";
+import MoviePlayer from "@/app/components/media/streaming/movie-player";
 
 type MoviePageProps = {
   params: Promise<{ id: string }>;
@@ -51,7 +52,8 @@ export default async function MoviePage({ params }: MoviePageProps) {
 
   // Check watchlist on the server
   const session = await auth();
-  const watchlist = session?.user
+  const isSignedIn = Boolean(session?.user?.id);
+  const watchlist = session?.user?.id
     ? await getCachedUserWatchlist(session.user.id)
     : [];
   const isBookmarked = watchlist.some(
@@ -65,7 +67,21 @@ export default async function MoviePage({ params }: MoviePageProps) {
 
       <div className="mt-8 grid grid-cols-1 gap-8 items-start xl:grid-cols-[minmax(0,1fr)_22rem]">
         <div className="space-y-8">
-          <MovieStreamingPreview movie={movie} />
+          {isSignedIn ? (
+            <MoviePlayer
+              tmdbId={movie.id}
+              title={movie.title}
+              posterPath={movie.backdrop_path ?? movie.poster_path}
+              releaseDate={movie.release_date}
+            />
+          ) : (
+            <StreamingPreview
+              title={movie.title}
+              imagePath={movie.backdrop_path ?? movie.poster_path}
+              heading={locale === "en" ? "Stream Movie" : undefined}
+              loginUrl={`/login?callbackUrl=${encodeURIComponent(`/movies/${id}`)}`}
+            />
+          )}
           <MovieCast id={id} />
           <MovieReviewForm tmdbId={Number(id)} />
         </div>
