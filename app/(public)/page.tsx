@@ -1,5 +1,6 @@
 import { getTranslations } from "next-intl/server";
 import SearchBar from "../components/media/search/search-bar";
+import ContinueWatchingSection from "../components/media/continue-watching-section";
 import NowPlayingSection from "../components/media/now-playing-section";
 import TopRatedSection from "../components/media/top-rated-section";
 import TrendingSection from "../components/media/trending-section";
@@ -12,6 +13,8 @@ export default async function Page() {
       <SearchBar placeholder={t("searchPlaceholder")} />
 
       <TrendingSection id="trending-heading" />
+
+      <ContinueWatchingSection />
 
       <TopRatedSection id="top-rated-heading" />
 

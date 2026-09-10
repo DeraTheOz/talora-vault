@@ -4,7 +4,7 @@ import createNextIntlPlugin from "next-intl/plugin";
 const withNextIntl = createNextIntlPlugin();
 
 const nextConfig: NextConfig = {
-  allowedDevOrigins: ["10.146.211.186"],
+  // allowedDevOrigins: ["10.125.243.186"],
   images: {
     remotePatterns: [
       {

@@ -8,7 +8,7 @@ import { getCachedUserWatchlist } from "@/features/watchlist/api/get-user-watchl
 import SeriesFacts from "@/app/components/series/detail/series-facts";
 import SeriesHero from "@/app/components/series/detail/series-hero";
 import SeriesReviewForm from "@/app/components/series/detail/series-review-form";
-import SeriesStreamingPreview from "@/app/components/series/detail/series-streaming-preview";
+import StreamingPreview from "@/app/components/media/streaming/streaming-preview";
 import EpisodeSelector from "@/app/components/series/episodes/episode-selector";
 import TvCast from "@/app/components/series/detail/series-cast";
 import SimilarTvShows from "@/app/components/series/detail/similar-series";
@@ -30,7 +30,8 @@ export async function generateMetadata({
     return {
       title: `${tvShow.name} | Talora Vault`,
       description:
-        tvShow.overview || t("metadataSeriesDescription", { name: tvShow.name }),
+        tvShow.overview ||
+        t("metadataSeriesDescription", { name: tvShow.name }),
       openGraph: {
         title: `${tvShow.name} | Talora Vault`,
         description: tvShow.overview,
@@ -52,7 +53,8 @@ export default async function SeriesPage({ params }: SeriesPageProps) {
 
   // Check watchlist on the server
   const session = await auth();
-  const watchlist = session?.user
+  const isSignedIn = Boolean(session?.user?.id);
+  const watchlist = session?.user?.id
     ? await getCachedUserWatchlist(session.user.id)
     : [];
   const isBookmarked = watchlist.some(
@@ -66,11 +68,21 @@ export default async function SeriesPage({ params }: SeriesPageProps) {
 
       <div className="mt-8 grid grid-cols-1 gap-8 xl:grid-cols-[minmax(0,1fr)_22rem]">
         <div className="space-y-8">
-          <EpisodeSelector
-            tvShowId={String(tvShow.id)}
-            seasons={tvShow.seasons}
-          />
-          <SeriesStreamingPreview series={tvShow} />
+          {isSignedIn ? (
+            <EpisodeSelector
+              tvShowId={String(tvShow.id)}
+              showName={tvShow.name}
+              seasons={tvShow.seasons}
+            />
+          ) : (
+            <StreamingPreview
+              title={tvShow.name}
+              imagePath={tvShow.backdrop_path ?? tvShow.poster_path}
+              heading={locale === "en" ? "Stream Episode" : undefined}
+              loginUrl={`/login?callbackUrl=${encodeURIComponent(`/series/${id}`)}`}
+            />
+          )}
+
           <TvCast id={id} />
           <SeriesReviewForm tmdbId={Number(id)} />
         </div>
