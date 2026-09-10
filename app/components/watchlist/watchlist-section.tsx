@@ -1,26 +1,25 @@
 "use client";
 
-import { useMemo } from "react";
+import { useMemo, useState, useTransition } from "react";
+import { useRouter } from "next/navigation";
 import { useTranslations } from "next-intl";
+import { toast } from "sonner";
 
 import { useWatchlistFilterStore } from "@/stores/watchlist/watchlist-filter-store";
+import { useBookmarkStore } from "@/stores/bookmark/bookmark-store";
+import { clearWatchlist } from "@/features/watchlist/actions/watchlist-actions";
+import { toastStyles } from "@/lib/constants/toast";
 import type { WatchlistMediaItem } from "@/features/watchlist/types/watchlist";
 import WatchlistFilter from "./watchlist-filter";
 import WatchlistGrid from "./watchlist-grid";
+import ClearActionButton from "../ui/clear-action-button";
+import ClearWatchlistModal from "../modals/clear-watchlist-modal";
 import { MediaSectionSkeleton } from "../media/media-skeletons";
 
 interface WatchlistSectionProps {
   media: WatchlistMediaItem[];
 }
 
-/**
- * Sorts a watchlist by the given sort option.
- * Handles title sorting (case-insensitive) and added_at sorting (newest first by default).
- *
- * @param items - The array of watchlist items to sort.
- * @param sortBy - The sort option string key.
- * @returns A new sorted array (does not mutate the original).
- */
 function sortWatchlist(
   items: WatchlistMediaItem[],
   sortBy: string,
@@ -46,8 +45,12 @@ function sortWatchlist(
 
 export default function WatchlistSection({ media }: WatchlistSectionProps) {
   const t = useTranslations("watchlist");
+  const router = useRouter();
   const filters = useWatchlistFilterStore((state) => state.filters);
   const hasHydrated = useWatchlistFilterStore((state) => state._hasHydrated);
+  const clearBookmarks = useBookmarkStore((state) => state.clearBookmarks);
+  const [isConfirmOpen, setIsConfirmOpen] = useState(false);
+  const [isPending, startTransition] = useTransition();
 
   const filteredMedia = useMemo(() => {
     const filtered =
@@ -56,6 +59,25 @@ export default function WatchlistSection({ media }: WatchlistSectionProps) {
         : media.filter((item) => item.media_type === filters.mediaType);
     return sortWatchlist(filtered, filters.sortBy);
   }, [media, filters.mediaType, filters.sortBy]);
+
+  function handleClearWatchlist() {
+    startTransition(async () => {
+      const result = await clearWatchlist();
+
+      if (!result.success) {
+        toast.error(t("clearWatchlistError"), {
+          id: "clear-watchlist-error",
+          ...toastStyles.error,
+        });
+        return;
+      }
+
+      clearBookmarks();
+      setIsConfirmOpen(false);
+      toast.success(t("clearWatchlistSuccess"));
+      router.refresh();
+    });
+  }
 
   if (!hasHydrated) {
     return <MediaSectionSkeleton filters />;
@@ -84,6 +106,23 @@ export default function WatchlistSection({ media }: WatchlistSectionProps) {
               : t("noTitlesFound")}
         </p>
       )}
+
+      {media.length > 0 ? (
+        <div className="flex justify-center mt-12">
+          <ClearActionButton
+            label={t("clearWatchlist")}
+            onClick={() => setIsConfirmOpen(true)}
+          />
+        </div>
+      ) : null}
+
+      {isConfirmOpen ? (
+        <ClearWatchlistModal
+          isPending={isPending}
+          onClose={() => setIsConfirmOpen(false)}
+          onConfirm={handleClearWatchlist}
+        />
+      ) : null}
     </section>
   );
 }
