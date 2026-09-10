@@ -18,11 +18,14 @@ export default function LogoutAuthModal({
 
   return (
     <div
+      data-talora-overlay
       role="dialog"
       aria-modal="true"
       aria-labelledby="logout-confirm-title"
       className="fixed inset-0 z-50 grid place-items-center bg-talora-dark-blue/80 px-4 backdrop-blur-sm">
-      <div className="w-full max-w-sm rounded-2xl bg-talora-semi-dark-blue p-6 text-talora-white shadow-2xl">
+      <div
+        data-talora-modal
+        className="w-full max-w-sm rounded-2xl bg-talora-semi-dark-blue p-6 text-talora-white shadow-2xl">
         <h2 id="logout-confirm-title" className="text-xl font-medium">
           {t("logOutConfirm")}
         </h2>
