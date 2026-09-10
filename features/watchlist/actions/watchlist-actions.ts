@@ -12,6 +12,22 @@ import {
   type WatchlistInput,
 } from "@/features/watchlist/schemas/watchlist-schema";
 
+export async function clearWatchlist() {
+  const session = await auth();
+
+  if (!session?.user?.id) {
+    return { error: "unauthorized" };
+  }
+
+  await db
+    .delete(watchlistItems)
+    .where(eq(watchlistItems.userId, session.user.id));
+
+  revalidatePath("/watchlist");
+
+  return { success: true };
+}
+
 export async function toggleWatchlistItem(input: WatchlistInput) {
   const locale = await getLocale();
   const t = await getTranslations({ locale, namespace: "detail" });
