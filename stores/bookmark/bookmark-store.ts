@@ -16,6 +16,7 @@ type BookmarkState = {
   setAuthStatus: (isSignedIn: boolean) => void;
   isBookmarked: (item: WatchlistItem, fallback?: boolean) => boolean;
   setBookmark: (item: WatchlistItem, value: boolean) => void;
+  clearBookmarks: () => void;
 };
 
 function getWatchlistKey(item: WatchlistItem): WatchlistKey {
@@ -64,6 +65,14 @@ export const useBookmarkStore = create<BookmarkState>()(
           }),
           false,
           "bookmark/setBookmark",
+        );
+      },
+
+      clearBookmarks: () => {
+        set(
+          { bookmarkedById: {} },
+          false,
+          "bookmark/clearBookmarks",
         );
       },
     }),
