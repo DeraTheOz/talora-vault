@@ -8,7 +8,7 @@ This version has breaking changes — APIs, conventions, and file structure may 
 
 # Talora Vault
 
-Talora Vault is a modern, portfolio-grade movie and TV streaming platform inspired by today's leading entertainment services.
+Talora Vault is a modern, movie and TV streaming platform inspired by today's leading entertainment services.
 
 The application enables users to:
 
@@ -18,7 +18,6 @@ The application enables users to:
 - View detailed information about movies and series
 - Save and build personal watchlists
 - Leave ratings and reviews
-- Receive personalized recommendations
 - Track activity and engagement through a personal analytics dashboard
 - Manage their profile and account preferences
 - Discover trending, popular, and recommended content
@@ -296,17 +295,6 @@ Possible metrics:
 - Series bookmarked
 - Reviews written
 - Ratings submitted
-- Favorite genres
-- Most viewed genres
-- Search activity
-- Monthly activity
-- Platform engagement insights
-
-Dashboard visualizations:
-
-- Line charts
-- Bar charts
-- Pie charts
 
 ---
 
@@ -338,12 +326,10 @@ Features:
 
 - Description
 - Cast
-- Trailer
 - Similar titles
 - Ratings
 - Reviews
 - Bookmark actions
-- Streaming provider information
 
 ---
 
