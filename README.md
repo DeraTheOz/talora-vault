@@ -1,36 +1,51 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Talora Vault
 
-## Getting Started
+A modern movie and TV discovery platform that allows users to explore entertainment content, build personal watchlists, and leave reviews.
 
-First, run the development server:
+## Overview
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+Talora Vault helps users discover and track movies and TV series in one centralized place. It solves the problem of scattered media tracking by providing a unified interface where individuals can search for content, view detailed episode information, build personal watchlists, and leave ratings. The platform delivers exactly what viewers need to manage their entertainment journey without complicated setups.
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Usage
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+Users can access the platform directly via their web browser to begin discovering content. The homepage presents a dashboard of trending, popular, and highly rated titles.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+To track media, users create an account using Google OAuth or standard email credentials. Once authenticated, they can click the bookmark icon on any media card to add it to their personal watchlist. The platform also allows authenticated users to rate titles out of ten and leave written reviews on individual movie or series detail pages.
 
-## Learn More
+The application supports full internationalization. Users can change their preferred language to English, Spanish, or French directly from their profile settings page. Doing so will immediately update the interface and content metadata.
 
-To learn more about Next.js, take a look at the following resources:
+## Features
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+- Advanced search functionality with debounced input and multi-category filtering
+- Personalized watchlists and complete watch history tracking
+- User authentication system supporting both social logins and secure credential access
+- Comprehensive media detail pages including cast information, similar titles, and episode guides
+- Interactive review and rating system for user engagement
+- Personalized user profiles with activity analytics and media statistics
+- Full internationalization support for English, Spanish, and French
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Technologies Used
 
-## Deploy on Vercel
+| Category           | Technology                                                                |
+| :----------------- | :------------------------------------------------------------------------ |
+| Core Framework     | [Next.js](https://nextjs.org/)                                            |
+| Language           | [TypeScript](https://www.typescriptlang.org/)                             |
+| Styling            | [Tailwind CSS](https://tailwindcss.com/)                                  |
+| Database           | [Neon PostgreSQL](https://neon.tech/)                                     |
+| ORM                | [Drizzle ORM](https://orm.drizzle.team/)                                  |
+| Authentication     | [Auth.js](https://authjs.dev/)                                            |
+| Server State       | [TanStack Query](https://tanstack.com/query)                              |
+| Client State       | [Zustand](https://zustand-demo.pmnd.rs/)                                  |
+| Forms & Validation | [React Hook Form](https://react-hook-form.com/) & [Zod](https://zod.dev/) |
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## Author Info
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- LinkedIn: [Emmanuel Ihemedu](https://linkedin.com/in/emmanuel-ihemedu)
+- X (Twitter): [@deraamaobi](https://x.com/deraamaobi)
+
+[![Next.js](https://img.shields.io/badge/Next.js-000000?style=for-the-badge&logo=nextdotjs&logoColor=white)](https://nextjs.org/)
+[![TypeScript](https://img.shields.io/badge/TypeScript-3178C6?style=for-the-badge&logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
+[![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white)](https://tailwindcss.com/)
+[![PostgreSQL](https://img.shields.io/badge/PostgreSQL-316192?style=for-the-badge&logo=postgresql&logoColor=white)](https://www.postgresql.org/)
+[![Drizzle ORM](https://img.shields.io/badge/Drizzle_ORM-C5F74F?style=for-the-badge&logo=drizzle&logoColor=black)](https://orm.drizzle.team/)
+[![React Query](https://img.shields.io/badge/React_Query-FF4154?style=for-the-badge&logo=reactquery&logoColor=white)](https://tanstack.com/query)
