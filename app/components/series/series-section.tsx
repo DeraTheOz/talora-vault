@@ -2,10 +2,7 @@
 
 import { useTranslations } from "next-intl";
 
-import {
-  MediaGridSkeleton,
-  MediaSectionSkeleton,
-} from "../media/media-skeletons";
+import { MediaGridSkeleton, MediaSkeleton } from "../media/media-skeletons";
 
 import SeriesCard from "./series-card";
 import MediaFilter from "../media/filter/media-filter";
@@ -39,7 +36,7 @@ export default function SeriesSection({ id }: TvProps) {
   } = useSeriesSection();
 
   if (isInitialLoading) {
-    return <MediaSectionSkeleton filters />;
+    return <MediaSkeleton filters />;
   }
 
   if (error || genreError) {
@@ -53,8 +50,10 @@ export default function SeriesSection({ id }: TvProps) {
   }
 
   return (
-    <section aria-labelledby={id} className="space-y-8 mb-16">
-      <div className="flex flex-col gap-6 justify-between sm:flex-row xl:pr-8">
+    <section
+      aria-labelledby={id}
+      className="space-y-8 mb-16 px-4 sm:px-6 xl:px-8">
+      <div className="flex flex-col gap-6 justify-between sm:flex-row">
         <h2
           id={id}
           className="text-2xl font-normal md:text-[2rem] md:leading-tight">
@@ -72,9 +71,7 @@ export default function SeriesSection({ id }: TvProps) {
       {isFiltering ? (
         <MediaGridSkeleton />
       ) : series.length === 0 ? (
-        <p className="text-sm text-talora-white">
-          {t("noTvForFilter")}
-        </p>
+        <p className="text-sm text-talora-white">{t("noTvForFilter")}</p>
       ) : (
         <div className="grid max-[369px]:grid-cols-1 grid-cols-2 gap-x-4 gap-y-5 md:grid-cols-3 md:gap-x-7 md:gap-y-6 xl:pr-8 xl:grid-cols-[repeat(auto-fill,minmax(17.5rem,1fr))] xl:gap-x-10 xl:gap-y-8">
           {series.map((tvShow) => (

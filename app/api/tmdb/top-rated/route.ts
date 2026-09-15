@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 
-import { TmdbTopRatedApiResponse } from "@/features/top-rated/types/top-rated";
+import { TmdbTopRatedMovieApiResponse } from "@/features/top-rated/types/top-rated";
 import { toTmdbLocale } from "@/lib/tmdb/tmdb-locale";
 
 export async function GET(request: NextRequest) {
@@ -38,7 +38,7 @@ export async function GET(request: NextRequest) {
       );
     }
 
-    const data = (await response.json()) as TmdbTopRatedApiResponse;
+    const data = (await response.json()) as TmdbTopRatedMovieApiResponse;
 
     return NextResponse.json(data);
   } catch (error) {

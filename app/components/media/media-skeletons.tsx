@@ -2,7 +2,7 @@ import Skeleton from "@/app/components/ui/skeleton";
 
 export function SearchSkeleton() {
   return (
-    <div className="flex min-h-12 items-center gap-4 pr-6 md:gap-6">
+    <div className="flex min-h-12 items-center gap-4 md:gap-6 px-4 sm:px-6 xl:px-8">
       <Skeleton className="size-8 rounded-full" />
       <Skeleton className="h-7 w-full max-w-2xl" />
     </div>
@@ -23,7 +23,7 @@ export function MediaCardSkeleton() {
 
 export function MediaGridSkeleton({ count = 15 }: { count?: number }) {
   return (
-    <div className="grid grid-cols-2 gap-x-4 gap-y-5 md:grid-cols-3 md:gap-x-7 md:gap-y-6 xl:pr-8 xl:grid-cols-[repeat(auto-fill,minmax(17.5rem,1fr))] xl:gap-x-10 xl:gap-y-8">
+    <div className="grid grid-cols-2 gap-x-4 gap-y-5 md:grid-cols-3 md:gap-x-7 md:gap-y-6 xl:grid-cols-[repeat(auto-fill,minmax(17.5rem,1fr))] xl:gap-x-10 xl:gap-y-8">
       {Array.from({ length: count }).map((_, index) => (
         <MediaCardSkeleton key={index} />
       ))}
@@ -31,7 +31,7 @@ export function MediaGridSkeleton({ count = 15 }: { count?: number }) {
   );
 }
 
-export function MediaSectionSkeleton({
+export function MediaSkeleton({
   title = true,
   filters = false,
 }: {
@@ -39,9 +39,9 @@ export function MediaSectionSkeleton({
   filters?: boolean;
 }) {
   return (
-    <section className="space-y-4 md:space-y-6 mb-16">
+    <section className="space-y-4 md:space-y-6 mb-16 px-4 sm:px-6 xl:px-8">
       {title || filters ? (
-        <div className="flex flex-col gap-6 justify-between sm:flex-row xl:pr-8">
+        <div className="flex flex-col gap-6 justify-between sm:flex-row">
           {title ? <Skeleton className="h-8 w-44 md:h-10" /> : null}
 
           {filters ? (
@@ -58,18 +58,35 @@ export function MediaSectionSkeleton({
   );
 }
 
-export function TrendingSectionSkeleton() {
+export function TrendingSkeleton() {
   return (
-    <section className="min-w-0 overflow-hidden space-y-4 md:space-y-6">
-      <Skeleton className="h-8 w-36 md:h-10" />
+    <section
+      className="relative overflow-x-clip px-4 py-16 md:py-20"
+      style={{
+        maskImage:
+          "linear-gradient(to bottom, transparent 0%, black 10%, black 90%, transparent 100%)",
+        WebkitMaskImage:
+          "linear-gradient(to bottom, transparent 0%, black 10%, black 90%, transparent 100%)",
+      }}>
+      <div className="relative mx-auto aspect-2/3 w-[min(70vw,16rem)] sm:w-64 md:w-72 lg:w-80">
+        <Skeleton className="absolute inset-0 rounded-lg" />
+      </div>
 
-      <div className="-mx-4 flex gap-4 overflow-hidden px-4 pb-2 md:mx-0 md:gap-10 xl:px-0 xl:pr-8">
-        {Array.from({ length: 4 }).map((_, index) => (
-          <Skeleton
-            key={index}
-            className="h-45 w-60 shrink-0 md:h-57.5 md:w-117.5"
-          />
-        ))}
+      <div className="mx-auto mt-8 flex max-w-2xl items-end justify-between gap-8 px-1">
+        <div className="space-y-3">
+          <Skeleton className="h-3 w-44" />
+          <Skeleton className="h-6 w-56" />
+        </div>
+        <Skeleton className="h-4 w-20" />
+      </div>
+
+      <div className="mx-auto mt-10 flex max-w-2xl items-center gap-5 px-1">
+        <Skeleton className="size-10 shrink-0 rounded-full" />
+        <div className="relative flex-1 py-3">
+          <div className="absolute inset-x-0 top-1/2 h-px -translate-y-1/2 bg-white/15" />
+          <div className="absolute left-0 top-1/2 size-2 -translate-y-1/2 rounded-full bg-white/25" />
+        </div>
+        <Skeleton className="size-10 shrink-0 rounded-full" />
       </div>
     </section>
   );

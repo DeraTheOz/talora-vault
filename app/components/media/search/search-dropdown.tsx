@@ -60,7 +60,7 @@ export default function SearchDropdown({
       id="search-dropdown"
       role="listbox"
       aria-label={t("resultsLabel")}
-      className="absolute left-0 right-0 top-full z-50 mt-4 max-h-96 overflow-y-auto rounded-xl bg-talora-semi-dark-blue shadow-lg shadow-black/40 scrollbar-none xl:right-6">
+      className="absolute left-0 right-0 top-full z-50 mt-4 max-h-96 overflow-y-auto rounded-xl bg-talora-semi-dark-blue shadow-lg shadow-black/40 scrollbar-none xl:left6 xl:right6 mx-4 sm:mx-6 xl:mx-8">
       {/* Loading state */}
       {hasQuery && isResultsLoading && <SearchLoadingSkeleton />}
 

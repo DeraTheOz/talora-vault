@@ -22,7 +22,9 @@ export default async function MediaFacts({
   const t = await getTranslations("detail");
 
   return (
-    <section aria-label={ariaLabel ?? t("movieFactsAria")} className="mt-6">
+    <section
+      aria-label={ariaLabel ?? t("movieFactsAria")}
+      className="mt-6 px-4 sm:px-6 xl:px-8">
       <div className="flex flex-wrap gap-3">
         {items.map((item) => (
           <MediaFactPill

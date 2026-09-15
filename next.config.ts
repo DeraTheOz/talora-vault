@@ -4,7 +4,6 @@ import createNextIntlPlugin from "next-intl/plugin";
 const withNextIntl = createNextIntlPlugin();
 
 const nextConfig: NextConfig = {
-  // allowedDevOrigins: ["10.125.243.186"],
   images: {
     remotePatterns: [
       {
@@ -18,6 +17,27 @@ const nextConfig: NextConfig = {
         pathname: "/**",
       },
     ],
+  },
+  async headers() {
+    return [
+      {
+        source: "/sw.js",
+        headers: [
+          {
+            key: "Content-Type",
+            value: "application/javascript; charset=utf-8",
+          },
+          {
+            key: "Cache-Control",
+            value: "no-cache, no-store, must-revalidate",
+          },
+        ],
+      },
+      {
+        source: "/manifest.webmanifest",
+        headers: [{ key: "Cache-Control", value: "public, max-age=3600" }],
+      },
+    ];
   },
 };
 

@@ -1,9 +1,10 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Outfit } from "next/font/google";
 import { getLocale } from "next-intl/server";
 import { NextIntlClientProvider } from "next-intl";
 import "./globals.css";
 import QueryProvider from "./components/providers/query-provider";
+import ServiceWorkerRegister from "./components/pwa/service-worker-register";
 import { Toaster } from "sonner";
 
 const outfit = Outfit({
@@ -16,6 +17,24 @@ export const metadata: Metadata = {
   title: "Talora Vault",
   description:
     "Discover movies and TV series with Talora Vault — watchlists, recommendations, and entertainment insights.",
+  applicationName: "Talora Vault",
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: "black-translucent",
+    title: "Talora Vault",
+  },
+  icons: {
+    icon: [
+      { url: "/icon-192x192.png", type: "image/png", sizes: "192x192" },
+      { url: "/icon-512x512.png", type: "image/png", sizes: "512x512" },
+    ],
+    apple: [{ url: "/apple-touch-icon.png", sizes: "180x180", type: "image/png" }],
+  },
+};
+
+export const viewport: Viewport = {
+  themeColor: "#10141E",
+  colorScheme: "dark",
 };
 
 export default async function RootLayout({
@@ -34,6 +53,8 @@ export default async function RootLayout({
         <NextIntlClientProvider>
           <QueryProvider>{children}</QueryProvider>
         </NextIntlClientProvider>
+
+        <ServiceWorkerRegister />
 
         <Toaster
           position="top-center"

@@ -14,9 +14,9 @@ import WatchlistFilter from "./watchlist-filter";
 import WatchlistGrid from "./watchlist-grid";
 import ClearActionButton from "../ui/clear-action-button";
 import ClearWatchlistModal from "../modals/clear-watchlist-modal";
-import { MediaSectionSkeleton } from "../media/media-skeletons";
+import { MediaSkeleton } from "../media/media-skeletons";
 
-interface WatchlistSectionProps {
+interface WatchlistProps {
   media: WatchlistMediaItem[];
 }
 
@@ -43,7 +43,7 @@ function sortWatchlist(
   }
 }
 
-export default function WatchlistSection({ media }: WatchlistSectionProps) {
+export default function Watchlist({ media }: WatchlistProps) {
   const t = useTranslations("watchlist");
   const router = useRouter();
   const filters = useWatchlistFilterStore((state) => state.filters);
@@ -80,12 +80,14 @@ export default function WatchlistSection({ media }: WatchlistSectionProps) {
   }
 
   if (!hasHydrated) {
-    return <MediaSectionSkeleton filters />;
+    return <MediaSkeleton filters />;
   }
 
   return (
-    <section aria-labelledby="watchlist-heading" className="mb-16 space-y-6">
-      <div className="flex flex-col gap-6 justify-between sm:flex-row xl:pr-8">
+    <section
+      aria-labelledby="watchlist-heading"
+      className="mb-16 space-y-6 px-4 sm:px-6 xl:px-8">
+      <div className="flex flex-col gap-6 justify-between sm:flex-row">
         <h1
           id="watchlist-heading"
           className="text-2xl font-normal md:text-[2rem] md:leading-tight">
