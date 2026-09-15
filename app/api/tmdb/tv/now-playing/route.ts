@@ -1,6 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
 
-import { TmdbTopRatedMovieApiResponse } from "@/features/top-rated/types/top-rated";
 import { toTmdbLocale } from "@/lib/tmdb/tmdb-locale";
 
 export async function GET(request: NextRequest) {
@@ -27,25 +26,25 @@ export async function GET(request: NextRequest) {
     };
 
     const response = await fetch(
-      `${baseUrl}/movie/top_rated?language=${toTmdbLocale(lang ?? "en")}`,
+      `${baseUrl}/discover/tv?language=${toTmdbLocale(lang ?? "en")}`,
       options,
     );
 
     if (!response.ok) {
       return NextResponse.json(
-        { message: "Failed to fetch top rated content" },
+        { message: "Failed to fetch now playing TV shows" },
         { status: 502 },
       );
     }
 
-    const data = (await response.json()) as TmdbTopRatedMovieApiResponse;
+    const data = await response.json();
 
     return NextResponse.json(data);
   } catch (error) {
     console.error(error);
 
     return NextResponse.json(
-      { message: "Failed to fetch top rated content" },
+      { message: "Failed to fetch now playing TV shows" },
       { status: 500 },
     );
   }

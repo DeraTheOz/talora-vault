@@ -18,7 +18,7 @@ type ContinueWatchingItem = {
   episode?: number;
 };
 
-export default function ContinueWatchingSection() {
+export default function ContinueWatching() {
   const t = useTranslations("home");
   const movieProgress = useWatchProgressStore((s) => s.movieProgress);
   const tvProgress = useWatchProgressStore((s) => s.tvProgress);
@@ -106,14 +106,14 @@ export default function ContinueWatchingSection() {
   return (
     <section
       aria-labelledby="continue-watching-heading"
-      className="space-y-4 md:space-y-6 mb-16">
+      className="space-y-4 md:space-y-6 mb-10 px-4 sm:px-6 xl:px-8">
       <h2
         id="continue-watching-heading"
         className="text-2xl font-normal md:text-[2rem] md:leading-tight">
         {t("continueWatching")}
       </h2>
 
-      <div className="grid max-[369px]:grid-cols-1 grid-cols-2 gap-x-4 gap-y-5 md:grid-cols-3 md:gap-x-7 md:gap-y-6 xl:pr-8 xl:grid-cols-[repeat(auto-fill,minmax(17.5rem,1fr))] xl:gap-x-10 xl:gap-y-8">
+      <div className="grid max-[369px]:grid-cols-1 grid-cols-2 gap-x-4 gap-y-5 md:grid-cols-3 md:gap-x-7 md:gap-y-6 xl:grid-cols-[repeat(auto-fill,minmax(17.5rem,1fr))] xl:gap-x-10 xl:gap-y-8">
         {items.map((item) => (
           <ContinueWatchingCard
             key={
