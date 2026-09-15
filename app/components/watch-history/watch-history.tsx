@@ -7,7 +7,7 @@ import { useWatchHistoryFilterStore } from "@/stores/watch-history/watch-history
 import WatchHistoryFilter from "./watch-history-filter";
 import WatchHistoryGrid from "./watch-history-grid";
 import ClearActionButton from "../ui/clear-action-button";
-import { MediaSectionSkeleton } from "../media/media-skeletons";
+import { MediaSkeleton } from "../media/media-skeletons";
 import { useWatchHistory } from "@/features/watch-history/hooks/use-watch-history";
 import { WatchHistoryItem } from "@/features/watch-history/types/watch-history";
 import ClearHistoryModal from "../modals/clear-history-modal";
@@ -33,7 +33,7 @@ function sortHistory(
   }
 }
 
-export default function WatchHistorySection() {
+export default function WatchHistory() {
   const t = useTranslations("watchHistory");
   const filters = useWatchHistoryFilterStore((state) => state.filters);
   const hasHydrated = useWatchHistoryFilterStore((state) => state._hasHydrated);
@@ -57,7 +57,7 @@ export default function WatchHistorySection() {
   }, [watchHistoryItems, filters.mediaType, filters.sortBy]);
 
   if (!hasHydrated) {
-    return <MediaSectionSkeleton filters />;
+    return <MediaSkeleton filters />;
   }
 
   // Empty history — show empty state with explore CTA
@@ -72,8 +72,8 @@ export default function WatchHistorySection() {
   return (
     <section
       aria-labelledby="watch-history-heading"
-      className="mb-16 space-y-6">
-      <div className="flex flex-col gap-6 justify-between sm:flex-row xl:pr-8">
+      className="mb-16 space-y-6 px-4 sm:px-6 xl:px-8">
+      <div className="flex flex-col gap-6 justify-between sm:flex-row">
         <h1
           id="watch-history-heading"
           className="text-2xl font-normal md:text-[2rem] md:leading-tight">
