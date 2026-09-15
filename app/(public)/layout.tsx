@@ -30,13 +30,13 @@ export default async function PublicLayout({
         {t("skipToContent")}
       </a>
 
-      <div className="mx-auto flex h-dvh w-full flex-col overflow-hidden gap-6 px-4 py-4 md:px-6 md:py-6 xl:flex-row xl:gap-9 xl:px-0 xl:py-0">
+      <div className="mx-auto flex h-dvh w-full flex-col overflow-hidden py-4 md:py-6 xl:flex-row xl:py-0">
         <Sidebar />
 
         <main
           id="main-content"
           tabIndex={-1}
-          className="min-h-0 min-w-0 flex-1 overflow-x-hidden overflow-y-auto scrollbar-none outline-none xl:pt-6">
+          className="min-h-0 min-w-0 flex-1 overflow-x-hidden overflow-y-auto scrollbar-none outline-none">
           <WatchProgressProvider isSignedIn={Boolean(session?.user?.id)}>
             <BookmarkProvider
               initialItems={initialBookmarkItems}

@@ -2,9 +2,9 @@ import Skeleton from "@/app/components/ui/skeleton";
 
 export default function DetailPageSkeleton({ withEpisodes = false }) {
   return (
-    <div className="pb-6 mb-16 sm:mb-0 xl:pr-8">
-      <section className="relative overflow-hidden rounded-lg px-4 pb-8 pt-56 md:px-6 md:pt-72 xl:px-8 xl:pt-80">
-        <Skeleton className="absolute inset-0 rounded-lg" />
+    <div className="pb-6 mb-16 sm:mb-0">
+      <section className="relative overflow-hidden px-4 pb-8 pt-56 md:px-6 md:pt-72 xl:px-8 xl:pt-80">
+        <Skeleton className="absolute inset-0" />
 
         <div className="relative max-w-4xl space-y-4">
           <Skeleton className="h-4 w-48" />
@@ -19,13 +19,13 @@ export default function DetailPageSkeleton({ withEpisodes = false }) {
         </div>
       </section>
 
-      <div className="mt-5 flex flex-wrap gap-3">
+      <div className="mt-5 flex flex-wrap gap-3 px-4 sm:px-6 xl:px-8">
         {Array.from({ length: 6 }).map((_, index) => (
           <Skeleton key={index} className="h-10 w-24 rounded-full" />
         ))}
       </div>
 
-      <div className="mt-8 grid grid-cols-1 gap-8 xl:grid-cols-[minmax(0,1fr)_22rem]">
+      <div className="mt-8 grid grid-cols-1 gap-8 xl:grid-cols-[minmax(0,1fr)_22rem] px-4 sm:px-6 xl:px-8">
         <div className="space-y-6 xl:col-start-1 xl:row-start-1">
           {withEpisodes ? <Skeleton className="h-14 w-full" /> : null}
           <Skeleton className="aspect-video w-full" />

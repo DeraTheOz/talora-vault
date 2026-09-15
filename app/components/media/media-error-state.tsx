@@ -20,7 +20,7 @@ export default function MediaErrorState({
   return (
     <div
       role="alert"
-      className="flex flex-col items-start gap-3 text-talora-white">
+      className="flex flex-col items-start gap-3 text-talora-white px-4 sm:px-6 xl:px-8">
       <p className="text-talora-red">{message}</p>
 
       {onRetry ? (

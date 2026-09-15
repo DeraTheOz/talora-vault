@@ -40,7 +40,7 @@ export default async function Sidebar() {
     <>
       <aside
         aria-label={t("primaryNavigation")}
-        className="group/sidebar z-30 flex h-14 shrink-0 items-center justify-between rounded-[0.625rem] bg-talora-semi-dark-blue px-4 transition-[width] duration-300 ease-out md:h-20 md:rounded-[1.25rem] md:px-6 xl:sticky xl:top-0 xl:h-dvh xl:w-24 xl:flex-col xl:items-start xl:justify-start xl:overflow-hidden xl:rounded-none xl:px-0 xl:py-8 xl:hover:w-72">
+        className="group/sidebar z-30 flex h-14 shrink-0 items-center justify-between rounded-[0.625rem] bg-talora-semi-dark-blue px-4 mx-4 sm:mx-6 xl:mx-0 mb-6 transition-[width] duration-300 ease-out md:h-20 md:rounded-[1.25rem] md:px-6 xl:sticky xl:top-0 xl:h-dvh xl:w-24 xl:flex-col xl:items-start xl:justify-start xl:overflow-hidden xl:rounded-none xl:px-0 xl:py-8 xl:mb-0 xl:hover:w-72">
         <div className="flex items-center xl:grid xl:w-full xl:grid-cols-[6rem_1fr]">
           <div className="flex items-center justify-center">
             <Logo />

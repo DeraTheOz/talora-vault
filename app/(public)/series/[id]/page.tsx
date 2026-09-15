@@ -62,11 +62,11 @@ export default async function SeriesPage({ params }: SeriesPageProps) {
   );
 
   return (
-    <div className="pb-6 mb-16 xl:pr-8">
+    <div className="pb-6 mb-16">
       <SeriesHero tvShow={tvShow} isBookmarked={isBookmarked} />
       <SeriesFacts tvShow={tvShow} />
 
-      <div className="mt-8 grid grid-cols-1 gap-8 xl:grid-cols-[minmax(0,1fr)_22rem]">
+      <div className="mt-8 grid grid-cols-1 gap-8 xl:grid-cols-[minmax(0,1fr)_22rem] px-4 sm:px-6 xl:px-8">
         <div className="space-y-8">
           {isSignedIn ? (
             <EpisodeSelector

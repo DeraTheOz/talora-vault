@@ -51,7 +51,7 @@ export default async function MediaHero({
   return (
     <section
       aria-labelledby={titleId}
-      className="relative isolate overflow-hidden rounded-lg px-4 pb-8 pt-56 md:px-6 md:pt-72 xl:mx-0 xl:px-8 xl:pt-80">
+      className="relative isolate overflow-hidden px-4 pb-8 pt-56 md:px-6 md:pt-72 xl:mx-0 xl:px-8 xl:pt-80">
       {/* Mobile Image */}
       {mobileImage ? (
         <Image

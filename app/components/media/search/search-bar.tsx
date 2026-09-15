@@ -37,7 +37,9 @@ export default function SearchBar({
   } = useSearchBar(searchType);
 
   return (
-    <div ref={containerRef} className="relative w-full xl:pr-6">
+    <div
+      ref={containerRef}
+      className="relative w-full px-4 sm:px-6 xl:px-8 xl:pt-6">
       <form
         role="search"
         aria-label={placeholder}
