@@ -59,7 +59,10 @@ export default async function ProfilePage() {
   ).length;
   const tvCount = watchlist.filter((item) => item.mediaType === "tv").length;
   const watchlistCount = movieCount + tvCount;
-  const recentWatchlist = await getWatchlistMedia(watchlist.slice(0, 5), locale);
+  const recentWatchlist = await getWatchlistMedia(
+    watchlist.slice(0, 5),
+    locale,
+  );
   const recentWatchlistItems = recentWatchlist.map((item) => ({
     tmdbId: item.id,
     title: item.title,
@@ -82,7 +85,7 @@ export default async function ProfilePage() {
   );
 
   return (
-    <div className="space-y-6 mb-16 md:space-y-8 pl-1.5 xl:pr-8">
+    <div className="space-y-6 mb-16 md:space-y-8 px-4 sm:px-6 xl:px-8 xl:mt-6">
       <h1 className="sr-only">{t("pageTitle")}</h1>
 
       <ProfileHeader

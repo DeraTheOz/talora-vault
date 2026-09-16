@@ -23,14 +23,12 @@ export default function DeleteAccount({
     <section
       aria-label={t("sectionTitle")}
       className="rounded-xl bg-talora-semi-dark-blue p-5">
-      <div className="flex items-center justify-between gap-3">
+      <div className="flex flex-wrap items-center justify-between gap-3">
         <div className="min-w-0 flex flex-col gap-2">
           <h3 className="text-md font-medium text-talora-red">
             {t("sectionTitle")}
           </h3>
-          <p className="text-xs text-talora-red">
-            {t("sectionDescription")}
-          </p>
+          <p className="text-xs text-talora-red">{t("sectionDescription")}</p>
         </div>
 
         <button

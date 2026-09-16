@@ -73,7 +73,7 @@ export default function SeriesSection({ id }: TvProps) {
       ) : series.length === 0 ? (
         <p className="text-sm text-talora-white">{t("noTvForFilter")}</p>
       ) : (
-        <div className="grid max-[369px]:grid-cols-1 grid-cols-2 gap-x-4 gap-y-5 md:grid-cols-3 md:gap-x-7 md:gap-y-6 xl:pr-8 xl:grid-cols-[repeat(auto-fill,minmax(17.5rem,1fr))] xl:gap-x-10 xl:gap-y-8">
+        <div className="grid max-[369px]:grid-cols-1 grid-cols-2 gap-x-4 gap-y-5 md:grid-cols-3 md:gap-x-7 md:gap-y-6 xl:grid-cols-[repeat(auto-fill,minmax(17.5rem,1fr))] xl:gap-x-10 xl:gap-y-8">
           {series.map((tvShow) => (
             <SeriesCard key={`${tvShow.name}-${tvShow.id}`} tvShow={tvShow} />
           ))}

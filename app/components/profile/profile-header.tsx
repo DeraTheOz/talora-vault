@@ -94,7 +94,7 @@ export default function ProfileHeader({
           </div>
 
           <div className="flex flex-wrap items-center gap-x-4 gap-y-1.5 text-sm text-talora-white/70">
-            <span className="inline-flex items-center gap-1.5">
+            <span className="inline-flex flex-wrap items-center gap-1.5">
               <HugeiconsIcon icon={Mail01Icon} size={16} />
               {email}
 

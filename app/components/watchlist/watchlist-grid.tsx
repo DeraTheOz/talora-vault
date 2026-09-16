@@ -21,7 +21,9 @@ export default function WatchlistGrid({
   // Empty state — not signed in
   if (!isSignedIn) {
     return (
-      <section aria-labelledby="watchlist-heading" className="mb-16 space-y-4">
+      <section
+        aria-labelledby="watchlist-heading"
+        className="mb-16 space-y-4 px-4 sm:px-6 xl:px-8">
         <h1
           id="watchlist-heading"
           className="text-xl font-normal md:text-[2rem] md:leading-tight">
@@ -52,7 +54,9 @@ export default function WatchlistGrid({
   // Empty state — signed in but watchlist is empty
   if (media.length === 0) {
     return (
-      <section aria-labelledby="watchlist-heading" className="mb-16 space-y-4">
+      <section
+        aria-labelledby="watchlist-heading"
+        className="mb-16 space-y-4 px-4 sm:px-6 xl:px-8">
         <h1
           id="watchlist-heading"
           className="text-xl font-normal md:text-[2rem] md:leading-tight">
@@ -76,7 +80,7 @@ export default function WatchlistGrid({
 
   // Populated state — render the grid
   return (
-    <div className="grid max-[369px]:grid-cols-1 grid-cols-2 gap-x-4 gap-y-5 md:grid-cols-3 md:gap-x-7 md:gap-y-6 xl:grid-cols-[repeat(auto-fill,minmax(17.5rem,1fr))] xl:gap-x-10 xl:gap-y-8 xl:pr-8">
+    <div className="grid max-[369px]:grid-cols-1 grid-cols-2 gap-x-4 gap-y-5 md:grid-cols-3 md:gap-x-7 md:gap-y-6 xl:grid-cols-[repeat(auto-fill,minmax(17.5rem,1fr))] xl:gap-x-10 xl:gap-y-8">
       {media.map((item) => (
         <MediaCard
           key={`${item.media_type}-${item.id}`}

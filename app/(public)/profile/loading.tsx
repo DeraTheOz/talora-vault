@@ -2,7 +2,7 @@ import Skeleton from "@/app/components/ui/skeleton";
 
 export default function ProfileLoading() {
   return (
-    <div className="space-y-6 pb-6 md:space-y-8 pl-1.5 xl:pr-8">
+    <div className="space-y-6 pb-6 md:space-y-8 px-4 sm:px-6 xl:px-8 xl:mt-6">
       {/* Header skeleton */}
       <section
         aria-label="Loading profile information"
@@ -11,8 +11,7 @@ export default function ProfileLoading() {
           <Skeleton className="size-20 shrink-0 rounded-xl md:size-28" />
           <div className="min-w-0 flex-1 space-y-3">
             <Skeleton className="h-8 w-48 md:h-10" />
-            <Skeleton className="h-4 w-72" />
-            <Skeleton className="h-4 w-40" />
+            <Skeleton className="h-4 w-48" />
           </div>
           <div className="flex items-center gap-3 flex-wrap">
             <Skeleton className="h-11 w-32 shrink-0 rounded-lg" />

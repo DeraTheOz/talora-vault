@@ -63,7 +63,7 @@ export default function WatchHistory() {
   // Empty history — show empty state with explore CTA
   if (watchHistoryItems.length === 0) {
     return (
-      <div className="space-y-6 pb-6 md:space-y-8">
+      <div className="space-y-6 pb-6 md:space-y-8 px-4 sm:px-6 xl:px-8">
         <WatchHistoryGrid items={[]} isSignedIn />
       </div>
     );
